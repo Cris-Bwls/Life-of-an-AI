@@ -1,0 +1,45 @@
+﻿  Tree.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  TimeManager.cpp
+  TextureManager.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\texturemanager.h(3): fatal error C1083: Cannot open include file: 'DynamicArray.h': No such file or directory
+  Tent.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Stockpile.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  StaticObject.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Rock.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  ResourceObject.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  ResourceComponent.cpp
+  Hut.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Housing.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  GameObject.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Forge.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Deer.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Crafter.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Construction.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Component.cpp
+  Cabin.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Building.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Application2D.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\application2d.cpp(69): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\application2d.cpp(70): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  AI.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Agent.cpp
+c:\users\s181210\documents\projects\004_ai\g-life of an ai\project2d\gameobject.h(2): fatal error C1083: Cannot open include file: 'Matrix3.h': No such file or directory
+  Generating Code...

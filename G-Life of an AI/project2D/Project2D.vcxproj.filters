@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\_Core">
+      <UniqueIdentifier>{559f79d1-23ff-49cf-9b13-66ee6c076e5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\_Core">
+      <UniqueIdentifier>{c35a0b88-1896-46e0-95ba-4663b7177ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Singletons">
+      <UniqueIdentifier>{1fe7bab7-887f-4d4f-8905-54e542af31ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Singletons">
+      <UniqueIdentifier>{2d92c617-71e6-4588-a644-a7e1bbde69bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{c44702dd-8ced-4e2d-8e57-d24f759e6949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{527ee632-8c1d-4aab-bf7f-3b07ab9e70ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Agents">
+      <UniqueIdentifier>{acef45ac-1271-4a24-a35c-8039467bf931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\StaticObjects">
+      <UniqueIdentifier>{918b1e65-809b-457c-ac2e-075d6c8dc846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Agents">
+      <UniqueIdentifier>{63301a7d-0f2c-47c1-a7b0-627cd3b13fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\StaticObjects">
+      <UniqueIdentifier>{b71b0687-ddf7-41b9-adda-738f4964d22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{8271ebb7-2d6e-4620-89e3-464ff0da4568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{095beb2c-b313-40ae-8d72-ea9e5a252c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enums">
+      <UniqueIdentifier>{fe00bf4b-e5c2-4834-a780-bb24816879d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain">
+      <UniqueIdentifier>{327beb82-354a-4aec-94b0-4cc0b493a73b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain">
+      <UniqueIdentifier>{386062be-7414-4ba1-90d5-f890aff5f1e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\StaticObjects\Buildings">
+      <UniqueIdentifier>{627fb693-cad0-4bc2-9d43-eed45996a3d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\StaticObjects\ResourceObjects">
+      <UniqueIdentifier>{54861f6c-eb0d-4088-998d-020b525f24ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\StaticObjects\ResourceObjects">
+      <UniqueIdentifier>{ab2dbd92-abae-4089-8211-3aedf97b20e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\StaticObjects\Buildings">
+      <UniqueIdentifier>{dbc5db41-8f04-40f9-b3bd-fb418ddb863e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\StaticObjects\Buildings\Housing">
+      <UniqueIdentifier>{b45548d4-71cb-414a-bd03-894159b1be80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\StaticObjects\Buildings\Housing">
+      <UniqueIdentifier>{0b6e0811-85a0-45ca-a218-580287c432fe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application2D.cpp">
+      <Filter>Source Files\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Source Files\GameObjects\Agents</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceObject.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Construction.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Stockpile.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Housing.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tent.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClCompile>
+    <ClCompile Include="Forge.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Crafter.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Hut.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClCompile>
+    <ClCompile Include="Cabin.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Source Files\GameObjects\Agents</Filter>
+    </ClCompile>
+    <ClCompile Include="Deer.cpp">
+      <Filter>Source Files\GameObjects\Agents</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application2D.h">
+      <Filter>Header Files\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Header Files\GameObjects\Agents</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>Header Files\GameObjects\StaticObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EResourceType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ETerrainType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainStats.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceObject.h">
+      <Filter>Header Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>Header Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Housing.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tent.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClInclude>
+    <ClInclude Include="Stockpile.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Construction.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Forge.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Cabin.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClInclude>
+    <ClInclude Include="Hut.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings\Housing</Filter>
+    </ClInclude>
+    <ClInclude Include="Crafter.h">
+      <Filter>Header Files\GameObjects\StaticObjects\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Header Files\GameObjects\Agents</Filter>
+    </ClInclude>
+    <ClInclude Include="Deer.h">
+      <Filter>Header Files\GameObjects\Agents</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
