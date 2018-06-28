@@ -1,10 +1,3 @@
 ﻿  Application2D.cpp
-  Generating Code...
-  Compiling...
-  main.cpp
-  Terrain.cpp
-c:\users\s181210\documents\projects\004_ai\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\s181210\documents\projects\004_ai\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(311): warning C4018: '<': signed/unsigned mismatch
-c:\users\s181210\documents\projects\004_ai\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(313): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+c:\users\s181210\documents\projects\004_ai\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(114): warning C4018: '<': signed/unsigned mismatch
   Project2D.vcxproj -> C:\Users\s181210\Documents\Projects\004_AI\Life-of-an-AI\G-Life of an AI\temp\Project2D\Win32\Debug\Project2D.exe

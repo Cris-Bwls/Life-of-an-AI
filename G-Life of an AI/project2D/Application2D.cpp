@@ -5,6 +5,10 @@
 
 #include <iostream>
 
+//DEBUG
+#include <vector>
+#include "Vector2.h"
+
 Application2D::Application2D() {
 
 }
@@ -101,6 +105,19 @@ void Application2D::draw() {
 	m_2dRenderer->begin();
 
 	m_pMap->Draw(m_2dRenderer);
+
+	if ((int)(getTime()) % 10 > 5)
+	{
+		auto path = m_pMap->GetPath(Vector2(100, 100), Vector2(300, 200), true);
+
+		m_2dRenderer->setRenderColour(0xFF0000FF);
+		for (int i = 0; i < path.size(); ++i)
+		{
+			m_2dRenderer->drawBox(path[i].x, path[i].y, TILE_SIZE, TILE_SIZE);
+
+		}
+		m_2dRenderer->setRenderColour(0xFFFFFFFF);
+	}
 
 	// output some text, uses the last used colour
 	char fps[32];
