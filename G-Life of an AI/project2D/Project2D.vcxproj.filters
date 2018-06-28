@@ -147,6 +147,12 @@
     <ClCompile Include="Deer.cpp">
       <Filter>Source Files\GameObjects\Agents</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainTile.cpp">
+      <Filter>Source Files\Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -223,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="Deer.h">
       <Filter>Header Files\GameObjects\Agents</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainTile.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TileQuadrant.h">
+      <Filter>Header Files\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

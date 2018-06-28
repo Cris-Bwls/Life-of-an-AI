@@ -184,6 +184,8 @@
     <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Stockpile.cpp" />
     <ClCompile Include="Tent.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TerrainTile.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Tree.cpp" />
@@ -210,8 +212,11 @@
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="Tent.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TerrainStats.h" />
+    <ClInclude Include="TerrainTile.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TileQuadrant.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>
