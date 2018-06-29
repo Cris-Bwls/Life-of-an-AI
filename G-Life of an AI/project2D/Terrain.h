@@ -16,6 +16,9 @@ public:
 	Terrain();
 	~Terrain();
 
+	void ResetAnimalAvoid();
+	void SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel);
+
 	std::vector<Vector2> GetPath(Vector2 v2Start, Vector2 v2End, bool AStar);
 	TerrainTile* GetTileByPos(Vector2 v2Pos);
 

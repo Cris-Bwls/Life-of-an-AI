@@ -58,6 +58,8 @@ public:
 
 	TileQuadrant* GetAnimalAvoidQuadrant(int nIndex) { return m_AnimalAvoidQuadrants[nIndex]; };
 
+	int GetQuadrantFromPos(Vector2 v2Pos);
+
 private:
 	Vector2 m_v2Pos;
 	TerrainStats m_TerrainStats;

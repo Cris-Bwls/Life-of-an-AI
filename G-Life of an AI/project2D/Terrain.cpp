@@ -10,7 +10,7 @@ Terrain::Terrain()
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
-			m_pTiles[x][y] = new TerrainTile();
+			m_pTiles[x][y] = new TerrainTile(ETERRAINTYPE_WATER);
 			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x, TILE_SIZE * y));
 			m_pTiles[x][y]->SetIndex(x, y);
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
@@ -163,6 +163,90 @@ Terrain::~Terrain()
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
 			delete m_pTiles[x][y];
+		}
+	}
+}
+
+void Terrain::ResetAnimalAvoid()
+{
+	TileQuadrant* pCurrentQuadrant = m_pTiles[0][0]->GetAnimalAvoidQuadrant(0);
+	while (pCurrentQuadrant)
+	{
+		pCurrentQuadrant->m_nDistance = 0;
+
+		TileQuadrant* pRightQuadrant = pCurrentQuadrant->m_pNeighbours[1];
+		while (pRightQuadrant)
+		{
+			pRightQuadrant->m_nDistance = 0;
+			pRightQuadrant = pRightQuadrant->m_pNeighbours[1];
+		}
+
+		pCurrentQuadrant = pCurrentQuadrant->m_pNeighbours[0];
+	}
+}
+
+void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
+{
+	TerrainTile* pTileAtPos = GetTileByPos(v2Pos);
+	//Pathfinding
+	m_OpenList.clear();
+	memset(m_ClosedList, 0, sizeof(bool) * TERRAIN_SIZE_X * TERRAIN_SIZE_Y);
+
+	pStart->SetGScore(0);
+	pStart->SetPrev(nullptr);
+	m_OpenList.push_back(pStart);
+
+	while (m_OpenList.size() > 0)
+	{
+		SortOpenList();
+
+		// Remove lowest node from open list and add to closed list
+		TerrainTile* pCurrent = m_OpenList[0];
+		m_OpenList.erase(m_OpenList.begin());
+		m_ClosedList[pCurrent->GetIndexX()][pCurrent->GetIndexY()] = true;
+
+		//Loop through all neighbours and add them to open list
+		for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
+		{
+			TerrainTile* pNeighbour = pCurrent->GetNeighbour(i);
+
+			//Skip null neighbours
+			if (!pNeighbour)
+				continue;
+
+			//Skip blocked neighbours
+			if (pNeighbour->GetBlocked())
+				continue;
+
+			//Skip closed list neighbours
+			if (m_ClosedList[pNeighbour->GetIndexX()][pNeighbour->GetIndexY()])
+				continue;
+
+			//If neighbour is already in open list
+			if (std::find(m_OpenList.begin(), m_OpenList.end(), pNeighbour) != m_OpenList.end())
+			{
+				//Check if this is a better path
+				unsigned int newGScore = pCurrent->GetGScore() + pCurrent->GetCost(i);
+				if (newGScore < pNeighbour->GetGScore())
+				{
+					//Update to use the better path
+					pNeighbour->SetGScore(newGScore);
+
+					pNeighbour->SetPrev(pCurrent);
+
+					m_OpenList.push_back(pNeighbour);
+				}
+			}
+			//ELSE add node to open list and calculate scores
+			else
+			{
+				//Calculate Gscore
+				pNeighbour->SetGScore(pCurrent->GetGScore() + pCurrent->GetCost(i));
+
+				pNeighbour->SetPrev(pCurrent);
+
+				m_OpenList.push_back(pNeighbour);
+			}
 		}
 	}
 }

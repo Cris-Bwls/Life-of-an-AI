@@ -54,3 +54,21 @@ void TerrainTile::SetQuadrantBlocked()
 	m_AnimalAvoidQuadrants[2]->m_bBlocked = m_bBlocked;
 	m_AnimalAvoidQuadrants[3]->m_bBlocked = m_bBlocked;
 }
+
+int TerrainTile::GetQuadrantFromPos(Vector2 v2Pos)
+{
+	if (v2Pos.x > m_v2Pos.x)
+	{
+		if (v2Pos.y > m_v2Pos.y)
+		{
+			return 1;
+		}
+		return 3;
+	}
+	//ELSE
+	if (v2Pos.y > m_v2Pos.y)
+	{
+		return 0;
+	}
+	return 2;
+}

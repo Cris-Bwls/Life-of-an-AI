@@ -64,6 +64,9 @@ void Application2D::update(float deltaTime) {
 		m_Scroll = -0.1f;
 	}
 
+	printf("%i\n", m_MouseScroll);
+
+
 	// use arrow keys to move camera
 
 	if (input->isKeyDown(aie::INPUT_KEY_UP))
@@ -98,7 +101,7 @@ void Application2D::draw() {
 	if (scale < 0.1f)
 		scale = 0.1f;
 
-	if (scale > 10.0f)
+	else if (scale > 10.0f)
 		scale = 10.0f;
 
 	m_2dRenderer->setCameraScale(scale);
