@@ -9,15 +9,15 @@ struct TerrainStats
 		{
 		case ETERRAINTYPE_DIRT:
 			m_bIsPassable = true;
-			m_nColour = 0x603913; // Dark Brown
+			m_nColour = 0x754c24FF; // Dark Brown
 			break;
 		case ETERRAINTYPE_WATER:
 			m_bIsPassable = false;
-			m_nColour = 0x2b89b4; // Light Blue
+			m_nColour = 0x2b89b4FF; // Light Blue
 			break;
 		case ETERRAINTYPE_MOUNTAIN:
 			m_bIsPassable = false;
-			m_nColour = 0x3d392f; // Grey Brown
+			m_nColour = 0x3d392fFF; // Grey Brown
 			
 			break;
 		case ETERRAINTYPE_TOTAL:

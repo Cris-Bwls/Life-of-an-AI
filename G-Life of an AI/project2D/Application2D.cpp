@@ -30,6 +30,8 @@ bool Application2D::startup() {
 	m_timer = 0;
 
 	return true;
+
+	
 }
 
 void Application2D::shutdown() {
@@ -82,7 +84,7 @@ void Application2D::update(float deltaTime) {
 }
 
 void Application2D::draw() {
-
+	
 	// wipe the screen to the background colour
 	clearScreen();
 
