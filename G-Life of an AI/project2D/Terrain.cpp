@@ -18,13 +18,13 @@ Terrain::Terrain()
 	}
 
 	// Neighbour Connection Order
-	// |------
+	// -------
 	// |7|0|4|
-	// |------
+	// -------
 	// |3|X|1|
-	// |------
+	// -------
 	// |6|2|5|
-	// |------
+	// -------
 
 	// Connect Tiles
 	for (int x = 0; x < TERRAIN_SIZE_X; ++x)
@@ -189,63 +189,67 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 {
 	TerrainTile* pTileAtPos = GetTileByPos(v2Pos);
 	//Pathfinding
-	m_OpenList.clear();
-	memset(m_ClosedList, 0, sizeof(bool) * TERRAIN_SIZE_X * TERRAIN_SIZE_Y);
 
-	pStart->SetGScore(0);
-	pStart->SetPrev(nullptr);
-	m_OpenList.push_back(pStart);
-
-	while (m_OpenList.size() > 0)
+	for (int i = 0; i < 4; ++i)
 	{
-		SortOpenList();
+		TileQuadrant* pStartTile = pTileAtPos->GetAnimalAvoidQuadrant(i);
+		m_AnimalAvoidOpenList.clear();
+		memset(m_AnimalAvoidClosedList, 0, sizeof(bool) * TERRAIN_SIZE_X * TERRAIN_SIZE_Y * 4);
 
-		// Remove lowest node from open list and add to closed list
-		TerrainTile* pCurrent = m_OpenList[0];
-		m_OpenList.erase(m_OpenList.begin());
-		m_ClosedList[pCurrent->GetIndexX()][pCurrent->GetIndexY()] = true;
+		pStartTile->m_nDistance = nNoiseLevel;
+		m_AnimalAvoidOpenList.push_back(pStartTile);
 
-		//Loop through all neighbours and add them to open list
-		for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
+		while (m_AnimalAvoidOpenList.size() > 0)
 		{
-			TerrainTile* pNeighbour = pCurrent->GetNeighbour(i);
+			//SortOpenList();
 
-			//Skip null neighbours
-			if (!pNeighbour)
+			// Remove lowest node from open list and add to closed list
+			TileQuadrant* pCurrent = m_AnimalAvoidOpenList[0];
+
+			if (pCurrent->m_nDistance == 0)
 				continue;
 
-			//Skip blocked neighbours
-			if (pNeighbour->GetBlocked())
-				continue;
+			m_AnimalAvoidOpenList.erase(m_AnimalAvoidOpenList.begin());
+			m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->nQuadrant] = true;
 
-			//Skip closed list neighbours
-			if (m_ClosedList[pNeighbour->GetIndexX()][pNeighbour->GetIndexY()])
-				continue;
-
-			//If neighbour is already in open list
-			if (std::find(m_OpenList.begin(), m_OpenList.end(), pNeighbour) != m_OpenList.end())
+			//Loop through all neighbours and add them to open list
+			for (int j = 0; j < 4; ++j)
 			{
-				//Check if this is a better path
-				unsigned int newGScore = pCurrent->GetGScore() + pCurrent->GetCost(i);
-				if (newGScore < pNeighbour->GetGScore())
+				TileQuadrant* pNeighbour = pCurrent->m_pNeighbours[j];
+
+				//Skip null neighbours
+				if (!pNeighbour)
+					continue;
+
+				//Skip blocked neighbours
+				if (pNeighbour->m_bBlocked)
+					continue;
+
+				//Skip closed list neighbours
+				if (m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->nQuadrant])
+					continue;
+
+				//If neighbour is already in open list
+				if (std::find(m_AnimalAvoidOpenList.begin(), m_AnimalAvoidOpenList.end(), pNeighbour) != m_AnimalAvoidOpenList.end())
 				{
-					//Update to use the better path
-					pNeighbour->SetGScore(newGScore);
+					//Check if this is a better path
+					int nDistance = pCurrent->m_nDistance - 1;
+					if (nDistance < pNeighbour->m_nDistance)
+					{
+						//Update to use the better path
+						pNeighbour->m_nDistance = nDistance;
 
-					pNeighbour->SetPrev(pCurrent);
-
-					m_OpenList.push_back(pNeighbour);
+						m_AnimalAvoidOpenList.push_back(pNeighbour);
+					}
 				}
-			}
-			//ELSE add node to open list and calculate scores
-			else
-			{
-				//Calculate Gscore
-				pNeighbour->SetGScore(pCurrent->GetGScore() + pCurrent->GetCost(i));
+				//ELSE add node to open list and calculate scores
+				else
+				{
+					//Calculate Gscore
+					pNeighbour->m_nDistance = pCurrent->m_nDistance - 1;;
 
-				pNeighbour->SetPrev(pCurrent);
-
-				m_OpenList.push_back(pNeighbour);
+					m_AnimalAvoidOpenList.push_back(pNeighbour);
+				}
 			}
 		}
 	}
@@ -401,6 +405,22 @@ void Terrain::SortOpenList()
 				TerrainTile* swap = m_OpenList[j];
 				m_OpenList[j] = m_OpenList[j + 1];
 				m_OpenList[j + 1] = swap;
+			}
+		}
+	}
+}
+
+void Terrain::SortAnimalAvoidOpenList()
+{
+	for (int i = 0; i < m_AnimalAvoidOpenList.size(); ++i)
+	{
+		for (int j = 0; j < m_AnimalAvoidOpenList.size() - 1; ++j)
+		{
+			if (m_AnimalAvoidOpenList[j]->m_nDistance < m_AnimalAvoidOpenList[j + 1]->m_nDistance)
+			{
+				TileQuadrant* swap = m_AnimalAvoidOpenList[j];
+				m_AnimalAvoidOpenList[j] = m_AnimalAvoidOpenList[j + 1];
+				m_AnimalAvoidOpenList[j + 1] = swap;
 			}
 		}
 	}
