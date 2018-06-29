@@ -17,13 +17,13 @@ TerrainTile::TerrainTile(ETerrainType eTerrainType)
 	m_AnimalAvoidQuadrants[3] = new TileQuadrant();
 
 	m_AnimalAvoidQuadrants[0]->index = m_Index;
-	m_AnimalAvoidQuadrants[0]->nQuadrant = 0;
+	m_AnimalAvoidQuadrants[0]->m_nQuadrant = 0;
 	m_AnimalAvoidQuadrants[1]->index = m_Index;
-	m_AnimalAvoidQuadrants[1]->nQuadrant = 1;
+	m_AnimalAvoidQuadrants[1]->m_nQuadrant = 1;
 	m_AnimalAvoidQuadrants[2]->index = m_Index;
-	m_AnimalAvoidQuadrants[2]->nQuadrant = 2;
+	m_AnimalAvoidQuadrants[2]->m_nQuadrant = 2;
 	m_AnimalAvoidQuadrants[3]->index = m_Index;
-	m_AnimalAvoidQuadrants[3]->nQuadrant = 3;
+	m_AnimalAvoidQuadrants[3]->m_nQuadrant = 3;
 
 	// Costs
 	m_nCost[0] = 10;

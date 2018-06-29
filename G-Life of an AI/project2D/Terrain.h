@@ -27,6 +27,7 @@ public:
 	void SortAnimalAvoidOpenList();
 
 	void Draw(aie::Renderer2D* pRenderer);
+	void DrawQuadrants(aie::Renderer2D* pRenderer);
 
 private:
 	TerrainTile* m_pTiles[TERRAIN_SIZE_X][TERRAIN_SIZE_Y];

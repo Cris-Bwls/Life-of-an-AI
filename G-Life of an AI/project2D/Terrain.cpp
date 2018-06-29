@@ -169,7 +169,7 @@ Terrain::~Terrain()
 
 void Terrain::ResetAnimalAvoid()
 {
-	TileQuadrant* pCurrentQuadrant = m_pTiles[0][0]->GetAnimalAvoidQuadrant(0);
+	TileQuadrant* pCurrentQuadrant = m_pTiles[0][0]->GetAnimalAvoidQuadrant(2);
 	while (pCurrentQuadrant)
 	{
 		pCurrentQuadrant->m_nDistance = 0;
@@ -210,7 +210,7 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 				continue;
 
 			m_AnimalAvoidOpenList.erase(m_AnimalAvoidOpenList.begin());
-			m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->nQuadrant] = true;
+			m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->m_nQuadrant] = true;
 
 			//Loop through all neighbours and add them to open list
 			for (int j = 0; j < 4; ++j)
@@ -226,7 +226,7 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 					continue;
 
 				//Skip closed list neighbours
-				if (m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->nQuadrant])
+				if (m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->m_nQuadrant])
 					continue;
 
 				//If neighbour is already in open list
@@ -451,6 +451,31 @@ void Terrain::Draw(aie::Renderer2D * pRenderer)
 					pRenderer->drawLine(v2Pos.x, v2Pos.y, v2NeighbourPos.x, v2NeighbourPos.y, 3);
 				}
 			}
+		}
+	}
+
+	pRenderer->setRenderColour(0xFFFFFFFF);
+}
+
+void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
+{
+	for (int x = 0; x < TERRAIN_SIZE_X; ++x)
+	{
+		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
+		{
+			Vector2 v2Pos = m_pTiles[x][y]->GetPos();
+
+			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance));
+			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 2, v2Pos.y + TILE_SIZE / 2, TILE_SIZE/2, TILE_SIZE/2);
+
+			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance));
+			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 2, v2Pos.y + TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
+
+			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance));
+			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 2, v2Pos.y - TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
+
+			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance));
+			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 2, v2Pos.y - TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
 		}
 	}
 

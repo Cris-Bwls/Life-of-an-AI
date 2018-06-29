@@ -25,6 +25,10 @@ bool Application2D::startup() {
 
 	m_pMap = new Terrain();
 	
+	//DEBUG
+	m_pMap->ResetAnimalAvoid();
+	m_pMap->SetAnimalAvoid(Vector2(100, 100), 20);
+
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -109,7 +113,8 @@ void Application2D::draw() {
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
-	m_pMap->Draw(m_2dRenderer);
+	m_pMap->DrawQuadrants(m_2dRenderer);
+	//m_pMap->Draw(m_2dRenderer);
 
 	if ((int)(getTime()) % 10 > 5)
 	{
