@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include "CameraManager.h"
 
 #include <iostream>
 
@@ -18,6 +19,8 @@ Application2D::~Application2D() {
 }
 
 bool Application2D::startup() {
+
+	CameraManager::Create();
 	
 	m_2dRenderer = new aie::Renderer2D();
 
@@ -27,10 +30,8 @@ bool Application2D::startup() {
 	
 	//DEBUG
 	m_pMap->ResetAnimalAvoid();
-	m_pMap->SetAnimalAvoid(Vector2(100, 100), 20);
+	m_pMap->SetAnimalAvoid(Vector2(300, 300), 20);
 
-	m_cameraX = 0;
-	m_cameraY = 0;
 	m_timer = 0;
 
 	return true;
@@ -43,47 +44,19 @@ void Application2D::shutdown() {
 	delete m_font;
 	delete m_2dRenderer;
 	delete m_pMap;
+
+	CameraManager::Destroy();
 }
 
 void Application2D::update(float deltaTime) {
 
 	m_timer += deltaTime;
 
+	//Update Camera
+	CameraManager::GetInstance()->Update(deltaTime);
+
 	// input example
 	aie::Input* input = aie::Input::getInstance();
-
-	// Zoom
-	if (m_MouseScroll == (int)input->getMouseScroll())
-	{
-		m_Scroll = 0.0f;
-	}
-	else if (m_MouseScroll > (int)input->getMouseScroll())
-	{
-		m_MouseScroll = (int)input->getMouseScroll();
-		m_Scroll = 0.1f;
-	}
-	else if (m_MouseScroll < (int)input->getMouseScroll())
-	{
-		m_MouseScroll = (int)input->getMouseScroll();
-		m_Scroll = -0.1f;
-	}
-
-	printf("%i\n", m_MouseScroll);
-
-
-	// use arrow keys to move camera
-
-	if (input->isKeyDown(aie::INPUT_KEY_UP))
-		m_cameraY += 500.0f * deltaTime;
-
-	if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-		m_cameraY -= 500.0f * deltaTime;
-
-	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-		m_cameraX -= 500.0f * deltaTime;
-
-	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-		m_cameraX += 500.0f * deltaTime;
 	
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -95,26 +68,14 @@ void Application2D::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
-	// set the camera position before we begin rendering
-	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
-
-	// Set Camera Zoom Level (camera Scale)
-	float scale = m_2dRenderer->getCameraScale();
-	scale += m_Scroll;
-
-	if (scale < 0.1f)
-		scale = 0.1f;
-
-	else if (scale > 10.0f)
-		scale = 10.0f;
-
-	m_2dRenderer->setCameraScale(scale);
+	// set the camera position and scale before we begin rendering
+	CameraManager::GetInstance()->Draw(m_2dRenderer);
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
+	m_pMap->Draw(m_2dRenderer);
 	m_pMap->DrawQuadrants(m_2dRenderer);
-	//m_pMap->Draw(m_2dRenderer);
 
 	if ((int)(getTime()) % 10 > 5)
 	{

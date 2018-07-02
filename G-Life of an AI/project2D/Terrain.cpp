@@ -10,9 +10,8 @@ Terrain::Terrain()
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
-			m_pTiles[x][y] = new TerrainTile(ETERRAINTYPE_WATER);
+			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT);
 			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x, TILE_SIZE * y));
-			m_pTiles[x][y]->SetIndex(x, y);
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
 		}
 	}
@@ -459,23 +458,29 @@ void Terrain::Draw(aie::Renderer2D * pRenderer)
 
 void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
 {
+	float fAlphaOffset;
+
 	for (int x = 0; x < TERRAIN_SIZE_X; ++x)
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
 			Vector2 v2Pos = m_pTiles[x][y]->GetPos();
 
-			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance));
-			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 2, v2Pos.y + TILE_SIZE / 2, TILE_SIZE/2, TILE_SIZE/2);
+			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance;
+			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
+			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance));
-			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 2, v2Pos.y + TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
+			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance;
+			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
+			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance));
-			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 2, v2Pos.y - TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
+			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance;
+			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
+			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			pRenderer->setRenderColour(1.0f, 0.0f, 0.0f, 1.0f - (1.0f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance));
-			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 2, v2Pos.y - TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
+			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance;
+			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
+			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 		}
 	}
 

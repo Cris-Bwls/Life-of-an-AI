@@ -4,9 +4,10 @@
 
 
 
-TerrainTile::TerrainTile(ETerrainType eTerrainType)
+TerrainTile::TerrainTile(int nIndexX, int nIndexY, ETerrainType eTerrainType)
 {
 	m_TerrainStats.Setup(eTerrainType);
+	SetIndex(nIndexX, nIndexY);
 
 	if (!(m_TerrainStats.m_bIsPassable))
 		m_bBlocked = true;

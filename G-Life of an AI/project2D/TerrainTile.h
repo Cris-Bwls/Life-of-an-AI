@@ -16,7 +16,7 @@ struct Index
 class TerrainTile
 {
 public:
-	TerrainTile(ETerrainType eTerrainType = ETERRAINTYPE_DIRT);
+	TerrainTile(int nIndexX, int nIndexY, ETerrainType eTerrainType = ETERRAINTYPE_DIRT);
 	~TerrainTile();
 
 	void SetPos(Vector2 v2Pos) { m_v2Pos = v2Pos; };

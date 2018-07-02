@@ -169,6 +169,7 @@
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Cabin.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Construction.cpp" />
     <ClCompile Include="Crafter.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Cabin.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Construction.h" />
     <ClInclude Include="Crafter.h" />
