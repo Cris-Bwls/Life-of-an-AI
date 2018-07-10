@@ -1,6 +1,8 @@
 #include "DebugMouseGUI.h"
 #include "CameraManager.h"
 
+using namespace GUI_Type_DebugMouse;
+
 DebugMouseGUI::DebugMouseGUI()
 {
 	m_EGuiType = EGUITYPE_DEBUG_MOUSE;
@@ -31,10 +33,54 @@ void DebugMouseGUI::Draw()
 
 		// Editor Checkboxes
 		ImGui::Text("Choose Editor");
-		ImGui::Checkbox("BlockerEdit", &(m_pGuiFlags->bBlockerEdit));
-		ImGui::Checkbox("ChangeTerrain", &(m_pGuiFlags->bChangeTerrain));
-		ImGui::Checkbox("HeatMapEdit", &(m_pGuiFlags->bHeatMapEdit));
-		ImGui::Checkbox("PathfindingEdit", &(m_pGuiFlags->bPathfindingEdit));
+		if (ImGui::Button("Blocker Edit"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_BLOCKER_EDIT;
+		}
+		if (ImGui::Button("Change Terrain"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_CHANGE_TERRAIN;
+		}
+		if (ImGui::Button("Heat Map Edit"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_HEAT_MAP_EDIT;
+		}
+		if (ImGui::Button("Pathfinding Edit"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_PATHFINDING_EDIT;
+		}
+		if (ImGui::Button("Misc Edit"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_MISC_EDIT;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		switch (m_pGuiFlags->eDebugMouseWindows)
+		{
+		case EWINDOWS_BLOCKER_EDIT:
+			selected = "Blocker Edit";
+			break;
+		case EWINDOWS_CHANGE_TERRAIN:
+			selected = "Change Terrain";
+			break;
+		case EWINDOWS_HEAT_MAP_EDIT:
+			selected = "Heat Map Edit";
+			break;
+		case EWINDOWS_PATHFINDING_EDIT:
+			selected = "Pathfinding Edit";
+			break;
+		case EWINDOWS_MISC_EDIT:
+			selected = "Misc Edit";
+			break;
+		default:
+			selected = "NONE";
+			break;
+		}
+
+		ImGui::Text("Selected : %s", selected);
 		ImGui::Separator();
 
 		// Mouse Pos
@@ -48,51 +94,188 @@ void DebugMouseGUI::Draw()
 
 		
 		ImGui::End();
-
-		// Change Editor bools
-		if (m_pGuiFlags->bBlockerEdit)
-		{
-			m_pGuiFlags->bChangeTerrain = false;
-			m_pGuiFlags->bHeatMapEdit = false;
-			m_pGuiFlags->bPathfindingEdit = false;
-		}
-		else if (m_pGuiFlags->bChangeTerrain)
-		{
-			m_pGuiFlags->bBlockerEdit = false;
-			m_pGuiFlags->bHeatMapEdit = false;
-			m_pGuiFlags->bPathfindingEdit = false;
-		}
-		else if (m_pGuiFlags->bHeatMapEdit)
-		{
-			m_pGuiFlags->bBlockerEdit = false;
-			m_pGuiFlags->bChangeTerrain = false;
-			m_pGuiFlags->bPathfindingEdit = false;
-		}
-		else if (m_pGuiFlags->bPathfindingEdit)
-		{
-			m_pGuiFlags->bBlockerEdit = false;
-			m_pGuiFlags->bChangeTerrain = false;
-			m_pGuiFlags->bHeatMapEdit = false;
-		}
 	}
 
 	// Blocker Edit Window
-	if (m_pGuiFlags->bBlockerEdit)
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_BLOCKER_EDIT)
 	{
+		bool open = true;
+
 		// Open Window
-		ImGui::Begin("BlockerEdit##0", &(m_pGuiFlags->bBlockerEdit));
+		ImGui::Begin("BlockerEdit##0", &open);
 
 		// CheckBoxes
 		ImGui::Text("Choose Edit Type");
-		ImGui::Checkbox("BlockerEdit", &(m_pGuiFlags->bPlaceBlocker));
-		ImGui::Checkbox("ChangeTerrain", &(m_pGuiFlags->bRemoveBlocker));
+		if (ImGui::Button("Place Blocker"))
+		{
+			m_pGuiFlags->blockerEdit.bPlaceBlocker = true;
 
-		if (m_pGuiFlags->bPlaceBlocker)
-			m_pGuiFlags->bRemoveBlocker = false;
+			m_pGuiFlags->blockerEdit.bRemoveBlocker = false;
+		}
+		if (ImGui::Button("Remove Blocker"))
+		{
+			m_pGuiFlags->blockerEdit.bRemoveBlocker = true;
 
-		if (m_pGuiFlags->bRemoveBlocker)
-			m_pGuiFlags->bPlaceBlocker = false;
+			m_pGuiFlags->blockerEdit.bPlaceBlocker = false;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		if (m_pGuiFlags->blockerEdit.bPlaceBlocker)
+			selected = "Place Blocker";
+		else if (m_pGuiFlags->blockerEdit.bRemoveBlocker)
+			selected = "Remove Blocker";
+		else
+			selected = "NONE";
+
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
 
 		ImGui::End();
+
+		if (!open)
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
+	}
+
+	// Change Terrain Window
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_CHANGE_TERRAIN)
+	{
+		bool open = true;
+
+		// Open Window
+		ImGui::Begin("ChangeTerrain##0", &open);
+
+		// CheckBoxes
+		ImGui::Text("Choose Edit Type");
+		if (ImGui::Button("Place Dirt"))
+		{
+			m_pGuiFlags->changeTerrain.bPlaceDirt = true;
+
+			m_pGuiFlags->changeTerrain.bPlaceWater = false;
+			m_pGuiFlags->changeTerrain.bPlaceMountain = false;
+		}
+		if (ImGui::Button("Place Water"))
+		{
+			m_pGuiFlags->changeTerrain.bPlaceWater = true;
+
+			m_pGuiFlags->changeTerrain.bPlaceDirt = false;
+			m_pGuiFlags->changeTerrain.bPlaceMountain = false;
+		}
+		if (ImGui::Button("Place Mountain"))
+		{
+			m_pGuiFlags->changeTerrain.bPlaceMountain = true;
+
+			m_pGuiFlags->changeTerrain.bPlaceDirt = false;
+			m_pGuiFlags->changeTerrain.bPlaceWater = false;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		if (m_pGuiFlags->changeTerrain.bPlaceDirt)
+			selected = "Place Dirt";
+		else if (m_pGuiFlags->changeTerrain.bPlaceWater)
+			selected = "Place Water";
+		else if (m_pGuiFlags->changeTerrain.bPlaceMountain)
+			selected = "Place Mountain";
+		else
+			selected = "NONE";
+
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		ImGui::End();
+
+		if (!open)
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
+	}
+
+	// Heat Map Edit Window
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_HEAT_MAP_EDIT)
+	{
+		bool open = true;
+
+		// Open Window
+		ImGui::Begin("HeatMapEdit##0", &open);
+
+		// CheckBoxes
+		ImGui::Text("Choose Edit Type");
+		if (ImGui::Button("Place Heat Source"))
+		{
+			m_pGuiFlags->heatMapEdit.bPlaceHeatPoint = true;
+
+			m_pGuiFlags->heatMapEdit.bRemoveHeatPoint = false;
+		}
+		if (ImGui::Button("Remove Heat Source"))
+		{
+			m_pGuiFlags->heatMapEdit.bRemoveHeatPoint = true;
+
+			m_pGuiFlags->heatMapEdit.bPlaceHeatPoint = false;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		if (m_pGuiFlags->heatMapEdit.bPlaceHeatPoint)
+			selected = "Place Heat Source";
+		else if (m_pGuiFlags->heatMapEdit.bRemoveHeatPoint)
+			selected = "Remove Heat Source";
+		else
+			selected = "NONE";
+
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		ImGui::End();
+
+		if (!open)
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
+	}
+
+	// Pathfinding Edit Window
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_PATHFINDING_EDIT)
+	{
+		bool open = true;
+
+		// Open Window
+		ImGui::Begin("PathfindingEdit##0", &open);
+
+		// CheckBoxes
+		ImGui::Text("Choose Edit Type");
+		if (ImGui::Button("Move Start"))
+		{
+			m_pGuiFlags->pathFindingEdit.bMoveStart = true;
+
+			m_pGuiFlags->pathFindingEdit.bMoveEnd = false;
+		}
+		if (ImGui::Button("Move End"))
+		{
+			m_pGuiFlags->pathFindingEdit.bMoveEnd = true;
+
+			m_pGuiFlags->pathFindingEdit.bMoveStart = false;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		if (m_pGuiFlags->pathFindingEdit.bMoveStart)
+			selected = "Move Start";
+		else if (m_pGuiFlags->pathFindingEdit.bMoveEnd)
+			selected = "Move End";
+		else
+			selected = "NONE";
+
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		ImGui::End();
+
+		if (!open)
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
 	}
 }
