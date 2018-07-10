@@ -2,15 +2,18 @@
 
 struct GUIFlags
 {
-	bool bPlaceBlocker;
-	bool bRemoveBlocker;
+	bool bBlockerEdit = false;
+	bool bPlaceBlocker = false;
+	bool bRemoveBlocker = false;
 
-	bool bChangeTerrain;
-	bool bPlaceWater;
+	bool bChangeTerrain = false;
+	bool bPlaceWater = false;
 
-	bool bPlaceHeatPoint;
-	bool bRemoveHeatPoint;
+	bool bHeatMapEdit = false;
+	bool bPlaceHeatPoint = false;
+	bool bRemoveHeatPoint = false;
 
-	bool bPlaceStart;
-	bool bPlaceEnd;
+	bool bPathfindingEdit = false;
+	bool bPlaceStart = false;
+	bool bPlaceEnd = false;
 };

@@ -22,17 +22,23 @@ void DebugMouseGUI::Update()
 
 void DebugMouseGUI::Draw()
 {
-	// 1. Show a simple window.
-	// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
+	// Main Debug Mouse Window
 	{
 		ImGui::Begin("DebugMouseGUI##0");
-		ImGui::Text("%.1f FPS", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		
-		
-		bool a;
-		ImGui::Checkbox("ChangeTerrain", &(a));
+		// Show FPS
+		ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);		
+		ImGui::Separator();
 
-		ImGui::Text("Mouse Position");                           // Display some text (you can use a format string too)  
+		// Editor Checkboxes
+		ImGui::Text("Choose Editor");
+		ImGui::Checkbox("BlockerEdit", &(m_pGuiFlags->bBlockerEdit));
+		ImGui::Checkbox("ChangeTerrain", &(m_pGuiFlags->bChangeTerrain));
+		ImGui::Checkbox("HeatMapEdit", &(m_pGuiFlags->bHeatMapEdit));
+		ImGui::Checkbox("PathfindingEdit", &(m_pGuiFlags->bPathfindingEdit));
+		ImGui::Separator();
+
+		// Mouse Pos
+		ImGui::Text("Mouse Position");
 
 		Vector2 mousePos = CameraManager::GetInstance()->GetWorldMousePos();
 
@@ -42,22 +48,51 @@ void DebugMouseGUI::Draw()
 
 		
 		ImGui::End();
+
+		// Change Editor bools
+		if (m_pGuiFlags->bBlockerEdit)
+		{
+			m_pGuiFlags->bChangeTerrain = false;
+			m_pGuiFlags->bHeatMapEdit = false;
+			m_pGuiFlags->bPathfindingEdit = false;
+		}
+		else if (m_pGuiFlags->bChangeTerrain)
+		{
+			m_pGuiFlags->bBlockerEdit = false;
+			m_pGuiFlags->bHeatMapEdit = false;
+			m_pGuiFlags->bPathfindingEdit = false;
+		}
+		else if (m_pGuiFlags->bHeatMapEdit)
+		{
+			m_pGuiFlags->bBlockerEdit = false;
+			m_pGuiFlags->bChangeTerrain = false;
+			m_pGuiFlags->bPathfindingEdit = false;
+		}
+		else if (m_pGuiFlags->bPathfindingEdit)
+		{
+			m_pGuiFlags->bBlockerEdit = false;
+			m_pGuiFlags->bChangeTerrain = false;
+			m_pGuiFlags->bHeatMapEdit = false;
+		}
 	}
 
-	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name your windows.
-	if (show_another_window)
+	// Blocker Edit Window
+	if (m_pGuiFlags->bBlockerEdit)
 	{
-		ImGui::Begin("DebugMouseGUI##1", &show_another_window);
-		ImGui::Text("Hello from another window!");
-		if (ImGui::Button("Close Me"))
-			show_another_window = false;
+		// Open Window
+		ImGui::Begin("BlockerEdit##0", &(m_pGuiFlags->bBlockerEdit));
+
+		// CheckBoxes
+		ImGui::Text("Choose Edit Type");
+		ImGui::Checkbox("BlockerEdit", &(m_pGuiFlags->bPlaceBlocker));
+		ImGui::Checkbox("ChangeTerrain", &(m_pGuiFlags->bRemoveBlocker));
+
+		if (m_pGuiFlags->bPlaceBlocker)
+			m_pGuiFlags->bRemoveBlocker = false;
+
+		if (m_pGuiFlags->bRemoveBlocker)
+			m_pGuiFlags->bPlaceBlocker = false;
+
 		ImGui::End();
-	}
-
-	// 3. Show the ImGui demo window. Most of the sample code is in ImGui::ShowDemoWindow(). Read its code to learn more about Dear ImGui!
-	if (show_demo_window)
-	{
-		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-		//ImGui::ShowTestWindow(&show_demo_window);
 	}
 }

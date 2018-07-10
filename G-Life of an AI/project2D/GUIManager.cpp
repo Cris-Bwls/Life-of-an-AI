@@ -24,6 +24,8 @@ GUIManager::~GUIManager()
 		delete m_AllGUI.back();
 		m_AllGUI.pop_back();
 	}
+
+	delete m_pGuiFlags;
 }
 
 
