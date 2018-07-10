@@ -46,6 +46,25 @@ TerrainTile::~TerrainTile()
 	delete m_AnimalAvoidQuadrants[3];
 }
 
+void TerrainTile::SetTerrainStats(ETerrainType eTerrainType)
+{
+	// Change Terrain Type
+	m_TerrainStats.Setup(eTerrainType);
+
+	// Change Blocked Status
+	if (m_TerrainStats.m_bIsPassable)
+	{
+		if (!m_pBlocker)
+		{
+			RemoveBlocked();
+		}
+	}
+	else
+	{
+		SetBlocked();
+	}
+}
+
 void TerrainTile::RemoveBlocked()
 {
 	if (m_TerrainStats.m_bIsPassable)
@@ -82,3 +101,4 @@ int TerrainTile::GetQuadrantFromPos(Vector2 v2Pos)
 	}
 	return 2;
 }
+

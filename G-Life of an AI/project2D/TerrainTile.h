@@ -19,10 +19,17 @@ public:
 	TerrainTile(int nIndexX, int nIndexY, ETerrainType eTerrainType = ETERRAINTYPE_DIRT);
 	~TerrainTile();
 
+	void SetTerrainStats(ETerrainType eTerrainType = ETERRAINTYPE_DIRT);
+
+	void RemoveBlocked();
+	void SetQuadrantBlocked();
+
+	int GetQuadrantFromPos(Vector2 v2Pos);
+
+	// Helper Func
 	void SetPos(Vector2 v2Pos) { m_v2Pos = v2Pos; };
 	Vector2 GetPos() { return m_v2Pos; };
 
-	void SetTerrainStats(ETerrainType eTerrainType = ETERRAINTYPE_DIRT) { m_TerrainStats.Setup(eTerrainType); };
 	TerrainStats GetTerrainStats() { return m_TerrainStats; };
 	
 	void SetNeighbour(int nIndex, TerrainTile* neighbour = nullptr) { m_pNeighbours[nIndex] = neighbour; };
@@ -53,12 +60,8 @@ public:
 	bool GetBlocked() { return m_bBlocked; };
 	StaticObject* GetBlocker() { return m_pBlocker; };
 
-	void RemoveBlocked();
-	void SetQuadrantBlocked();
-
 	TileQuadrant* GetAnimalAvoidQuadrant(int nIndex) { return m_AnimalAvoidQuadrants[nIndex]; };
 
-	int GetQuadrantFromPos(Vector2 v2Pos);
 
 private:
 	Vector2 m_v2Pos;

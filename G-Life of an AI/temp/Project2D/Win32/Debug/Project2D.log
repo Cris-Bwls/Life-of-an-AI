@@ -1,2 +1,7 @@
-﻿  TerrainTile.cpp
+﻿  Terrain.cpp
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(403): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(405): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(419): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(421): warning C4018: '<': signed/unsigned mismatch
   Project2D.vcxproj -> C:\Users\Chris\Documents\001_AIE\Projects\Life-of-an-AI\G-Life of an AI\temp\Project2D\Win32\Debug\Project2D.exe

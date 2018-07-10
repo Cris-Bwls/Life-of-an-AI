@@ -11,7 +11,7 @@ Terrain::Terrain()
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
 			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT);
-			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x, TILE_SIZE * y));
+			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x + TILE_OFFSET, TILE_SIZE * y + TILE_OFFSET));
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
 		}
 	}
@@ -205,12 +205,12 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 			// Remove lowest node from open list and add to closed list
 			TileQuadrant* pCurrent = m_AnimalAvoidOpenList[0];
 
-			if (pCurrent->m_nDistance == 0)
-				continue;
 
 			m_AnimalAvoidOpenList.erase(m_AnimalAvoidOpenList.begin());
 			m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->m_nQuadrant] = true;
 
+			if (pCurrent->m_nDistance == 0)
+				continue;
 			//Loop through all neighbours and add them to open list
 			for (int j = 0; j < 4; ++j)
 			{
@@ -225,7 +225,7 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 					continue;
 
 				//Skip closed list neighbours
-				if (m_AnimalAvoidClosedList[pCurrent->index.x][pCurrent->index.y][pCurrent->m_nQuadrant])
+				if (m_AnimalAvoidClosedList[pNeighbour->index.x][pNeighbour->index.y][pNeighbour->m_nQuadrant])
 					continue;
 
 				//If neighbour is already in open list
@@ -378,16 +378,21 @@ TerrainTile* Terrain::GetTileByPos(Vector2 v2Pos)
 	int x = (int)((v2Pos.x) / TILE_SIZE);
 	int y = (int)((v2Pos.y) / TILE_SIZE);
 
+	// Checks if the floats are -ve
+	// This means terrain cant be less than game world origin
+	if (v2Pos.x < 0 || v2Pos.y < 0)
+		return nullptr;
+
 	if (x < 0)
 		return nullptr;
 
 	if (y < 0)
 		return nullptr;
 
-	if (x > TERRAIN_SIZE_X)
+	if (x >= TERRAIN_SIZE_X)
 		return nullptr;
 
-	if (y > TERRAIN_SIZE_Y)
+	if (y >= TERRAIN_SIZE_Y)
 		return nullptr;
 
 	return m_pTiles[x][y];
@@ -438,14 +443,19 @@ void Terrain::Draw(aie::Renderer2D * pRenderer)
 			pRenderer->drawBox(v2Pos.x, v2Pos.y, TILE_SIZE, TILE_SIZE);
 
 			pRenderer->setRenderColour(0x0000FFFF);
+
+			if (m_pTiles[x][y]->GetBlocked())
+				continue;
+
 			for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
 			{
-				if (m_pTiles[x][y]->GetNeighbour(i))
+				auto neighbour = m_pTiles[x][y]->GetNeighbour(i);
+				if (neighbour)
 				{
-					if (m_pTiles[x][y]->GetNeighbour(i)->GetBlocked())
+					if (neighbour->GetBlocked())
 						continue;
 
-					Vector2 v2NeighbourPos = m_pTiles[x][y]->GetNeighbour(i)->GetPos();
+					Vector2 v2NeighbourPos = neighbour->GetPos();
 
 					pRenderer->drawLine(v2Pos.x, v2Pos.y, v2NeighbourPos.x, v2NeighbourPos.y, 3);
 				}

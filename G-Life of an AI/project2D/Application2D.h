@@ -18,6 +18,7 @@ public:
 protected:
 
 	Terrain* m_pMap;
+	std::vector<Vector2> m_path;
 
 	aie::Renderer2D*	m_2dRenderer;
 	aie::Font*			m_font;
