@@ -3,7 +3,10 @@
 
 struct TileQuadrant
 {
-	TileQuadrant* m_pNeighbours[4];
+	TileQuadrant* m_pNeighbours[8];
+	int m_anCost[8] = { 10, 10, 10, 10,		// Cardinal Neighbour cost
+						14, 14, 14, 14 };	// Diagonal Neighbour cost
+
 	TileQuadrant* m_pPrev = nullptr;
 
 	Index index;

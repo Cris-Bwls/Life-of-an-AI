@@ -35,17 +35,21 @@ namespace GUI_Windows
 	{
 		bool bPlaceHeatPoint = false;
 		bool bRemoveHeatPoint = false;
+		bool bRebuildHeatMap = false;
 	};
 
 	struct PathfindingEdit
 	{
 		bool bMoveStart = false;
 		bool bMoveEnd = false;
+		bool bRebuildPath = false;
 	};
 } // End Namespace GUI_Windows
 
 struct GUIFlags
 {
+	bool bFlagChange = false;
+
 	GUI_Type_DebugMouse::EWindows eDebugMouseWindows = GUI_Type_DebugMouse::EWINDOWS_DEFAULT;
 	GUI_Windows::BlockerEdit blockerEdit;
 	GUI_Windows::ChangeTerrain changeTerrain;

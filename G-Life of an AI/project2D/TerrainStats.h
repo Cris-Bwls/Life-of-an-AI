@@ -17,10 +17,7 @@ struct TerrainStats
 			break;
 		case ETERRAINTYPE_MOUNTAIN:
 			m_bIsPassable = false;
-			m_nColour = 0x3d392fFF; // Grey Brown
-			
-			break;
-		case ETERRAINTYPE_TOTAL:
+			m_nColour = 0x3d392fFF; // Grey Brown			
 			break;
 		default:
 			break;

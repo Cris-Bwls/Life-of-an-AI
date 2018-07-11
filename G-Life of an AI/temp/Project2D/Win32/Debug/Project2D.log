@@ -1,13 +1,11 @@
-﻿  DebugMouseGUI.cpp
-  Generating Code...
-  Compiling...
-  GUIManager.cpp
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\guimanager.cpp(63): warning C4018: '<': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\guimanager.cpp(81): warning C4018: '<': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\guimanager.cpp(89): warning C4018: '<': signed/unsigned mismatch
-  DebugBasicGUI.cpp
-  BaseGUI.cpp
-  Application2D.cpp
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(124): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+﻿  Terrain.cpp
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(474): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(476): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(490): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(492): warning C4018: '<': signed/unsigned mismatch
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(550): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(554): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(558): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\terrain.cpp(562): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Project2D.vcxproj -> C:\Users\Chris\Documents\001_AIE\Projects\Life-of-an-AI\G-Life of an AI\temp\Project2D\Win32\Debug\Project2D.exe

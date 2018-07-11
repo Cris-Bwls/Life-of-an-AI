@@ -58,14 +58,11 @@ void GUIManager::AddActiveGUI(EGuiType eGuiType)
 
 void GUIManager::RemoveActiveGUI(EGuiType eGuiType)
 {
-	auto iter = m_ActiveGUI.begin();
-
 	for (int i = 0; i < m_ActiveGUI.size(); ++i)
 	{
-		++iter;
 		if (eGuiType == m_ActiveGUI[i]->m_EGuiType)
 		{
-			m_ActiveGUI.erase(iter);
+			m_ActiveGUI.erase(m_ActiveGUI.begin() + i);
 			return;
 		}
 	}

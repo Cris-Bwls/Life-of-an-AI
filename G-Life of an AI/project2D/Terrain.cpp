@@ -88,23 +88,41 @@ Terrain::Terrain()
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[1] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[2] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[3] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[4] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[5] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[6] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[7] = nullptr;
 
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[0] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[1] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[2] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[3] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[4] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[5] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[6] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[7] = nullptr;
 
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[0] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[1] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[2] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[3] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[4] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[5] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[6] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[7] = nullptr;
 
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[0] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[1] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[2] = nullptr;
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[3] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[4] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[5] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[6] = nullptr;
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[7] = nullptr;
 
 			// Internal Connections
+			
+			/// Cardinal Connections
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[1] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(1);
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[2] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(2);
 
@@ -117,37 +135,104 @@ Terrain::Terrain()
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[0] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(1);
 			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[3] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(2);
 
+			/// Diagonal Connections
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[5] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(3);
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[6] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(2);
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[4] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(1);
+			m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[7] = m_pTiles[x][y]->GetAnimalAvoidQuadrant(0);
+
 			// External Connections
-			///UP
+
+			//UP
 			if (m_pTiles[x][y]->GetNeighbour(0))
 			{
 				auto neighbour = m_pTiles[x][y]->GetNeighbour(0);
+
+				// Cardinal Connections
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[0] = neighbour->GetAnimalAvoidQuadrant(2);
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[0] = neighbour->GetAnimalAvoidQuadrant(3);
+
+				// Diagonal Connections
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[4] = neighbour->GetAnimalAvoidQuadrant(3);
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[7] = neighbour->GetAnimalAvoidQuadrant(2);
 			}
 
-			///RIGHT
+			//RIGHT
 			if (m_pTiles[x][y]->GetNeighbour(1))
 			{
 				auto neighbour = m_pTiles[x][y]->GetNeighbour(1);
+
+				// Cardinal Connections
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[1] = neighbour->GetAnimalAvoidQuadrant(0);
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[1] = neighbour->GetAnimalAvoidQuadrant(2);
+
+				// Diagonal Connections
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[5] = neighbour->GetAnimalAvoidQuadrant(2);
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[4] = neighbour->GetAnimalAvoidQuadrant(0);
 			}
 
-			///DOWN
+			//DOWN
 			if (m_pTiles[x][y]->GetNeighbour(2))
 			{
 				auto neighbour = m_pTiles[x][y]->GetNeighbour(2);
+
+				// Cardinal Connections
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[2] = neighbour->GetAnimalAvoidQuadrant(0);
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[2] = neighbour->GetAnimalAvoidQuadrant(1);
+
+				// Diagonal Connections
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[5] = neighbour->GetAnimalAvoidQuadrant(1);
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[6] = neighbour->GetAnimalAvoidQuadrant(0);
 			}
 
-			///LEFT
+			//LEFT
 			if (m_pTiles[x][y]->GetNeighbour(3))
 			{
 				auto neighbour = m_pTiles[x][y]->GetNeighbour(3);
+
+				// Cardinal Connections
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[3] = neighbour->GetAnimalAvoidQuadrant(1);
 				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[3] = neighbour->GetAnimalAvoidQuadrant(3);
+
+				// Diagonal Connections
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[6] = neighbour->GetAnimalAvoidQuadrant(3);
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[7] = neighbour->GetAnimalAvoidQuadrant(1);
+			}
+
+			//UP-RIGHT
+			if (m_pTiles[x][y]->GetNeighbour(4))
+			{
+				auto neighbour = m_pTiles[x][y]->GetNeighbour(4);
+
+				// Diagonal Connection
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_pNeighbours[4] = neighbour->GetAnimalAvoidQuadrant(2);
+			}
+
+			//DOWN-RIGHT
+			if (m_pTiles[x][y]->GetNeighbour(5))
+			{
+				auto neighbour = m_pTiles[x][y]->GetNeighbour(5);
+
+				// Diagonal Connection
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_pNeighbours[5] = neighbour->GetAnimalAvoidQuadrant(0);
+			}
+
+			//DOWN-LEFT
+			if (m_pTiles[x][y]->GetNeighbour(6))
+			{
+				auto neighbour = m_pTiles[x][y]->GetNeighbour(6);
+
+				// Diagonal Connection
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_pNeighbours[6] = neighbour->GetAnimalAvoidQuadrant(1);
+			}
+
+			//UP-LEFT
+			if (m_pTiles[x][y]->GetNeighbour(7))
+			{
+				auto neighbour = m_pTiles[x][y]->GetNeighbour(7);
+
+				// Diagonal Connection
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_pNeighbours[7] = neighbour->GetAnimalAvoidQuadrant(3);
 			}
 		}
 	}
@@ -195,13 +280,11 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 		m_AnimalAvoidOpenList.clear();
 		memset(m_AnimalAvoidClosedList, 0, sizeof(bool) * TERRAIN_SIZE_X * TERRAIN_SIZE_Y * 4);
 
-		pStartTile->m_nDistance = nNoiseLevel;
+		pStartTile->m_nDistance = nNoiseLevel * 10;
 		m_AnimalAvoidOpenList.push_back(pStartTile);
 
 		while (m_AnimalAvoidOpenList.size() > 0)
 		{
-			//SortOpenList();
-
 			// Remove lowest node from open list and add to closed list
 			TileQuadrant* pCurrent = m_AnimalAvoidOpenList[0];
 
@@ -212,7 +295,7 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 			if (pCurrent->m_nDistance == 0)
 				continue;
 			//Loop through all neighbours and add them to open list
-			for (int j = 0; j < 4; ++j)
+			for (int j = 0; j < 8; ++j)
 			{
 				TileQuadrant* pNeighbour = pCurrent->m_pNeighbours[j];
 
@@ -228,24 +311,12 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 				if (m_AnimalAvoidClosedList[pNeighbour->index.x][pNeighbour->index.y][pNeighbour->m_nQuadrant])
 					continue;
 
-				//If neighbour is already in open list
-				if (std::find(m_AnimalAvoidOpenList.begin(), m_AnimalAvoidOpenList.end(), pNeighbour) != m_AnimalAvoidOpenList.end())
+				//Check if this is a better path
+				int nDistance = pCurrent->m_nDistance - pCurrent->m_anCost[j];
+				if (nDistance > pNeighbour->m_nDistance)
 				{
-					//Check if this is a better path
-					int nDistance = pCurrent->m_nDistance - 1;
-					if (nDistance < pNeighbour->m_nDistance)
-					{
-						//Update to use the better path
-						pNeighbour->m_nDistance = nDistance;
-
-						m_AnimalAvoidOpenList.push_back(pNeighbour);
-					}
-				}
-				//ELSE add node to open list and calculate scores
-				else
-				{
-					//Calculate Gscore
-					pNeighbour->m_nDistance = pCurrent->m_nDistance - 1;;
+					//Update to use the better path
+					pNeighbour->m_nDistance = nDistance;
 
 					m_AnimalAvoidOpenList.push_back(pNeighbour);
 				}
@@ -476,19 +547,19 @@ void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
 		{
 			Vector2 v2Pos = m_pTiles[x][y]->GetPos();
 
-			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance;
+			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance) * 0.1;
 			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
 			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance;
+			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance) * 0.1;
 			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
 			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance;
+			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance) * 0.1;
 			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
 			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			fAlphaOffset = 0.05f * m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance;
+			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance) * 0.1;
 			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
 			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
 		}

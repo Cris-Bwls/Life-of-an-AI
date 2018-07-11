@@ -24,6 +24,8 @@ void DebugMouseGUI::Update()
 
 void DebugMouseGUI::Draw()
 {
+	m_pGuiFlags->bFlagChange = false;
+
 	// Main Debug Mouse Window
 	{
 		ImGui::Begin("DebugMouseGUI##0");
@@ -230,6 +232,12 @@ void DebugMouseGUI::Draw()
 		ImGui::Text("Selected : %s", selected);
 		ImGui::Separator();
 
+		if (ImGui::Button("Rebuild Heat Map"))
+		{
+			m_pGuiFlags->heatMapEdit.bRebuildHeatMap = true;
+		}
+		ImGui::Separator();
+
 		ImGui::End();
 
 		if (!open)
@@ -271,6 +279,12 @@ void DebugMouseGUI::Draw()
 			selected = "NONE";
 
 		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		if (ImGui::Button("Rebuild Path"))
+		{
+			m_pGuiFlags->pathFindingEdit.bRebuildPath = true;
+		}
 		ImGui::Separator();
 
 		ImGui::End();

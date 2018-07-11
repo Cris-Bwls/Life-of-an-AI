@@ -2,6 +2,7 @@
 #include "Terrain.h"
 #include "Application.h"
 #include "Renderer2D.h"
+#include <functional>
 
 class Application2D : public aie::Application {
 public:
@@ -15,7 +16,14 @@ public:
 	virtual void update(float deltaTime);
 	virtual void draw();
 
+	void SetMouseDownLeft();
 protected:
+
+	std::function<void()> MouseDownLeft = []() {};
+
+	Vector2 m_v2PathStart;
+	Vector2 m_v2PathEnd;
+	std::vector<Vector2> m_HeatSourceList;
 
 	Terrain* m_pMap;
 	std::vector<Vector2> m_path;
