@@ -126,10 +126,10 @@ void Application2D::draw() {
 	}
 
 	// output some text, uses the last used colour
-	char fps[32];
-	sprintf_s(fps, 32, "FPS: %i", getFPS());
-	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
-	m_2dRenderer->drawText(m_font, "Press ESC to quit!", 0, 720 - 64);
+	//char fps[32];
+	//sprintf_s(fps, 32, "FPS: %i", getFPS());
+	//m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
+	//m_2dRenderer->drawText(m_font, "Press ESC to quit!", 0, 720 - 64);
 
 	// done drawing sprites
 	m_2dRenderer->end();
