@@ -21,46 +21,47 @@ public:
 
 	void SetTerrainStats(ETerrainType eTerrainType = ETERRAINTYPE_DIRT);
 
-	void RemoveBlocked();
+	void SetStaticObject(StaticObject* pBlocker = nullptr);
+	void RemoveStaticObject();
+	void Unblock();
 	void SetQuadrantBlocked();
 
 	int GetQuadrantFromPos(Vector2 v2Pos);
 
-	// Helper Func
-	void SetPos(Vector2 v2Pos) { m_v2Pos = v2Pos; };
-	Vector2 GetPos() { return m_v2Pos; };
+	void SetPos(Vector2 v2Pos, int tileSize);
+	inline Vector2 GetPos() { return m_v2Pos; };
 
-	TerrainStats GetTerrainStats() { return m_TerrainStats; };
+	inline TerrainStats GetTerrainStats() { return m_TerrainStats; };
 	
-	void SetNeighbour(int nIndex, TerrainTile* neighbour = nullptr) { m_pNeighbours[nIndex] = neighbour; };
-	TerrainTile* GetNeighbour(int nIndex) { return m_pNeighbours[nIndex]; };
+	inline void SetNeighbour(int nIndex, TerrainTile* neighbour = nullptr) { m_pNeighbours[nIndex] = neighbour; };
+	inline TerrainTile* GetNeighbour(int nIndex) { return m_pNeighbours[nIndex]; };
 
-	void SetPrev(TerrainTile* prev = nullptr) { m_pPrev = prev; };
-	TerrainTile* GetPrev() { return m_pPrev; };
+	inline void SetPrev(TerrainTile* prev = nullptr) { m_pPrev = prev; };
+	inline TerrainTile* GetPrev() { return m_pPrev; };
 
-	void SetIndex(int nIndexX, int nIndexY) { m_Index.x = nIndexX; m_Index.y = nIndexY; };
-	Index GetIndex() { return m_Index; };
-	int GetIndexX() { return m_Index.x; };
-	int GetIndexY() { return m_Index.y; };
+	inline void SetIndex(int nIndexX, int nIndexY) { m_Index.x = nIndexX; m_Index.y = nIndexY; };
+	inline Index GetIndex() { return m_Index; };
+	inline int GetIndexX() { return m_Index.x; };
+	inline int GetIndexY() { return m_Index.y; };
 
-	unsigned int GetCost(int nIndex) {	return m_nCost[nIndex];	};
-
-
-	void SetFScore(unsigned int nFScore) { m_nFScore = nFScore; };
-	unsigned int GetFScore() { return m_nFScore; };
-
-	void SetGScore(unsigned int nGScore) { m_nGScore = nGScore; };
-	unsigned int GetGScore() { return m_nGScore; };
-
-	void SetHScore(unsigned int nHScore) { m_nHScore = nHScore; };
-	unsigned int GetHScore() { return m_nHScore; };
+	inline unsigned int GetCost(int nIndex) {	return m_nCost[nIndex];	};
 
 
-	void SetBlocked(StaticObject* pBlocker = nullptr) {	m_bBlocked = true; m_pBlocker = pBlocker; SetQuadrantBlocked(); };
-	bool GetBlocked() { return m_bBlocked; };
-	StaticObject* GetBlocker() { return m_pBlocker; };
+	inline void SetFScore(unsigned int nFScore) { m_nFScore = nFScore; };
+	inline unsigned int GetFScore() { return m_nFScore; };
 
-	TileQuadrant* GetAnimalAvoidQuadrant(int nIndex) { return m_AnimalAvoidQuadrants[nIndex]; };
+	inline void SetGScore(unsigned int nGScore) { m_nGScore = nGScore; };
+	inline unsigned int GetGScore() { return m_nGScore; };
+
+	inline void SetHScore(unsigned int nHScore) { m_nHScore = nHScore; };
+	inline unsigned int GetHScore() { return m_nHScore; };
+
+
+	inline void Block() { m_bBlocked = true; SetQuadrantBlocked(); };
+	inline bool GetBlocked() { return m_bBlocked; };
+	StaticObject* GetStaticObject();
+
+	inline TileQuadrant* GetAnimalAvoidQuadrant(int nIndex) { return m_AnimalAvoidQuadrants[nIndex]; };
 
 
 private:
@@ -79,7 +80,7 @@ private:
 
 	bool m_bBlocked = false;
 
-	StaticObject* m_pBlocker = nullptr;
+	StaticObject* m_pStaticObject = nullptr;
 	TileQuadrant* m_AnimalAvoidQuadrants[4];
 };
 

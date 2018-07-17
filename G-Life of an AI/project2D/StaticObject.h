@@ -6,5 +6,9 @@ class StaticObject :
 public:
 	StaticObject();
 	virtual ~StaticObject();
+
+	inline bool GetIsBlocker() { return m_bIsBlocker; }
+protected:
+	bool m_bIsBlocker;
 };
 

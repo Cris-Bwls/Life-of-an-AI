@@ -52,27 +52,54 @@ void TerrainTile::SetTerrainStats(ETerrainType eTerrainType)
 	m_TerrainStats.Setup(eTerrainType);
 
 	// Change Blocked Status
-	if (m_TerrainStats.m_bIsPassable)
-	{
-		if (!m_pBlocker)
-		{
-			RemoveBlocked();
-		}
-	}
-	else
-	{
-		SetBlocked();
-	}
+	Unblock();
 }
 
-void TerrainTile::RemoveBlocked()
+void TerrainTile::SetStaticObject(StaticObject* pStaticObject)
+{
+	m_pStaticObject = pStaticObject;
+
+	if (pStaticObject)
+	{
+		if (pStaticObject->GetIsBlocker())
+		{
+			m_bBlocked = true;
+			SetQuadrantBlocked();
+			return;
+		}
+	}
+
+	Unblock();
+}
+
+void TerrainTile::RemoveStaticObject()
+{
+	m_pStaticObject = nullptr;
+	SetQuadrantBlocked();
+}
+
+void TerrainTile::Unblock()
 {
 	if (m_TerrainStats.m_bIsPassable)
+	{
 		m_bBlocked = false;
-	else
-		m_bBlocked = true;
 
-	m_pBlocker = nullptr;
+		// If there is no object above
+		if (GetStaticObject() == nullptr)
+		{
+			SetQuadrantBlocked();
+			return;
+		}
+
+		// If the object above isnt a blocker
+		if (m_pStaticObject->GetIsBlocker() == false)
+		{
+			SetQuadrantBlocked();
+			return;
+		}
+	}
+	
+	m_bBlocked = true;
 	SetQuadrantBlocked();
 }
 
@@ -100,5 +127,28 @@ int TerrainTile::GetQuadrantFromPos(Vector2 v2Pos)
 		return 0;
 	}
 	return 2;
+}
+
+void TerrainTile::SetPos(Vector2 v2Pos, int tileSize)
+{
+	m_v2Pos = v2Pos;
+
+	int offset = tileSize * 0.25;
+	m_AnimalAvoidQuadrants[0]->m_v2Pos = Vector2(v2Pos.x - offset, v2Pos.y + offset);
+	m_AnimalAvoidQuadrants[1]->m_v2Pos = Vector2(v2Pos.x + offset, v2Pos.y + offset);
+	m_AnimalAvoidQuadrants[2]->m_v2Pos = Vector2(v2Pos.x - offset, v2Pos.y - offset);
+	m_AnimalAvoidQuadrants[3]->m_v2Pos = Vector2(v2Pos.x + offset, v2Pos.y - offset);
+}
+
+StaticObject * TerrainTile::GetStaticObject()
+{
+	// If object exists
+	if (m_pStaticObject)
+		// AND is NOT alive
+		if (m_pStaticObject->GetIsAlive() == false)
+			// reset pointer
+			m_pStaticObject = nullptr;
+
+	return m_pStaticObject;
 }
 

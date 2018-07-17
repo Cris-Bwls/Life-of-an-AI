@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "CameraManager.h"
 #include "GUIManager.h"
+#include "StaticObjectManager.h"
 
 #include <iostream>
 
@@ -26,8 +27,9 @@ bool Application2D::startup() {
 	CameraManager::GetInstance()->SetApp2D(this);
 
 	GUIManager::Create();
-	//GUIManager::GetInstance()->AddActiveGUI(EGUITYPE_DEBUG_BASIC);
 	GUIManager::GetInstance()->AddActiveGUI(EGUITYPE_DEBUG_MOUSE);
+
+	StaticObjectManager::Create();
 	
 	m_2dRenderer = new aie::Renderer2D();
 
@@ -37,6 +39,7 @@ bool Application2D::startup() {
 	
 	m_v2PathStart = Vector2(100, 100);
 	m_v2PathEnd = Vector2(300, 200);
+	m_pPathTarget = nullptr;
 	
 	m_timer = 0;
 
@@ -51,6 +54,7 @@ void Application2D::shutdown() {
 	delete m_2dRenderer;
 	delete m_pMap;
 
+	StaticObjectManager::Destroy();
 	GUIManager::Destroy();
 	CameraManager::Destroy();
 }
@@ -76,13 +80,25 @@ void Application2D::update(float deltaTime) {
 		{
 			m_pMap->SetAnimalAvoid(m_HeatSourceList[i], 20);
 		}
+		m_pMap->UpdateAnimalAvoidVector();
 
 		pGuiFlags->heatMapEdit.bRebuildHeatMap = false;
 	}
 
 	if (input->isKeyDown(aie::INPUT_KEY_2) || pGuiFlags->pathFindingEdit.bRebuildPath)
 	{
-		m_path = m_pMap->GetPath(m_v2PathStart, m_v2PathEnd, true);
+		if (pGuiFlags->pathFindingEdit.bObjectPathfind)
+		{
+			if (m_pPathTarget)
+			{
+				m_path = m_pMap->GetPathToObject(m_v2PathStart, m_pPathTarget, true);
+			}
+		}
+		else
+		{
+			m_path = m_pMap->GetPathToPos(m_v2PathStart, m_v2PathEnd, true);
+		}
+
 
 		pGuiFlags->pathFindingEdit.bRebuildPath = false;
 	}
@@ -92,6 +108,9 @@ void Application2D::update(float deltaTime) {
 		SetMouseDownLeft();
 		MouseDownLeft();
 	}
+
+	// Update Objects
+	StaticObjectManager::GetInstance()->Update(deltaTime);
 	
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -100,6 +119,9 @@ void Application2D::update(float deltaTime) {
 
 void Application2D::draw() {
 	
+	// Get Gui Flags
+	GUIFlags* pGuiFlags = GUIManager::GetInstance()->GetGuiFlags();
+
 	// wipe the screen to the background colour
 	clearScreen();
 
@@ -109,21 +131,46 @@ void Application2D::draw() {
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
-	m_pMap->Draw(m_2dRenderer);
-	m_pMap->DrawQuadrants(m_2dRenderer);
+	// Draw Terrain
+	if (pGuiFlags->miscEdit.bDrawTerrain)
+		m_pMap->Draw(m_2dRenderer);
+
+	// Draw Flow Fields
+	if (pGuiFlags->miscEdit.bDrawFlowFields)
+		m_pMap->DrawQuadrants(m_2dRenderer);
+	
+	// Draw Objects
+	if (pGuiFlags->miscEdit.bDrawStaticObjects)
+		StaticObjectManager::GetInstance()->Draw(m_2dRenderer);
 	
 	//DEBUG
 
-	// Draw Path if it exists
-	if (m_path.size() > 0)
+	// Draw Pathfinding if allowed
+	if (pGuiFlags->miscEdit.bDrawPathfinding)
 	{
-		m_2dRenderer->setRenderColour(0xFF0000FF);
-		for (int i = 0; i < m_path.size(); ++i)
+		// Draw Path if it exists
+		if (m_path.size() > 0)
 		{
-			m_2dRenderer->drawBox(m_path[i].x, m_path[i].y, TILE_SIZE, TILE_SIZE);
+			m_2dRenderer->setRenderColour(0xFF0000FF);
+
+			if (pGuiFlags->pathFindingEdit.bFullPath)
+			{
+				for (int i = 0; i < m_path.size(); ++i)
+				{
+					m_2dRenderer->drawBox(m_path[i].x, m_path[i].y, TILE_SIZE, TILE_SIZE);
+				}
+			}
+			else if (pGuiFlags->pathFindingEdit.bStepPath)
+			{
+				if (pGuiFlags->pathFindingEdit.nStepCount >= m_path.size())
+					pGuiFlags->pathFindingEdit.nStepCount = 0;
+				m_2dRenderer->drawBox(m_path[pGuiFlags->pathFindingEdit.nStepCount].x, m_path[pGuiFlags->pathFindingEdit.nStepCount].y, TILE_SIZE, TILE_SIZE);
+			}
+
+			m_2dRenderer->setRenderColour(0xFFFFFFFF);
 		}
-		m_2dRenderer->setRenderColour(0xFFFFFFFF);
 	}
+
 
 	// output some text, uses the last used colour
 	//char fps[32];
@@ -145,9 +192,11 @@ void Application2D::SetMouseDownLeft()
 
 	switch (pGuiFlags->eDebugMouseWindows)
 	{
+	case GUI_Type_DebugMouse::EWINDOWS_DEFAULT:
+		break;
 	case GUI_Type_DebugMouse::EWINDOWS_BLOCKER_EDIT:
-		// Place Blocker
-		if (pGuiFlags->blockerEdit.bPlaceBlocker)
+		// Block
+		if (pGuiFlags->blockerEdit.bBlock)
 		{
 			MouseDownLeft = [this]() 
 			{
@@ -156,14 +205,14 @@ void Application2D::SetMouseDownLeft()
 
 				if (pTile)
 				{
-					pTile->SetBlocked();
+					pTile->Block();
 				}
 			};
 			funcSet = true;
 			return;
 		}
-		// Remove Blocker
-		else if (pGuiFlags->blockerEdit.bRemoveBlocker)
+		// Unblock
+		else if (pGuiFlags->blockerEdit.bUnblock)
 		{
 			MouseDownLeft = [this]()
 			{
@@ -172,7 +221,7 @@ void Application2D::SetMouseDownLeft()
 
 				if (pTile)
 				{
-					pTile->RemoveBlocked();
+					pTile->Unblock();
 				}
 			};
 			funcSet = true;
@@ -310,6 +359,67 @@ void Application2D::SetMouseDownLeft()
 				if (pTile)
 				{
 					m_v2PathEnd = v2MousePos;
+				}
+			};
+			funcSet = true;
+			return;
+		}
+
+		// Change Object Pathfinding target
+		else if (pGuiFlags->pathFindingEdit.bChangeTarget)
+		{
+			MouseDownLeft = [this]()
+			{
+				Vector2 v2MousePos = CameraManager::GetInstance()->GetWorldMousePos();
+				TerrainTile* pTile = m_pMap->GetTileByPos(v2MousePos);
+
+				if (pTile)
+				{
+					m_pPathTarget = pTile->GetStaticObject();
+				}
+			};
+			funcSet = true;
+			return;
+		}
+		break;
+	case GUI_Type_DebugMouse::EWINDOWS_STATICOBJECT_PLACE:
+		// Place Object
+		if (pGuiFlags->staticObjectPlace.bPlaceObject)
+		{
+			MouseDownLeft = [this]()
+			{
+				Vector2 v2MousePos = CameraManager::GetInstance()->GetWorldMousePos();
+				TerrainTile* pTile = m_pMap->GetTileByPos(v2MousePos);
+
+				if (pTile)
+				{
+					// If object already on tile
+					if (pTile->GetStaticObject())
+						return;
+
+					Vector2 tilePos = pTile->GetPos();
+					auto eObjectType = GUIManager::GetInstance()->GetGuiFlags()->staticObjectPlace.eStaticObjectType;
+					pTile->SetStaticObject(StaticObjectManager::GetInstance()->PlaceObject(eObjectType, tilePos));
+				}
+			};
+			funcSet = true;
+			return;
+		}
+		// Remove Object
+		else if (pGuiFlags->staticObjectPlace.bRemoveObject)
+		{
+			MouseDownLeft = [this]()
+			{
+				Vector2 v2MousePos = CameraManager::GetInstance()->GetWorldMousePos();
+				TerrainTile* pTile = m_pMap->GetTileByPos(v2MousePos);
+
+				if (pTile)
+				{
+					if (pTile->GetStaticObject())
+					{
+						pTile->GetStaticObject()->SetIsAlive(false);
+						pTile->SetStaticObject(nullptr);
+					}
 				}
 			};
 			funcSet = true;

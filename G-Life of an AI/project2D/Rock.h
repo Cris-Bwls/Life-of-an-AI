@@ -6,5 +6,7 @@ class Rock :
 public:
 	Rock();
 	~Rock();
+
+	void Draw(aie::Renderer2D* pRenderer);
 };
 

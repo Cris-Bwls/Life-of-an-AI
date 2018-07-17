@@ -171,8 +171,14 @@
     <ClCompile Include="DebugMouseGUI.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="StaticObjectManager.cpp">
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <Filter>Source Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClCompile>
     <ClCompile Include="DebugBasicGUI.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +286,18 @@
     </ClInclude>
     <ClInclude Include="DebugBasicGUI.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObjectManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <Filter>Header Files\GameObjects\StaticObjects\ResourceObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EStaticObjectType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectContainer.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

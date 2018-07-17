@@ -179,6 +179,7 @@
     <ClCompile Include="Deer.cpp" />
     <ClCompile Include="Forge.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Grass.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Housing.cpp" />
     <ClCompile Include="Hut.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="StaticObject.cpp" />
+    <ClCompile Include="StaticObjectManager.cpp" />
     <ClCompile Include="Stockpile.cpp" />
     <ClCompile Include="Tent.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -211,17 +213,21 @@
     <ClInclude Include="Deer.h" />
     <ClInclude Include="EGuiType.h" />
     <ClInclude Include="EResourceType.h" />
+    <ClInclude Include="EStaticObjectType.h" />
     <ClInclude Include="ETerrainType.h" />
     <ClInclude Include="Forge.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Grass.h" />
     <ClInclude Include="GuiFlags.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="Housing.h" />
     <ClInclude Include="Hut.h" />
+    <ClInclude Include="ObjectContainer.h" />
     <ClInclude Include="ResourceComponent.h" />
     <ClInclude Include="ResourceObject.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="StaticObjectManager.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="Tent.h" />
     <ClInclude Include="Terrain.h" />

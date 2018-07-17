@@ -1,6 +1,10 @@
 #include "Terrain.h"
+#include <algorithm>
+#include <typeinfo.h>
 #include "TerrainTile.h"
 #include "TileQuadrant.h"
+
+#include "GUIManager.h"
 
 
 Terrain::Terrain()
@@ -10,8 +14,8 @@ Terrain::Terrain()
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
-			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT);
-			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x + TILE_OFFSET, TILE_SIZE * y + TILE_OFFSET));
+			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT); 
+			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x + TILE_OFFSET, TILE_SIZE * y + TILE_OFFSET), TILE_SIZE);
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
 		}
 	}
@@ -325,11 +329,13 @@ void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
 	}
 }
 
-std::vector<Vector2> Terrain::GetPath(Vector2 v2Start, Vector2 v2End, bool AStar)
+std::vector<Vector2> Terrain::GetPathToPos(Vector2 v2Start, Vector2 v2End, bool bAStar)
 {
+	SetSortHeap([](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
+
 	std::vector<Vector2> path;
-	TerrainTile* pStart = GetTileByPos(v2End);
-	TerrainTile* pEnd = GetTileByPos(v2Start);
+	TerrainTile* pStart = GetTileByPos(v2Start);
+	TerrainTile* pEnd = GetTileByPos(v2End);
 
 	// Safety Checks
 	if (!pStart || !pEnd)
@@ -345,28 +351,30 @@ std::vector<Vector2> Terrain::GetPath(Vector2 v2Start, Vector2 v2End, bool AStar
 	pStart->SetGScore(0);
 	pStart->SetPrev(nullptr);
 	m_OpenList.push_back(pStart);
+	std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
 
 	while (m_OpenList.size() > 0)
 	{
-		SortOpenList();
-
 		// Remove lowest node from open list and add to closed list
 		TerrainTile* pCurrent = m_OpenList[0];
-		m_OpenList.erase(m_OpenList.begin());
+
+		std::pop_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
+		m_OpenList.pop_back();
+
 		m_ClosedList[pCurrent->GetIndexX()][pCurrent->GetIndexY()] = true;
 
 		//Complete path here
 		if (pCurrent == pEnd)
 		{
 			//Path is complete
-			path.push_back(pCurrent->GetPos());
+			path.insert(path.begin(), pCurrent->GetPos());
 
 			//While current's prev is not null
 			while (pCurrent->GetPrev())
 			{
 				//Make current currents prev
 				pCurrent = pCurrent->GetPrev();
-				path.push_back(pCurrent->GetPos());
+				path.insert(path.begin(), pCurrent->GetPos());
 			}
 			// Return Path
 			return path;
@@ -403,6 +411,7 @@ std::vector<Vector2> Terrain::GetPath(Vector2 v2Start, Vector2 v2End, bool AStar
 					pNeighbour->SetPrev(pCurrent);
 
 					m_OpenList.push_back(pNeighbour);
+					std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
 				}
 			}
 			//ELSE add node to open list and calculate scores
@@ -412,7 +421,7 @@ std::vector<Vector2> Terrain::GetPath(Vector2 v2Start, Vector2 v2End, bool AStar
 				pNeighbour->SetGScore(pCurrent->GetGScore() + pCurrent->GetCost(i));
 
 				// Calculate H score (if A*)
-				if (AStar)
+				if (bAStar)
 				{
 					int diffX = abs(pEnd->GetIndexX() - pNeighbour->GetIndexX());
 					int diffY = abs(pEnd->GetIndexY() - pNeighbour->GetIndexY());
@@ -436,6 +445,143 @@ std::vector<Vector2> Terrain::GetPath(Vector2 v2Start, Vector2 v2End, bool AStar
 				pNeighbour->SetPrev(pCurrent);
 
 				m_OpenList.push_back(pNeighbour);
+				std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
+			}
+		}
+	}
+
+	// Returns if no path found
+	return path;
+}
+
+std::vector<Vector2> Terrain::GetPathToObject(Vector2 v2Start, StaticObject* target, bool bAStar)
+{
+	SetSortHeap([](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
+	
+	std::vector<Vector2> path;
+	TerrainTile* pStart = GetTileByPos(v2Start);
+	TerrainTile* pEnd = GetTileByPos(target->GetPos());
+
+	auto targetTypeHash = typeid(*target).hash_code();
+
+	// Safety Checks
+	if (!pStart || !pEnd)
+		return path;
+
+	if (pStart->GetBlocked())
+		return path;
+
+	//Pathfinding
+	m_OpenList.clear();
+	memset(m_ClosedList, 0, sizeof(bool) * TERRAIN_SIZE_X * TERRAIN_SIZE_Y);
+
+	pStart->SetGScore(0);
+	pStart->SetPrev(nullptr);
+	m_OpenList.push_back(pStart);
+	std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
+
+	while (m_OpenList.size() > 0)
+	{
+		// Remove lowest node from open list and add to closed list
+		TerrainTile* pCurrent = m_OpenList[0];
+
+		std::pop_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
+		m_OpenList.pop_back();
+
+		m_ClosedList[pCurrent->GetIndexX()][pCurrent->GetIndexY()] = true;
+
+		size_t currentTypeHash;
+		if (pCurrent->GetStaticObject())
+			currentTypeHash = typeid(*(pCurrent->GetStaticObject())).hash_code();
+		else
+			currentTypeHash = 0;
+
+		//Complete path here
+		if (pCurrent == pEnd || currentTypeHash == targetTypeHash)
+		{
+			target = pCurrent->GetStaticObject();
+
+			//Path is complete
+			if (pCurrent->GetBlocked() == false)
+				path.insert(path.begin(), pCurrent->GetPos());
+
+			//While current's prev is not null
+			while (pCurrent->GetPrev())
+			{
+				//Make current currents prev
+				pCurrent = pCurrent->GetPrev();
+				path.insert(path.begin(), pCurrent->GetPos());
+			}
+			// Return Path
+			return path;
+		}
+
+		//Loop through all neighbours and add them to open list
+		for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
+		{
+			TerrainTile* pNeighbour = pCurrent->GetNeighbour(i);
+
+			//Skip null neighbours
+			if (!pNeighbour)
+				continue;
+
+			//Skip blocked neighbours
+			if (pNeighbour->GetBlocked() && pNeighbour != pEnd)
+				continue;
+
+			//Skip closed list neighbours
+			if (m_ClosedList[pNeighbour->GetIndexX()][pNeighbour->GetIndexY()])
+				continue;
+
+			//If neighbour is already in open list
+			if (std::find(m_OpenList.begin(), m_OpenList.end(), pNeighbour) != m_OpenList.end())
+			{
+				//Check if this is a better path
+				unsigned int newGScore = pCurrent->GetGScore() + pCurrent->GetCost(i);
+				if (newGScore < pNeighbour->GetGScore())
+				{
+					//Update to use the better path
+					pNeighbour->SetGScore(newGScore);
+					pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
+
+					pNeighbour->SetPrev(pCurrent);
+
+					m_OpenList.push_back(pNeighbour);
+					std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
+				}
+			}
+			//ELSE add node to open list and calculate scores
+			else
+			{
+				//Calculate Gscore
+				pNeighbour->SetGScore(pCurrent->GetGScore() + pCurrent->GetCost(i));
+
+				// Calculate H score (if A*)
+				if (bAStar)
+				{
+					int diffX = abs(pEnd->GetIndexX() - pNeighbour->GetIndexX());
+					int diffY = abs(pEnd->GetIndexY() - pNeighbour->GetIndexY());
+					if (diffX > diffY)
+					{
+						pNeighbour->SetHScore((diffY * 14) + ((diffX - diffY) * 10));
+					}
+					else
+					{
+						pNeighbour->SetHScore((diffX * 14) + ((diffY - diffX) * 10));
+					}
+				}
+				else
+				{
+					pNeighbour->SetHScore(0);
+				}
+
+				// Calculate F Score
+				pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
+
+				pNeighbour->SetPrev(pCurrent);
+
+				m_OpenList.push_back(pNeighbour);
+				std::push_heap(m_OpenList.begin(), m_OpenList.end(), SortHeapFunc);
 			}
 		}
 	}
@@ -469,33 +615,39 @@ TerrainTile* Terrain::GetTileByPos(Vector2 v2Pos)
 	return m_pTiles[x][y];
 }
 
-void Terrain::SortOpenList()
+void Terrain::UpdateAnimalAvoidVector()
 {
-	for (int i = 0; i < m_OpenList.size(); ++i)
+	for (int x = 0; x < TERRAIN_SIZE_X; ++x)
 	{
-		for (int j = 0; j < m_OpenList.size() - 1; ++j)
+		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
-			if (m_OpenList[j]->GetFScore() > m_OpenList[j + 1]->GetFScore())
+			if (m_pTiles[x][y]->GetBlocked())
 			{
-				TerrainTile* swap = m_OpenList[j];
-				m_OpenList[j] = m_OpenList[j + 1];
-				m_OpenList[j + 1] = swap;
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_v2Vec.Zero();
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_v2Vec.Zero();
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_v2Vec.Zero();
+				m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_v2Vec.Zero();
+				continue;
 			}
-		}
-	}
-}
 
-void Terrain::SortAnimalAvoidOpenList()
-{
-	for (int i = 0; i < m_AnimalAvoidOpenList.size(); ++i)
-	{
-		for (int j = 0; j < m_AnimalAvoidOpenList.size() - 1; ++j)
-		{
-			if (m_AnimalAvoidOpenList[j]->m_nDistance < m_AnimalAvoidOpenList[j + 1]->m_nDistance)
+			for (int i = 0; i < 4; ++i)
 			{
-				TileQuadrant* swap = m_AnimalAvoidOpenList[j];
-				m_AnimalAvoidOpenList[j] = m_AnimalAvoidOpenList[j + 1];
-				m_AnimalAvoidOpenList[j + 1] = swap;
+				TileQuadrant* pQuadrant = m_pTiles[x][y]->GetAnimalAvoidQuadrant(i);
+				Vector2 v2Vec;
+				for (int j = 0; j < 8; ++j)
+				{
+					if (pQuadrant->m_pNeighbours[j])
+					{
+						if (pQuadrant->m_pNeighbours[j]->m_bBlocked)
+							continue;
+
+						Vector2 deltaPos = pQuadrant->m_pNeighbours[j]->m_v2Pos - pQuadrant->m_v2Pos;
+						int deltaDistance = pQuadrant->m_pNeighbours[j]->m_nDistance - pQuadrant->m_nDistance;
+						v2Vec += (deltaPos * deltaDistance);
+					}
+				}
+				v2Vec.normalise();
+				pQuadrant->m_v2Vec = -v2Vec;
 			}
 		}
 	}
@@ -518,17 +670,21 @@ void Terrain::Draw(aie::Renderer2D * pRenderer)
 			if (m_pTiles[x][y]->GetBlocked())
 				continue;
 
-			for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
+			// Draw Connections (if allowed)
+			if (GUIManager::GetInstance()->GetGuiFlags()->miscEdit.bDrawConnections)
 			{
-				auto neighbour = m_pTiles[x][y]->GetNeighbour(i);
-				if (neighbour)
+				for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
 				{
-					if (neighbour->GetBlocked())
-						continue;
+					auto neighbour = m_pTiles[x][y]->GetNeighbour(i);
+					if (neighbour)
+					{
+						if (neighbour->GetBlocked())
+							continue;
 
-					Vector2 v2NeighbourPos = neighbour->GetPos();
+						Vector2 v2NeighbourPos = neighbour->GetPos();
 
-					pRenderer->drawLine(v2Pos.x, v2Pos.y, v2NeighbourPos.x, v2NeighbourPos.y, 3);
+						pRenderer->drawLine(v2Pos.x, v2Pos.y, v2NeighbourPos.x, v2NeighbourPos.y, 3);
+					}
 				}
 			}
 		}
@@ -545,23 +701,20 @@ void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
-			Vector2 v2Pos = m_pTiles[x][y]->GetPos();
+			for (int i = 0; i < 4; ++i)
+			{
+				auto pQuadrant = m_pTiles[x][y]->GetAnimalAvoidQuadrant(i);
 
-			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(0)->m_nDistance) * 0.1;
-			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
-			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
+				// Show Distance
+				fAlphaOffset = 0.05f * (float)(pQuadrant->m_nDistance) * 0.1;
+				pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
+				pRenderer->drawBox(pQuadrant->m_v2Pos.x, pQuadrant->m_v2Pos.y, TILE_SIZE / 4, TILE_SIZE / 4);
 
-			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(1)->m_nDistance) * 0.1;
-			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
-			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y + TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
-
-			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(2)->m_nDistance) * 0.1;
-			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
-			pRenderer->drawBox(v2Pos.x - TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
-
-			fAlphaOffset = 0.05f * (float)(m_pTiles[x][y]->GetAnimalAvoidQuadrant(3)->m_nDistance) * 0.1;
-			pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
-			pRenderer->drawBox(v2Pos.x + TILE_SIZE / 4, v2Pos.y - TILE_SIZE / 4, TILE_SIZE / 4, TILE_SIZE / 4);
+				// Show Vector
+				pRenderer->setRenderColour(0xFF0000FF);
+				Vector2 v2Vec = pQuadrant->m_v2Pos + (pQuadrant->m_v2Vec * TILE_SIZE * 0.25);
+				pRenderer->drawLine(pQuadrant->m_v2Pos.x, pQuadrant->m_v2Pos.y, v2Vec.x, v2Vec.y, 0.5f);
+			}
 		}
 	}
 

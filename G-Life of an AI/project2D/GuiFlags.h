@@ -1,4 +1,5 @@
 #pragma once
+#include "EStaticObjectType.h"
 
 namespace GUI_Type_DebugMouse
 {
@@ -10,6 +11,7 @@ namespace GUI_Type_DebugMouse
 		EWINDOWS_CHANGE_TERRAIN,
 		EWINDOWS_HEAT_MAP_EDIT,
 		EWINDOWS_PATHFINDING_EDIT,
+		EWINDOWS_STATICOBJECT_PLACE,
 		EWINDOWS_MISC_EDIT,
 		
 		EWINDOWS_TOTAL
@@ -20,8 +22,9 @@ namespace GUI_Windows
 {
 	struct BlockerEdit
 	{
-		bool bPlaceBlocker = false;
-		bool bRemoveBlocker = false;
+		bool bBlock = false;
+		bool bUnblock = false;
+		bool bForceUnblock = false;
 	};
 
 	struct ChangeTerrain
@@ -42,7 +45,38 @@ namespace GUI_Windows
 	{
 		bool bMoveStart = false;
 		bool bMoveEnd = false;
+
+		bool bChangeTarget = false;
+
+		bool bObjectPathfind = false;
+
 		bool bRebuildPath = false;
+		bool bFullPath = false;
+		bool bStepPath = false;
+		int nStepCount = 0;
+	};
+
+	struct StaticObjectPlace
+	{
+		bool bPlaceObject = false;
+		bool bRemoveObject = false;
+
+		bool bPlaceResource = false;
+		bool bPlaceWorkStation = false;
+		bool bPlaceHousing = false;
+
+		EStaticObjectType eStaticObjectType = ESTATICOBJECTTYPE_DEFAULT;
+	};
+
+	struct MiscEdit
+	{
+		bool bDrawTerrain = true;
+		bool bDrawStaticObjects = true;
+		bool bDrawAgents = true;
+
+		bool bDrawConnections = false;
+		bool bDrawPathfinding = false;
+		bool bDrawFlowFields = false;
 	};
 } // End Namespace GUI_Windows
 
@@ -55,4 +89,6 @@ struct GUIFlags
 	GUI_Windows::ChangeTerrain changeTerrain;
 	GUI_Windows::HeatMapEdit heatMapEdit;
 	GUI_Windows::PathfindingEdit pathFindingEdit;
+	GUI_Windows::StaticObjectPlace staticObjectPlace;
+	GUI_Windows::MiscEdit miscEdit;
 };

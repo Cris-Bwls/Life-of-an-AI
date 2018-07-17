@@ -6,5 +6,7 @@ class Tree :
 public:
 	Tree();
 	~Tree();
+
+	void Draw(aie::Renderer2D* pRenderer);
 };
 

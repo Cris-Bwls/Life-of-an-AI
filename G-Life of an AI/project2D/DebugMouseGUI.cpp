@@ -51,6 +51,10 @@ void DebugMouseGUI::Draw()
 		{
 			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_PATHFINDING_EDIT;
 		}
+		if (ImGui::Button("StaticObject Place"))
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_STATICOBJECT_PLACE;
+		}
 		if (ImGui::Button("Misc Edit"))
 		{
 			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_MISC_EDIT;
@@ -73,6 +77,9 @@ void DebugMouseGUI::Draw()
 			break;
 		case EWINDOWS_PATHFINDING_EDIT:
 			selected = "Pathfinding Edit";
+			break;
+		case EWINDOWS_STATICOBJECT_PLACE:
+			selected = "StaticObject Place";
 			break;
 		case EWINDOWS_MISC_EDIT:
 			selected = "Misc Edit";
@@ -110,24 +117,24 @@ void DebugMouseGUI::Draw()
 		ImGui::Text("Choose Edit Type");
 		if (ImGui::Button("Place Blocker"))
 		{
-			m_pGuiFlags->blockerEdit.bPlaceBlocker = true;
+			m_pGuiFlags->blockerEdit.bBlock = true;
 
-			m_pGuiFlags->blockerEdit.bRemoveBlocker = false;
+			m_pGuiFlags->blockerEdit.bUnblock = false;
 		}
 		if (ImGui::Button("Remove Blocker"))
 		{
-			m_pGuiFlags->blockerEdit.bRemoveBlocker = true;
+			m_pGuiFlags->blockerEdit.bUnblock = true;
 
-			m_pGuiFlags->blockerEdit.bPlaceBlocker = false;
+			m_pGuiFlags->blockerEdit.bBlock = false;
 		}
 		ImGui::Separator();
 
 		// Currently Selected
 		char* selected;
 
-		if (m_pGuiFlags->blockerEdit.bPlaceBlocker)
+		if (m_pGuiFlags->blockerEdit.bBlock)
 			selected = "Place Blocker";
-		else if (m_pGuiFlags->blockerEdit.bRemoveBlocker)
+		else if (m_pGuiFlags->blockerEdit.bUnblock)
 			selected = "Remove Blocker";
 		else
 			selected = "NONE";
@@ -254,17 +261,37 @@ void DebugMouseGUI::Draw()
 
 		// CheckBoxes
 		ImGui::Text("Choose Edit Type");
+
+		// Object Pathinfinding check
+		ImGui::Checkbox("Object Pathfinding", &(m_pGuiFlags->pathFindingEdit.bObjectPathfind));
+
 		if (ImGui::Button("Move Start"))
 		{
 			m_pGuiFlags->pathFindingEdit.bMoveStart = true;
 
 			m_pGuiFlags->pathFindingEdit.bMoveEnd = false;
+			m_pGuiFlags->pathFindingEdit.bChangeTarget = false;
 		}
-		if (ImGui::Button("Move End"))
-		{
-			m_pGuiFlags->pathFindingEdit.bMoveEnd = true;
 
-			m_pGuiFlags->pathFindingEdit.bMoveStart = false;
+		if (m_pGuiFlags->pathFindingEdit.bObjectPathfind)
+		{
+			if (ImGui::Button("Change Target"))
+			{
+				m_pGuiFlags->pathFindingEdit.bChangeTarget = true;
+
+				m_pGuiFlags->pathFindingEdit.bMoveStart = false;
+				m_pGuiFlags->pathFindingEdit.bMoveEnd = false;
+			}
+		}
+		else
+		{
+			if (ImGui::Button("Move End"))
+			{
+				m_pGuiFlags->pathFindingEdit.bMoveEnd = true;
+
+				m_pGuiFlags->pathFindingEdit.bMoveStart = false;
+				m_pGuiFlags->pathFindingEdit.bChangeTarget = false;
+			}
 		}
 		ImGui::Separator();
 
@@ -273,6 +300,8 @@ void DebugMouseGUI::Draw()
 
 		if (m_pGuiFlags->pathFindingEdit.bMoveStart)
 			selected = "Move Start";
+		else if (m_pGuiFlags->pathFindingEdit.bChangeTarget)
+			selected = "Change Target";
 		else if (m_pGuiFlags->pathFindingEdit.bMoveEnd)
 			selected = "Move End";
 		else
@@ -285,6 +314,214 @@ void DebugMouseGUI::Draw()
 		{
 			m_pGuiFlags->pathFindingEdit.bRebuildPath = true;
 		}
+		ImGui::Separator();
+
+		if (ImGui::Button("Draw full Path"))
+		{
+			m_pGuiFlags->pathFindingEdit.bFullPath = true;
+
+			m_pGuiFlags->pathFindingEdit.bStepPath = false;
+		}
+
+		if (ImGui::Button("Step through Path"))
+		{
+			m_pGuiFlags->pathFindingEdit.bStepPath = true;
+			++(m_pGuiFlags->pathFindingEdit.nStepCount);
+
+			m_pGuiFlags->pathFindingEdit.bFullPath = false;
+		}
+		ImGui::SameLine();
+		ImGui::Text("Count : %i", m_pGuiFlags->pathFindingEdit.nStepCount);
+		ImGui::Separator();
+
+		ImGui::End();
+
+		if (!open)
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
+	}
+
+	// StaticObject Place Window
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_STATICOBJECT_PLACE)
+	{
+		bool open = true;
+
+		// Open Window
+		ImGui::Begin("StaticObjectPlace##0", &open);
+
+		// CheckBoxes
+		ImGui::Text("Choose Edit Type");
+		if (ImGui::Button("Place Static Object"))
+		{
+			m_pGuiFlags->staticObjectPlace.bPlaceObject = true;
+
+			m_pGuiFlags->staticObjectPlace.bRemoveObject = false;
+		}
+		if (ImGui::Button("Remove Static Object"))
+		{
+			m_pGuiFlags->staticObjectPlace.bRemoveObject = true;
+
+			m_pGuiFlags->staticObjectPlace.bPlaceObject = false;
+		}
+		ImGui::Separator();
+
+		// Currently Selected
+		char* selected;
+
+		if (m_pGuiFlags->staticObjectPlace.bPlaceObject)
+			selected = "Place Static Object";
+		else if (m_pGuiFlags->staticObjectPlace.bRemoveObject)
+			selected = "Remove Static Object";
+		else
+			selected = "NONE";
+
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		ImGui::End();
+
+		if (!open)
+		{
+			m_pGuiFlags->eDebugMouseWindows = EWINDOWS_DEFAULT;
+			m_pGuiFlags->staticObjectPlace.bPlaceObject = false;
+		}
+	}
+
+	// StaticObject Place Window 1
+	if (m_pGuiFlags->staticObjectPlace.bPlaceObject)
+	{
+		// Open Window
+		ImGui::Begin("StaticObjectPlace##1", &(m_pGuiFlags->staticObjectPlace.bPlaceObject));
+
+		// CheckBoxes
+		ImGui::Text("Choose Type of Object to Place");
+		if (ImGui::Button("Place Resource"))
+		{
+			m_pGuiFlags->staticObjectPlace.bPlaceResource = true;
+
+			m_pGuiFlags->staticObjectPlace.bPlaceWorkStation = false;
+			m_pGuiFlags->staticObjectPlace.bPlaceHousing = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Place WorkStation"))
+		{
+			m_pGuiFlags->staticObjectPlace.bPlaceWorkStation = true;
+
+			m_pGuiFlags->staticObjectPlace.bPlaceResource = false;
+			m_pGuiFlags->staticObjectPlace.bPlaceHousing = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Place Housing"))
+		{
+			m_pGuiFlags->staticObjectPlace.bPlaceHousing = true;
+
+			m_pGuiFlags->staticObjectPlace.bPlaceResource = false;
+			m_pGuiFlags->staticObjectPlace.bPlaceWorkStation = false;
+		}
+		ImGui::Separator();
+
+		// IF  Place resource
+		if (m_pGuiFlags->staticObjectPlace.bPlaceResource)
+		{
+			if (ImGui::Button("Grass"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_RESOURCE_OBJECT_GRASS;
+			ImGui::SameLine();
+			if (ImGui::Button("Rock"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_RESOURCE_OBJECT_ROCK;
+			ImGui::SameLine();
+			if (ImGui::Button("Tree"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_RESOURCE_OBJECT_TREE;
+		}
+		// ELSE IF Place Workstation
+		else if (m_pGuiFlags->staticObjectPlace.bPlaceWorkStation)
+		{
+			if (ImGui::Button("Crafter"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_CRAFTER;
+			ImGui::SameLine();
+			if (ImGui::Button("Forge"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_FORGE;
+			ImGui::SameLine();
+			if (ImGui::Button("Stockpile"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_STOCKPILE;
+		}
+		// ELSE IF Place Housing
+		else if (m_pGuiFlags->staticObjectPlace.bPlaceHousing)
+		{
+			if (ImGui::Button("Cabin"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_HOUSING_CABIN;
+			ImGui::SameLine();
+			if (ImGui::Button("Hut"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_HOUSING_HUT;
+			ImGui::SameLine();
+			if (ImGui::Button("Tent"))
+				m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_BUILDING_HOUSING_TENT;
+		}
+		// ELSE none
+		else
+			m_pGuiFlags->staticObjectPlace.eStaticObjectType = ESTATICOBJECTTYPE_DEFAULT;
+
+		// Currently Selected
+		char* selected;
+
+		switch (m_pGuiFlags->staticObjectPlace.eStaticObjectType)
+		{
+		case ESTATICOBJECTTYPE_DEFAULT:
+			selected = "NONE";
+			break;
+		case ESTATICOBJECTTYPE_RESOURCE_OBJECT_GRASS:
+			selected = "Grass";
+			break;
+		case ESTATICOBJECTTYPE_RESOURCE_OBJECT_ROCK:
+			selected = "Rock";
+			break;
+		case ESTATICOBJECTTYPE_RESOURCE_OBJECT_TREE:
+			selected = "Tree";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_CRAFTER:
+			selected = "Crafter";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_FORGE:
+			selected = "Forge";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_STOCKPILE:
+			selected = "Stockpile";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_HOUSING_CABIN:
+			selected = "Cabin";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_HOUSING_HUT:
+			selected = "Hut";
+			break;
+		case ESTATICOBJECTTYPE_BUILDING_HOUSING_TENT:
+			selected = "Tent";
+			break;
+		default:
+			selected = "NONE";
+			break;
+		}
+
+		ImGui::Separator();
+		ImGui::Text("Selected : %s", selected);
+		ImGui::Separator();
+
+		ImGui::End();
+	}
+
+	// Misc Edit Window
+	if (m_pGuiFlags->eDebugMouseWindows == EWINDOWS_MISC_EDIT)
+	{
+		bool open = true;
+
+		// Open Window
+		ImGui::Begin("MiscEdit##0", &open);
+
+		ImGui::Separator();
+		ImGui::Checkbox("Draw Terrain", &(m_pGuiFlags->miscEdit.bDrawTerrain));
+		ImGui::Checkbox("Draw Static Objects", &(m_pGuiFlags->miscEdit.bDrawStaticObjects));
+		ImGui::Checkbox("Draw Agents", &(m_pGuiFlags->miscEdit.bDrawAgents));
+		ImGui::Separator();
+		ImGui::Checkbox("Draw Connections", &(m_pGuiFlags->miscEdit.bDrawConnections));
+		ImGui::Checkbox("Draw Pathfinding", &(m_pGuiFlags->miscEdit.bDrawPathfinding));
+		ImGui::Checkbox("Draw Flow Fields", &(m_pGuiFlags->miscEdit.bDrawFlowFields));
 		ImGui::Separator();
 
 		ImGui::End();

@@ -23,6 +23,8 @@ protected:
 
 	Vector2 m_v2PathStart;
 	Vector2 m_v2PathEnd;
+	StaticObject* m_pPathTarget;
+
 	std::vector<Vector2> m_HeatSourceList;
 
 	Terrain* m_pMap;

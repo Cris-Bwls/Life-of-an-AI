@@ -6,5 +6,8 @@ class ResourceObject :
 public:
 	ResourceObject();
 	virtual ~ResourceObject();
+
+protected:
+	int m_nCharges;
 };
 

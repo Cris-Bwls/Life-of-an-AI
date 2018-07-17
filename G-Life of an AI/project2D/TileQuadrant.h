@@ -12,9 +12,11 @@ struct TileQuadrant
 	Index index;
 	int m_nQuadrant;
 
-	bool m_bBlocked = false;
+	Vector2 m_v2Pos;
 	
 	Vector2 m_v2Vec;
 	int m_nDistance = 0;
+
+	bool m_bBlocked = false;
 };
 
