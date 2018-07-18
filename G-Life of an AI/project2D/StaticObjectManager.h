@@ -2,7 +2,7 @@
 #include "Renderer2D.h"
 #include "vector"
 #include "Vector2.h"
-#include "ObjectContainer.h"
+#include "ObjectPool.h"
 #include "EStaticObjectType.h"
 
 class StaticObject;
@@ -48,15 +48,15 @@ private:
 
 	void RemoveObject(StaticObject* object);
 
-	ObjectContainer<Grass>*			m_pGrassContainer;
-	ObjectContainer<Rock>*			m_pRockContainer;
-	ObjectContainer<Tree>*			m_pTreeContainer;
-	ObjectContainer<Construction>*	m_pConstructionContainer;
-	ObjectContainer<Crafter>*		m_pCrafterContainer;
-	ObjectContainer<Forge>*			m_pForgeContainer;
-	ObjectContainer<Stockpile>*		m_pStockpileContainer;
-	ObjectContainer<Cabin>*			m_pCabinContainer;
-	ObjectContainer<Hut>*			m_pHutContainer;
-	ObjectContainer<Tent>*			m_pTentContainer;
+	ObjectPool<Grass>*			m_pGrassContainer;
+	ObjectPool<Rock>*			m_pRockContainer;
+	ObjectPool<Tree>*			m_pTreeContainer;
+	ObjectPool<Construction>*	m_pConstructionContainer;
+	ObjectPool<Crafter>*		m_pCrafterContainer;
+	ObjectPool<Forge>*			m_pForgeContainer;
+	ObjectPool<Stockpile>*		m_pStockpileContainer;
+	ObjectPool<Cabin>*			m_pCabinContainer;
+	ObjectPool<Hut>*			m_pHutContainer;
+	ObjectPool<Tent>*			m_pTentContainer;
 };
 

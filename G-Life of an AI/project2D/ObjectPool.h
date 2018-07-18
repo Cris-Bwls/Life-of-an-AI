@@ -2,11 +2,11 @@
 #include<vector>
 
 template<typename T>
-struct ObjectContainer
+struct ObjectPool
 {
-	ObjectContainer() {};
+	ObjectPool() {};
 
-	~ObjectContainer()
+	~ObjectPool()
 	{
 		while (m_ActiveObjects.size() > 0)
 		{

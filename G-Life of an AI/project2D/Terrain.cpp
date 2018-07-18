@@ -519,14 +519,24 @@ std::vector<Vector2> Terrain::GetPathToObject(Vector2 v2Start, StaticObject* tar
 		//Loop through all neighbours and add them to open list
 		for (int i = 0; i < TILE_NEIGHBOUR_COUNT; ++i)
 		{
+			bool bAllowBlocked = false;
+
 			TerrainTile* pNeighbour = pCurrent->GetNeighbour(i);
 
 			//Skip null neighbours
 			if (!pNeighbour)
 				continue;
 
+			if (pNeighbour->GetStaticObject())
+			{
+				auto neighbourTypeHash = typeid(*(pNeighbour->GetStaticObject())).hash_code();
+
+				if (neighbourTypeHash == targetTypeHash)
+					bAllowBlocked = true;
+			}
+
 			//Skip blocked neighbours
-			if (pNeighbour->GetBlocked() && pNeighbour != pEnd)
+			if (pNeighbour->GetBlocked() && bAllowBlocked == false)
 				continue;
 
 			//Skip closed list neighbours

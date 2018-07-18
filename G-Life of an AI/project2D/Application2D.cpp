@@ -91,7 +91,7 @@ void Application2D::update(float deltaTime) {
 		{
 			if (m_pPathTarget)
 			{
-				m_path = m_pMap->GetPathToObject(m_v2PathStart, m_pPathTarget, true);
+				m_path = m_pMap->GetPathToObject(m_v2PathStart, m_pPathTarget, false);
 			}
 		}
 		else
