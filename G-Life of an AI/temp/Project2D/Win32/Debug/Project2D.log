@@ -1,7 +1,12 @@
-﻿  Application2D.cpp
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(79): warning C4018: '<': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(158): warning C4018: '<': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(165): warning C4018: '>=': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(296): warning C4018: '<': signed/unsigned mismatch
-c:\users\chris\documents\001_aie\projects\life-of-an-ai\g-life of an ai\project2d\application2d.cpp(320): warning C4018: '<': signed/unsigned mismatch
-  Project2D.vcxproj -> C:\Users\Chris\Documents\001_AIE\Projects\Life-of-an-AI\G-Life of an AI\temp\Project2D\Win32\Debug\Project2D.exe
+﻿  SteeringWander.cpp
+c:\users\s181210\documents\projects\004_ai\life-of-an-ai\g-life of an ai\project2d\steeringwander.cpp(13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  SteeringSeperation.cpp
+  SteeringSeek.cpp
+  SteeringFlee.cpp
+  SteeringCohesion.cpp
+  SteeringBase.cpp
+  SteeringAlignment.cpp
+  FlockingNeighbours.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Project2D.vcxproj -> C:\Users\s181210\Documents\Projects\004_AI\Life-of-an-AI\G-Life of an AI\temp\Project2D\Win32\Debug\Project2D.exe

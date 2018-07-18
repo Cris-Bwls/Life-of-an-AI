@@ -82,6 +82,36 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{025a1d43-5a18-41d6-ab77-2b9dc313471d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Decision Making">
+      <UniqueIdentifier>{278b7f13-3ec2-4ebc-a0d0-91f549012f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decision Making">
+      <UniqueIdentifier>{58272511-d29e-4bcb-bd4c-77ce2595bca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Decision Making\FSM">
+      <UniqueIdentifier>{681b9332-2c04-4633-8d15-01c5687c5cdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decision Making\FSM">
+      <UniqueIdentifier>{46c804ff-1723-4437-b6d6-fdc1e6688bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Decision Making\FSM\States">
+      <UniqueIdentifier>{3e68bc89-0062-45c4-951b-a20ef0eefe8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decision Making\FSM\States">
+      <UniqueIdentifier>{362e4630-7f54-4892-9fa8-2410cbc93eb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steering">
+      <UniqueIdentifier>{e28e0465-14f6-495b-b89d-7bebde64b651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steering\Flocking">
+      <UniqueIdentifier>{1eec1b62-54c1-45d1-b506-617da588eb54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Steering">
+      <UniqueIdentifier>{5cb590ee-a3c7-4dec-9e41-3ce74c598cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Steering\Flocking">
+      <UniqueIdentifier>{52e81cde-f6fa-492d-98ee-db02d57a413f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -179,6 +209,42 @@
     </ClCompile>
     <ClCompile Include="DebugBasicGUI.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseFSM.cpp">
+      <Filter>Source Files\Decision Making\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseFSMState.cpp">
+      <Filter>Source Files\Decision Making\FSM\States</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateMove.cpp">
+      <Filter>Source Files\Decision Making\FSM\States</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateAct.cpp">
+      <Filter>Source Files\Decision Making\FSM\States</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringBase.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringFlee.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringSeek.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringWander.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringAlignment.cpp">
+      <Filter>Source Files\Steering\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringCohesion.cpp">
+      <Filter>Source Files\Steering\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringSeperation.cpp">
+      <Filter>Source Files\Steering\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="FlockingNeighbours.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +364,42 @@
     </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseFSM.h">
+      <Filter>Header Files\Decision Making\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseFSMState.h">
+      <Filter>Header Files\Decision Making\FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateMove.h">
+      <Filter>Header Files\Decision Making\FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateAct.h">
+      <Filter>Header Files\Decision Making\FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringBase.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringFlee.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringSeek.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringWander.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringSeperation.h">
+      <Filter>Header Files\Steering\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringAlignment.h">
+      <Filter>Header Files\Steering\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringCohesion.h">
+      <Filter>Header Files\Steering\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="FlockingNeighbours.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
