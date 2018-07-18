@@ -15,31 +15,31 @@ StaticObjectManager* StaticObjectManager::m_pInstance = nullptr;
 
 StaticObjectManager::StaticObjectManager()
 {
-	m_pGrassContainer = new ObjectContainer<Grass>;
-	m_pRockContainer = new ObjectContainer<Rock>;
-	m_pTreeContainer = new ObjectContainer<Tree>;
-	m_pConstructionContainer = new ObjectContainer<Construction>;
-	m_pCrafterContainer = new ObjectContainer<Crafter>;
-	m_pForgeContainer = new ObjectContainer<Forge>;
-	m_pStockpileContainer = new ObjectContainer<Stockpile>;
-	m_pCabinContainer = new ObjectContainer<Cabin>;
-	m_pHutContainer = new ObjectContainer<Hut>;
-	m_pTentContainer = new ObjectContainer<Tent>;
+	m_pGrassPool = new ObjectPool<Grass>;
+	m_pRockPool = new ObjectPool<Rock>;
+	m_pTreePool = new ObjectPool<Tree>;
+	m_pConstructionPool = new ObjectPool<Construction>;
+	m_pCrafterPool = new ObjectPool<Crafter>;
+	m_pForgePool = new ObjectPool<Forge>;
+	m_pStockpilePool = new ObjectPool<Stockpile>;
+	m_pCabinPool = new ObjectPool<Cabin>;
+	m_pHutPool = new ObjectPool<Hut>;
+	m_pTentPool = new ObjectPool<Tent>;
 }
 
 
 StaticObjectManager::~StaticObjectManager()
 {
-	delete m_pGrassContainer;
-	delete m_pRockContainer;
-	delete m_pTreeContainer;
-	delete m_pConstructionContainer;
-	delete m_pCrafterContainer;
-	delete m_pForgeContainer;
-	delete m_pStockpileContainer;
-	delete m_pCabinContainer;
-	delete m_pHutContainer;
-	delete m_pTentContainer;
+	delete m_pGrassPool;
+	delete m_pRockPool;
+	delete m_pTreePool;
+	delete m_pConstructionPool;
+	delete m_pCrafterPool;
+	delete m_pForgePool;
+	delete m_pStockpilePool;
+	delete m_pCabinPool;
+	delete m_pHutPool;
+	delete m_pTentPool;
 }
 
 void StaticObjectManager::Create()
@@ -67,9 +67,9 @@ StaticObjectManager* StaticObjectManager::GetInstance()
 void StaticObjectManager::Update(float fDeltaTime)
 {
 	// GRASS
-	for (int i = 0; i < m_pGrassContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pGrassContainer->m_ActiveObjects[i];
+		auto current = m_pGrassPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -81,10 +81,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pGrassContainer->m_ActiveObjects.begin();
-			m_pGrassContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pGrassPool->m_ActiveObjects.begin();
+			m_pGrassPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pGrassContainer->m_ReserveObjects.push_back(current);
+			m_pGrassPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -92,9 +92,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// ROCK
-	for (int i = 0; i < m_pRockContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pRockContainer->m_ActiveObjects[i];
+		auto current = m_pRockPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -106,10 +106,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pRockContainer->m_ActiveObjects.begin();
-			m_pRockContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pRockPool->m_ActiveObjects.begin();
+			m_pRockPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pRockContainer->m_ReserveObjects.push_back(current);
+			m_pRockPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -117,9 +117,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// TREE
-	for (int i = 0; i < m_pTreeContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pTreeContainer->m_ActiveObjects[i];
+		auto current = m_pTreePool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -131,10 +131,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pTreeContainer->m_ActiveObjects.begin();
-			m_pTreeContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pTreePool->m_ActiveObjects.begin();
+			m_pTreePool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pTreeContainer->m_ReserveObjects.push_back(current);
+			m_pTreePool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -142,9 +142,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CONSTRUCTION
-	for (int i = 0; i < m_pConstructionContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pConstructionContainer->m_ActiveObjects[i];
+		auto current = m_pConstructionPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -156,10 +156,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pConstructionContainer->m_ActiveObjects.begin();
-			m_pConstructionContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pConstructionPool->m_ActiveObjects.begin();
+			m_pConstructionPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pConstructionContainer->m_ReserveObjects.push_back(current);
+			m_pConstructionPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -167,9 +167,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CRAFTER
-	for (int i = 0; i < m_pCrafterContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pCrafterContainer->m_ActiveObjects[i];
+		auto current = m_pCrafterPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -181,10 +181,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pCrafterContainer->m_ActiveObjects.begin();
-			m_pCrafterContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pCrafterPool->m_ActiveObjects.begin();
+			m_pCrafterPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pCrafterContainer->m_ReserveObjects.push_back(current);
+			m_pCrafterPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -192,9 +192,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// FORGE
-	for (int i = 0; i < m_pForgeContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pForgeContainer->m_ActiveObjects[i];
+		auto current = m_pForgePool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -206,10 +206,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pForgeContainer->m_ActiveObjects.begin();
-			m_pForgeContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pForgePool->m_ActiveObjects.begin();
+			m_pForgePool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pForgeContainer->m_ReserveObjects.push_back(current);
+			m_pForgePool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -217,9 +217,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// STOCKPILE
-	for (int i = 0; i < m_pStockpileContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pStockpileContainer->m_ActiveObjects[i];
+		auto current = m_pStockpilePool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -231,10 +231,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pStockpileContainer->m_ActiveObjects.begin();
-			m_pStockpileContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pStockpilePool->m_ActiveObjects.begin();
+			m_pStockpilePool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pStockpileContainer->m_ReserveObjects.push_back(current);
+			m_pStockpilePool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -242,9 +242,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CABIN
-	for (int i = 0; i < m_pCabinContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pCabinContainer->m_ActiveObjects[i];
+		auto current = m_pCabinPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -256,10 +256,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pCabinContainer->m_ActiveObjects.begin();
-			m_pCabinContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pCabinPool->m_ActiveObjects.begin();
+			m_pCabinPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pCabinContainer->m_ReserveObjects.push_back(current);
+			m_pCabinPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -267,9 +267,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 	
 	// HUT
-	for (int i = 0; i < m_pHutContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pHutContainer->m_ActiveObjects[i];
+		auto current = m_pHutPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -281,10 +281,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pHutContainer->m_ActiveObjects.begin();
-			m_pHutContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pHutPool->m_ActiveObjects.begin();
+			m_pHutPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pHutContainer->m_ReserveObjects.push_back(current);
+			m_pHutPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -292,9 +292,9 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 	
 	// TENT
-	for (int i = 0; i < m_pTentContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
 	{
-		auto current = m_pTentContainer->m_ActiveObjects[i];
+		auto current = m_pTentPool->m_ActiveObjects[i];
 
 		// Current is alive
 		if (current->GetIsAlive())
@@ -306,10 +306,10 @@ void StaticObjectManager::Update(float fDeltaTime)
 		else
 		{
 			// current is removed from active list
-			auto begin = m_pTentContainer->m_ActiveObjects.begin();
-			m_pTentContainer->m_ActiveObjects.erase(begin + i);
+			auto begin = m_pTentPool->m_ActiveObjects.begin();
+			m_pTentPool->m_ActiveObjects.erase(begin + i);
 			// current is added to reserve list
-			m_pTentContainer->m_ReserveObjects.push_back(current);
+			m_pTentPool->m_ReserveObjects.push_back(current);
 
 			// current is reset
 			current->Reset();
@@ -320,63 +320,63 @@ void StaticObjectManager::Update(float fDeltaTime)
 void StaticObjectManager::Draw(aie::Renderer2D* pRenderer)
 {
 	// GRASS
-	for (int i = 0; i < m_pGrassContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pGrassContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pGrassPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// ROCK
-	for (int i = 0; i < m_pRockContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pRockContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pRockPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// TREE
-	for (int i = 0; i < m_pTreeContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
 	{
-		m_pTreeContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pTreePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CONSTRUCTION
-	for (int i = 0; i < m_pConstructionContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pConstructionContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pConstructionPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CRAFTER
-	for (int i = 0; i < m_pCrafterContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pCrafterContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pCrafterPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// FORGE
-	for (int i = 0; i < m_pForgeContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
 	{
-		m_pForgeContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pForgePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// STOCKPILE
-	for (int i = 0; i < m_pStockpileContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
 	{
-		m_pStockpileContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pStockpilePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CABIN
-	for (int i = 0; i < m_pCabinContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pCabinContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pCabinPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// HUT
-	for (int i = 0; i < m_pHutContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pHutContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pHutPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// TENT
-	for (int i = 0; i < m_pTentContainer->m_ActiveObjects.size(); ++i)
+	for (int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
 	{
-		m_pTentContainer->m_ActiveObjects[i]->Draw(pRenderer);
+		m_pTentPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 }
 
@@ -393,7 +393,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Grass
 	case ESTATICOBJECTTYPE_RESOURCE_OBJECT_GRASS:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -423,7 +423,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Rock
 	case ESTATICOBJECTTYPE_RESOURCE_OBJECT_ROCK:
 		{ // Extra Scope for variables
-			auto container = m_pRockContainer;
+			auto container = m_pRockPool;
 			Rock* object = nullptr;
 
 			// IF there are reserve objects
@@ -453,7 +453,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Tree
 	case ESTATICOBJECTTYPE_RESOURCE_OBJECT_TREE:
 		{ // Extra Scope for variables
-			auto container = m_pTreeContainer;
+			auto container = m_pTreePool;
 			Tree* object = nullptr;
 
 			// IF there are reserve objects
@@ -487,7 +487,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Crafter
 	case ESTATICOBJECTTYPE_BUILDING_CRAFTER:
 		{ // Extra Scope for variables
-			auto container = m_pCrafterContainer;
+			auto container = m_pCrafterPool;
 			Crafter* object = nullptr;
 
 			// IF there are reserve objects
@@ -517,7 +517,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Forge
 	case ESTATICOBJECTTYPE_BUILDING_FORGE:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -547,7 +547,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Stockpile
 	case ESTATICOBJECTTYPE_BUILDING_STOCKPILE:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -577,7 +577,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Cabin
 	case ESTATICOBJECTTYPE_BUILDING_HOUSING_CABIN:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -607,7 +607,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Hut
 	case ESTATICOBJECTTYPE_BUILDING_HOUSING_HUT:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -637,7 +637,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 	// Tent
 	case ESTATICOBJECTTYPE_BUILDING_HOUSING_TENT:
 		{ // Extra Scope for variables
-			auto container = m_pGrassContainer;
+			auto container = m_pGrassPool;
 			Grass* object = nullptr;
 
 			// IF there are reserve objects
@@ -681,7 +681,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	if (objectTypeHash == typeid(Grass).hash_code())
 	{
 		auto polyObject = (Grass*)object;
-		auto containerActive = m_pGrassContainer->m_ActiveObjects;
+		auto containerActive = m_pGrassPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -690,7 +690,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pGrassContainer->m_ReserveObjects.push_back(polyObject);
+				m_pGrassPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -699,7 +699,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Rock).hash_code())
 	{
 		auto polyObject = (Rock*)object;
-		auto containerActive = m_pRockContainer->m_ActiveObjects;
+		auto containerActive = m_pRockPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -708,7 +708,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pRockContainer->m_ReserveObjects.push_back(polyObject);
+				m_pRockPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -717,7 +717,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Tree).hash_code())
 	{
 		auto polyObject = (Tree*)object;
-		auto containerActive = m_pTreeContainer->m_ActiveObjects;
+		auto containerActive = m_pTreePool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -726,7 +726,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pTreeContainer->m_ReserveObjects.push_back(polyObject);
+				m_pTreePool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -735,7 +735,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Construction).hash_code())
 	{
 		auto polyObject = (Construction*)object;
-		auto containerActive = m_pConstructionContainer->m_ActiveObjects;
+		auto containerActive = m_pConstructionPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -744,7 +744,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pConstructionContainer->m_ReserveObjects.push_back(polyObject);
+				m_pConstructionPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -753,7 +753,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Crafter).hash_code())
 	{
 		auto polyObject = (Crafter*)object;
-		auto containerActive = m_pCrafterContainer->m_ActiveObjects;
+		auto containerActive = m_pCrafterPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -762,7 +762,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pCrafterContainer->m_ReserveObjects.push_back(polyObject);
+				m_pCrafterPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -771,7 +771,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Forge).hash_code())
 	{
 		auto polyObject = (Forge*)object;
-		auto containerActive = m_pForgeContainer->m_ActiveObjects;
+		auto containerActive = m_pForgePool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -780,7 +780,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pForgeContainer->m_ReserveObjects.push_back(polyObject);
+				m_pForgePool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -789,7 +789,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Stockpile).hash_code())
 	{
 		auto polyObject = (Stockpile*)object;
-		auto containerActive = m_pStockpileContainer->m_ActiveObjects;
+		auto containerActive = m_pStockpilePool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -798,7 +798,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pStockpileContainer->m_ReserveObjects.push_back(polyObject);
+				m_pStockpilePool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -807,7 +807,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Cabin).hash_code())
 	{
 		auto polyObject = (Cabin*)object;
-		auto containerActive = m_pCabinContainer->m_ActiveObjects;
+		auto containerActive = m_pCabinPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -816,7 +816,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pCabinContainer->m_ReserveObjects.push_back(polyObject);
+				m_pCabinPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -825,7 +825,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Hut).hash_code())
 	{
 		auto polyObject = (Hut*)object;
-		auto containerActive = m_pHutContainer->m_ActiveObjects;
+		auto containerActive = m_pHutPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -834,7 +834,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pHutContainer->m_ReserveObjects.push_back(polyObject);
+				m_pHutPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}
@@ -843,7 +843,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 	else if (objectTypeHash == typeid(Tent).hash_code())
 	{
 		auto polyObject = (Tent*)object;
-		auto containerActive = m_pTentContainer->m_ActiveObjects;
+		auto containerActive = m_pTentPool->m_ActiveObjects;
 
 		for (int i = 0; i < containerActive.size(); ++i)
 		{
@@ -852,7 +852,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 				polyObject->Reset();
 
 				containerActive.erase(containerActive.begin() + i);
-				m_pTentContainer->m_ReserveObjects.push_back(polyObject);
+				m_pTentPool->m_ReserveObjects.push_back(polyObject);
 			}
 		}
 	}

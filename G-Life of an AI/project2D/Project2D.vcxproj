@@ -222,7 +222,7 @@
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="Housing.h" />
     <ClInclude Include="Hut.h" />
-    <ClInclude Include="ObjectContainer.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ResourceComponent.h" />
     <ClInclude Include="ResourceObject.h" />
     <ClInclude Include="Rock.h" />

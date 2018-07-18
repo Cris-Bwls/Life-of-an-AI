@@ -29,16 +29,16 @@ public:
 
 	StaticObject* PlaceObject(EStaticObjectType eObjectType, Vector2 v2Pos);
 
-	inline std::vector<Grass*> GetGrassActiveList() { return m_pGrassContainer->m_ActiveObjects; };
-	inline std::vector<Rock*> GetRockActiveList() { return m_pRockContainer->m_ActiveObjects; };
-	inline std::vector<Tree*> GetTreeActiveList() { return m_pTreeContainer->m_ActiveObjects; };
-	inline std::vector<Construction*> GetConstructionActiveList() { return m_pConstructionContainer->m_ActiveObjects; };
-	inline std::vector<Crafter*> GetCrafterActiveList() { return m_pCrafterContainer->m_ActiveObjects; };
-	inline std::vector<Forge*> GetForgeActiveList() { return m_pForgeContainer->m_ActiveObjects; };
-	inline std::vector<Stockpile*> GetStockpileActiveList() { return m_pStockpileContainer->m_ActiveObjects; };
-	inline std::vector<Cabin*> GetCabinActiveList() { return m_pCabinContainer->m_ActiveObjects; };
-	inline std::vector<Hut*> GetHutActiveList() { return m_pHutContainer->m_ActiveObjects; };
-	inline std::vector<Tent*> GetTentActiveList() { return m_pTentContainer->m_ActiveObjects; };
+	inline std::vector<Grass*> GetGrassActiveList() { return m_pGrassPool->m_ActiveObjects; };
+	inline std::vector<Rock*> GetRockActiveList() { return m_pRockPool->m_ActiveObjects; };
+	inline std::vector<Tree*> GetTreeActiveList() { return m_pTreePool->m_ActiveObjects; };
+	inline std::vector<Construction*> GetConstructionActiveList() { return m_pConstructionPool->m_ActiveObjects; };
+	inline std::vector<Crafter*> GetCrafterActiveList() { return m_pCrafterPool->m_ActiveObjects; };
+	inline std::vector<Forge*> GetForgeActiveList() { return m_pForgePool->m_ActiveObjects; };
+	inline std::vector<Stockpile*> GetStockpileActiveList() { return m_pStockpilePool->m_ActiveObjects; };
+	inline std::vector<Cabin*> GetCabinActiveList() { return m_pCabinPool->m_ActiveObjects; };
+	inline std::vector<Hut*> GetHutActiveList() { return m_pHutPool->m_ActiveObjects; };
+	inline std::vector<Tent*> GetTentActiveList() { return m_pTentPool->m_ActiveObjects; };
 
 private:
 	StaticObjectManager();
@@ -48,15 +48,15 @@ private:
 
 	void RemoveObject(StaticObject* object);
 
-	ObjectPool<Grass>*			m_pGrassContainer;
-	ObjectPool<Rock>*			m_pRockContainer;
-	ObjectPool<Tree>*			m_pTreeContainer;
-	ObjectPool<Construction>*	m_pConstructionContainer;
-	ObjectPool<Crafter>*		m_pCrafterContainer;
-	ObjectPool<Forge>*			m_pForgeContainer;
-	ObjectPool<Stockpile>*		m_pStockpileContainer;
-	ObjectPool<Cabin>*			m_pCabinContainer;
-	ObjectPool<Hut>*			m_pHutContainer;
-	ObjectPool<Tent>*			m_pTentContainer;
+	ObjectPool<Grass>*			m_pGrassPool;
+	ObjectPool<Rock>*			m_pRockPool;
+	ObjectPool<Tree>*			m_pTreePool;
+	ObjectPool<Construction>*	m_pConstructionPool;
+	ObjectPool<Crafter>*		m_pCrafterPool;
+	ObjectPool<Forge>*			m_pForgePool;
+	ObjectPool<Stockpile>*		m_pStockpilePool;
+	ObjectPool<Cabin>*			m_pCabinPool;
+	ObjectPool<Hut>*			m_pHutPool;
+	ObjectPool<Tent>*			m_pTentPool;
 };
 

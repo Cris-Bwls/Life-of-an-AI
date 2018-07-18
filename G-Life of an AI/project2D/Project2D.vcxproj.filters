@@ -296,7 +296,7 @@
     <ClInclude Include="EStaticObjectType.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectContainer.h">
+    <ClInclude Include="ObjectPool.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
