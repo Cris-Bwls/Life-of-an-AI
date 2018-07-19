@@ -24,27 +24,61 @@ Flocking::Flocking(Agent* pAgent)
 	else if (typeid(*pAgent).hash_code() == typeid(Deer).hash_code())
 		m_bAgentIsDeer = true;
 
-	//m_pSteeringAlignment = new SteeringAlignment();
-	//m_pSteeringCohesion = new SteeringCohesion();
-	//m_pSteeringSeperation = new SteeringSeperation();
+	m_pSteeringBehaviours[0] = new SteeringAlignment();
+	m_pSteeringBehaviours[1] = new SteeringCohesion();
+	m_pSteeringBehaviours[2] = new SteeringSeperation();
 }
 
 
 Flocking::~Flocking()
 {
-	//delete m_pSteeringAlignment;
-	//delete m_pSteeringCohesion;
-	//delete m_pSteeringSeperation;
+	delete m_pSteeringBehaviours[0];
+	delete m_pSteeringBehaviours[1];
+	delete m_pSteeringBehaviours[2];
 }
 
 Vector2 Flocking::Update(float fDeltaTime)
 {
 	CalcFlock();
-	m_pSteeringAlignment->Update(this, m_pAgent ,fDeltaTime);
-	m_pSteeringCohesion->Update(this, m_pAgent, fDeltaTime);
-	m_pSteeringSeperation->Update(this, m_pAgent, fDeltaTime);
 
-	return Vector2();
+	Vector2 v2TotalVelocity;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		float fMagnitude = v2TotalVelocity.magnitude();
+		float fRemaining = m_pAgent->GetMaxSpeed() - fMagnitude;
+
+		if (fRemaining <= 0.0f)
+		{
+			break;
+		}
+
+		Vector2 v2Force;
+
+		if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringAlignment).hash_code())
+			v2Force = ((SteeringAlignment*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+		else if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringCohesion).hash_code())
+			v2Force = ((SteeringCohesion*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+		else if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringSeperation).hash_code())
+			v2Force = ((SteeringSeperation*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+
+		v2Force *= m_pSteeringBehaviours[i]->m_fWeighting;
+
+		float fForce = v2Force.magnitude();
+		if (fForce < fRemaining)
+		{
+			v2TotalVelocity += v2Force;
+		}
+		else
+		{
+			v2Force.normalise();
+			v2Force *= fRemaining;
+
+			v2TotalVelocity += v2Force;
+		}
+	}
+
+	return v2TotalVelocity;
 }
 
 void Flocking::CalcFlock()

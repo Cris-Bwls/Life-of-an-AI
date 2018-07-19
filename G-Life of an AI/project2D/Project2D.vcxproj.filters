@@ -112,6 +112,18 @@
     <Filter Include="Header Files\Steering\Flocking">
       <UniqueIdentifier>{52e81cde-f6fa-492d-98ee-db02d57a413f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Decision Making\FSM\States\AI">
+      <UniqueIdentifier>{13044106-2a0f-439a-b290-6b0b1b8a7103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decision Making\FSM\States\AI">
+      <UniqueIdentifier>{c8024e4d-f3b5-4974-a3b3-4c81ef887be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decision Making\FSM\States\Deer">
+      <UniqueIdentifier>{6067837d-091d-4e64-ad4f-fa02f60f5f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Decision Making\FSM\States\Deer">
+      <UniqueIdentifier>{5718f83e-63d8-4d5c-97ec-c6d89c605bdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -216,12 +228,6 @@
     <ClCompile Include="BaseFSMState.cpp">
       <Filter>Source Files\Decision Making\FSM\States</Filter>
     </ClCompile>
-    <ClCompile Include="FSMStateMove.cpp">
-      <Filter>Source Files\Decision Making\FSM\States</Filter>
-    </ClCompile>
-    <ClCompile Include="FSMStateAct.cpp">
-      <Filter>Source Files\Decision Making\FSM\States</Filter>
-    </ClCompile>
     <ClCompile Include="SteeringBase.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
@@ -248,6 +254,21 @@
     </ClCompile>
     <ClCompile Include="AgentManager.cpp">
       <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateAct.cpp">
+      <Filter>Source Files\Decision Making\FSM\States\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateMove.cpp">
+      <Filter>Source Files\Decision Making\FSM\States\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateFlockMove.cpp">
+      <Filter>Source Files\Decision Making\FSM\States\Deer</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateEatGrass.cpp">
+      <Filter>Source Files\Decision Making\FSM\States\Deer</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMStateFindGrass.cpp">
+      <Filter>Source Files\Decision Making\FSM\States\Deer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,12 +395,6 @@
     <ClInclude Include="BaseFSMState.h">
       <Filter>Header Files\Decision Making\FSM\States</Filter>
     </ClInclude>
-    <ClInclude Include="FSMStateMove.h">
-      <Filter>Header Files\Decision Making\FSM\States</Filter>
-    </ClInclude>
-    <ClInclude Include="FSMStateAct.h">
-      <Filter>Header Files\Decision Making\FSM\States</Filter>
-    </ClInclude>
     <ClInclude Include="SteeringBase.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
@@ -406,6 +421,21 @@
     </ClInclude>
     <ClInclude Include="AgentManager.h">
       <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateMove.h">
+      <Filter>Header Files\Decision Making\FSM\States\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateAct.h">
+      <Filter>Header Files\Decision Making\FSM\States\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateFlockMove.h">
+      <Filter>Header Files\Decision Making\FSM\States\Deer</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateEatGrass.h">
+      <Filter>Header Files\Decision Making\FSM\States\Deer</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMStateFindGrass.h">
+      <Filter>Header Files\Decision Making\FSM\States\Deer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

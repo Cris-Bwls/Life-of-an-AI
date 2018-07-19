@@ -4,9 +4,7 @@
 #include"Vector2.h"
 
 class Agent;
-class SteeringAlignment;
-class SteeringCohesion;
-class SteeringSeperation;
+class SteeringBase;
 
 struct Boid
 {
@@ -29,10 +27,8 @@ private:
 
 	bool m_bAgentIsAI;
 	bool m_bAgentIsDeer;
-
-	SteeringAlignment*	m_pSteeringAlignment;
-	SteeringCohesion*	m_pSteeringCohesion;
-	SteeringSeperation* m_pSteeringSeperation;
+	
+	SteeringBase* m_pSteeringBehaviours[3];
 
 	std::vector<Boid> m_Flock;
 };

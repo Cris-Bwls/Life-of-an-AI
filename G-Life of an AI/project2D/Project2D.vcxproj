@@ -183,6 +183,9 @@
     <ClCompile Include="Flocking.cpp" />
     <ClCompile Include="Forge.cpp" />
     <ClCompile Include="FSMStateAct.cpp" />
+    <ClCompile Include="FSMStateEatGrass.cpp" />
+    <ClCompile Include="FSMStateFindGrass.cpp" />
+    <ClCompile Include="FSMStateFlockMove.cpp" />
     <ClCompile Include="FSMStateMove.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Grass.cpp" />
@@ -234,6 +237,9 @@
     <ClInclude Include="Flocking.h" />
     <ClInclude Include="Forge.h" />
     <ClInclude Include="FSMStateAct.h" />
+    <ClInclude Include="FSMStateEatGrass.h" />
+    <ClInclude Include="FSMStateFindGrass.h" />
+    <ClInclude Include="FSMStateFlockMove.h" />
     <ClInclude Include="FSMStateMove.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Grass.h" />

@@ -126,7 +126,7 @@ Agent* AgentManager::GetAgentByPos(Vector2 v2Pos, int fRadius)
 	{
 		Vector2 v2new = v2Pos - m_pAIPool->m_ActiveObjects[i]->GetPos();
 		// check distance is within given radius
-		if (v2new.magnitudeSqr < fRadiusSQR)
+		if (v2new.magnitudeSqr() < fRadiusSQR)
 			// Return Object Found
 			return m_pAIPool->m_ActiveObjects[i];
 	}
@@ -136,7 +136,7 @@ Agent* AgentManager::GetAgentByPos(Vector2 v2Pos, int fRadius)
 	{
 		Vector2 v2new = v2Pos - m_pAIPool->m_ActiveObjects[i]->GetPos();
 		// check distance is within given radius
-		if (v2new.magnitudeSqr < fRadiusSQR)
+		if (v2new.magnitudeSqr() < fRadiusSQR)
 			// Return Object Found
 			return m_pAIPool->m_ActiveObjects[i];
 	}
