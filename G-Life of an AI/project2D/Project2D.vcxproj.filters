@@ -243,8 +243,11 @@
     <ClCompile Include="SteeringSeperation.cpp">
       <Filter>Source Files\Steering\Flocking</Filter>
     </ClCompile>
-    <ClCompile Include="FlockingNeighbours.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Flocking.cpp">
+      <Filter>Source Files\Steering\Flocking</Filter>
+    </ClCompile>
+    <ClCompile Include="AgentManager.cpp">
+      <Filter>Source Files\Singletons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,8 +401,11 @@
     <ClInclude Include="SteeringCohesion.h">
       <Filter>Header Files\Steering\Flocking</Filter>
     </ClInclude>
-    <ClInclude Include="FlockingNeighbours.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Flocking.h">
+      <Filter>Header Files\Steering\Flocking</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentManager.h">
+      <Filter>Header Files\Singletons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

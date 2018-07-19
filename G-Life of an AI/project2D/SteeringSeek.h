@@ -7,6 +7,6 @@ public:
 	SteeringSeek();
 	~SteeringSeek();
 
-	Vector2 Update(Agent* pAgent, float fDeltaTime);
+	Vector2 Update(Agent* pAgent, float fDeltaTime, Vector2 destination);
 };
 

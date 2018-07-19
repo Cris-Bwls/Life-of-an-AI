@@ -9,7 +9,7 @@ public:
 	SteeringBase();
 	virtual ~SteeringBase();
 
-	virtual Vector2 Update(Agent* pAgent, float fDeltaTime) = 0;
+	virtual Vector2 Update(Agent* pAgent, float fDeltaTime) {};
 	
 	float m_fWeighting;
 };
