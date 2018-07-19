@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+
+class Terrain;
+
 class Agent :
 	public GameObject
 {
@@ -7,8 +10,10 @@ public:
 	Agent();
 	virtual ~Agent();
 
-	virtual void Update(float fDeltaTime);
+	virtual void Update(float fDeltaTime) {};
 	virtual void Draw(aie::Renderer2D* pRenderer);
+
+	void HungerCheck();
 
 	void SetVelocity(Vector2 v2Velocity);
 	Vector2 GetVelocity();
@@ -22,7 +27,10 @@ public:
 	inline void SetTarget(GameObject* pTarget) { m_pTarget = pTarget; };
 	inline GameObject* GetTarget() { return m_pTarget; };
 
+	virtual inline void SetTerrain(Terrain* pTerrain) { m_pTerrain = pTerrain; };
 protected:
+	Terrain* m_pTerrain;
+
 	Vector2 m_v2Velocity;
 	float m_fCurrentMaxSpeed;
 	float m_fMaxSpeed;

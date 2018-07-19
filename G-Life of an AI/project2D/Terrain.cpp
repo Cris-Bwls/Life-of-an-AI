@@ -15,7 +15,7 @@ Terrain::Terrain()
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
 			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT); 
-			m_pTiles[x][y]->SetPos(Vector2(TILE_SIZE * x + TILE_OFFSET, TILE_SIZE * y + TILE_OFFSET), TILE_SIZE);
+			m_pTiles[x][y]->SetPos(Vector2((float)(TILE_SIZE * x + TILE_OFFSET), (float)(TILE_SIZE * y + TILE_OFFSET)), (float)TILE_SIZE);
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
 		}
 	}
@@ -716,13 +716,13 @@ void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
 				auto pQuadrant = m_pTiles[x][y]->GetAnimalAvoidQuadrant(i);
 
 				// Show Distance
-				fAlphaOffset = 0.05f * (float)(pQuadrant->m_nDistance) * 0.1;
+				fAlphaOffset = 0.05f * (float)(pQuadrant->m_nDistance) * 0.1f;
 				pRenderer->setRenderColour(0.0f, 1.0f, 0.0f, (fAlphaOffset));
-				pRenderer->drawBox(pQuadrant->m_v2Pos.x, pQuadrant->m_v2Pos.y, TILE_SIZE / 4, TILE_SIZE / 4);
+				pRenderer->drawBox(pQuadrant->m_v2Pos.x, pQuadrant->m_v2Pos.y, (float)TILE_SIZE / 4, (float)TILE_SIZE / 4);
 
 				// Show Vector
 				pRenderer->setRenderColour(0xFF0000FF);
-				Vector2 v2Vec = pQuadrant->m_v2Pos + (pQuadrant->m_v2Vec * TILE_SIZE * 0.25);
+				Vector2 v2Vec = pQuadrant->m_v2Pos + (pQuadrant->m_v2Vec * (float)TILE_SIZE * 0.25f);
 				pRenderer->drawLine(pQuadrant->m_v2Pos.x, pQuadrant->m_v2Pos.y, v2Vec.x, v2Vec.y, 0.5f);
 			}
 		}

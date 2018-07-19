@@ -113,7 +113,7 @@ void Flocking::CalcFlock()
 	}
 
 	// For Deer type agents
-	if (m_bAgentIsDeer)
+	else if (m_bAgentIsDeer)
 	{
 		for (int i = 0; i < pDeerPool->m_ActiveObjects.size(); ++i)
 		{

@@ -4,6 +4,7 @@
 
 GameObject::GameObject()
 {
+	m_pTexture = nullptr;
 }
 
 
@@ -15,6 +16,6 @@ void GameObject::Reset()
 {
 	m_bIsAlive = false;
 	m3Transform.Identity();
-	SetPos(Vector2(0xFFFFFFFF, 0xFFFFFFFF));
+	SetPos(Vector2((float)0xFFFFFFFF, (float)0xFFFFFFFF));
 	m_fRotation = 0.0f;
 }

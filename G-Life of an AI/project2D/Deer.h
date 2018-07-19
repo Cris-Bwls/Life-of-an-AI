@@ -13,7 +13,12 @@ public:
 	void Update(float fDeltaTime);
 	void Draw(aie::Renderer2D* pRenderer);
 
+	void SetTerrain(Terrain* pTerrain);
+
 private:
+	void SetupFSM();
+
+	BaseFSM* m_FSM;
 	//HERENOW
 };
 

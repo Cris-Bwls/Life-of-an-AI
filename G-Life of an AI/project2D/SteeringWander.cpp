@@ -10,7 +10,7 @@ SteeringWander::SteeringWander(float fRadius, float fDistance, float fJitter)
 	m_fDistance = fDistance;
 	m_fJitter = fJitter;
 
-	srand(time(0));
+	srand(time((time_t)0));
 }
 
 

@@ -14,6 +14,7 @@
 #include "TerrainTile.h"
 #include <vector>
 #include "Vector2.h"
+#include "Deer.h"
 
 Application2D::Application2D() {
 
@@ -50,11 +51,18 @@ bool Application2D::startup() {
 	m_timer = 0;
 
 	// DEBUG
-	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
-	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
-	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
-	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
-	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
+	auto pAgentManager = AgentManager::GetInstance();
+
+	pAgentManager->AddDeer(Vector2(100, 100));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(150, 100));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 150));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(200, 100));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
 
 	
 	return true;
@@ -66,9 +74,11 @@ void Application2D::shutdown() {
 	delete m_2dRenderer;
 	delete m_pMap;
 
+	AgentManager::Destroy();
 	StaticObjectManager::Destroy();
 	GUIManager::Destroy();
 	CameraManager::Destroy();
+	TimeManager::Destroy();
 }
 
 void Application2D::update(float deltaTime) {

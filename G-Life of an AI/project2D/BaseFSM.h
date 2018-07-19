@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <memory>
 #include "Renderer2D.h"
 
 class Agent;
@@ -9,7 +10,7 @@ class Terrain;
 class BaseFSM
 {
 public:
-	BaseFSM(Terrain* pTerrain);
+	BaseFSM(Agent* pAgent, Terrain* pTerrain);
 	virtual ~BaseFSM();
 
 	virtual void AddState(char* stateName);
@@ -23,6 +24,6 @@ protected:
 	Terrain* m_pTerrain;
 
 	BaseFSMState* m_currentState;
-	std::map<char*, BaseFSMState*> m_StateMap;
+	std::map<char*, std::unique_ptr<BaseFSMState>> m_StateMap;
 };
 

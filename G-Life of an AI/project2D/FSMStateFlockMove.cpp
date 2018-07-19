@@ -10,6 +10,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include <iostream>
+
 FSMStateFlockMove::FSMStateFlockMove(Terrain* pTerrain)
 {
 	m_pTerrain = pTerrain;
@@ -31,14 +33,26 @@ void FSMStateFlockMove::Update(float fDeltaTime)
 		m_pFlocking = new Flocking(m_pAgent);
 
 	// Flee Force
-	Vector2 v2AgentPos = m_pAgent->GetPos();
-	auto tile = m_pTerrain->GetTileByPos(v2AgentPos);
-	auto quadrant = tile->GetAnimalAvoidQuadrant(tile->GetQuadrantFromPos(v2AgentPos));
+	Vector2 v2FleeForce;
+	{
+		Vector2 v2AgentPos = m_pAgent->GetPos();
+		auto pTile = m_pTerrain->GetTileByPos(v2AgentPos);
 
-	Vector2 v2FleeForce = quadrant->m_v2Vec * quadrant->m_nDistance;
+		TileQuadrant* pQuadrant;
+		if (pTile)
+		{
+			pQuadrant = pTile->GetAnimalAvoidQuadrant(pTile->GetQuadrantFromPos(v2AgentPos));
+			v2FleeForce = pQuadrant->m_v2Vec * (float)pQuadrant->m_nDistance * 0.1f;
+		}
+		else
+		{
+			v2FleeForce = Vector2();
+		}
+	}
 
 	// Flocking Force
 	Vector2 v2FlockingForce = m_pFlocking->Update(fDeltaTime);
+	printf("Flocking x: %f, y: %f\n", v2FlockingForce.x, v2FlockingForce.y);
 
 	// Total Force
 	Vector2 v2TotalForce = v2FleeForce + v2FlockingForce;
@@ -50,17 +64,29 @@ void FSMStateFlockMove::Update(float fDeltaTime)
 	else
 		v2TotalForce * fMag;
 
-	// Set Agent velocity
+	// Determine new Agent velocity
 	v2TotalForce += m_pAgent->GetVelocity();
-	m_pAgent->SetVelocity(v2TotalForce);
 
-	// Set Agent rotation
+	// Determine new Agent rotation
 	float m_fRotation = atan2f(v2TotalForce.y, v2TotalForce.x);
-	m_fRotation -= M_PI_2;
-	m_pAgent->SetRotation(m_fRotation);
+	m_fRotation -= (float)M_PI_2;
 
-	// Set Agent position
+	// Determine new Agent position
 	Vector2 v2Pos = m_pAgent->GetPos();
 	v2Pos += v2TotalForce * fDeltaTime;
-	m_pAgent->SetPos(v2Pos);
+
+	// Check if new position is valid
+	TerrainTile* pTile = m_pTerrain->GetTileByPos(v2Pos);
+	if (pTile)
+	{
+		// IF NOT blocked
+		if (!pTile->GetBlocked())
+		{
+			// Set new velocity, rotation and position
+			m_pAgent->SetVelocity(v2TotalForce);
+			m_pAgent->SetRotation(m_fRotation);
+			m_pAgent->SetPos(v2Pos);
+		}
+	}
+
 }

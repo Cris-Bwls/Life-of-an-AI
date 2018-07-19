@@ -7,7 +7,7 @@ public:
 	ResourceObject();
 	virtual ~ResourceObject();
 
-	inline int ChangeCharges(int nChargeChange) { m_nCharges += nChargeChange; };
+	inline void ChangeCharges(int nChargeChange) { m_nCharges += nChargeChange; };
 	inline int GetCharges() { return m_nCharges; };
 
 protected:
