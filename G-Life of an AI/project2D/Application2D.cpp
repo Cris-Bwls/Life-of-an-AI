@@ -5,6 +5,8 @@
 #include "CameraManager.h"
 #include "GUIManager.h"
 #include "StaticObjectManager.h"
+#include "TimeManager.h"
+#include "AgentManager.h"
 
 #include <iostream>
 
@@ -26,10 +28,14 @@ bool Application2D::startup() {
 	CameraManager::Create();
 	CameraManager::GetInstance()->SetApp2D(this);
 
+	TimeManager::Create();
+	TimeManager::GetInstance()->ResetGameTime();
+
 	GUIManager::Create();
 	GUIManager::GetInstance()->AddActiveGUI(EGUITYPE_DEBUG_MOUSE);
 
 	StaticObjectManager::Create();
+	AgentManager::Create();
 	
 	m_2dRenderer = new aie::Renderer2D();
 
@@ -43,9 +49,15 @@ bool Application2D::startup() {
 	
 	m_timer = 0;
 
-	return true;
+	// DEBUG
+	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
+	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
+	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
+	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
+	AgentManager::GetInstance()->AddDeer(Vector2(100, 100));
 
 	
+	return true;
 }
 
 void Application2D::shutdown() {
@@ -111,6 +123,9 @@ void Application2D::update(float deltaTime) {
 
 	// Update Objects
 	StaticObjectManager::GetInstance()->Update(deltaTime);
+
+	// Update Agents
+	AgentManager::GetInstance()->Update(deltaTime);
 	
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -142,6 +157,9 @@ void Application2D::draw() {
 	// Draw Objects
 	if (pGuiFlags->miscEdit.bDrawStaticObjects)
 		StaticObjectManager::GetInstance()->Draw(m_2dRenderer);
+
+	// Draw Agents
+	AgentManager::GetInstance()->Draw(m_2dRenderer);
 	
 	//DEBUG
 

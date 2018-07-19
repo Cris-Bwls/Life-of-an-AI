@@ -16,7 +16,7 @@ public:
 	inline void SetFSM(BaseFSM* pFSM) { m_pFSM = pFSM; };
 	inline void SetAgent(Agent* pAgent) { m_pAgent = pAgent; };
 
-private:
+protected:
 	BaseFSM* m_pFSM;
 	Agent* m_pAgent;
 };

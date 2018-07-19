@@ -5,6 +5,7 @@
 
 Agent::Agent()
 {
+	m_nHunger = 0;
 }
 
 
@@ -14,6 +15,21 @@ Agent::~Agent()
 
 void Agent::Update(float fDeltaTime)
 {
+	if (m_nHunger > 80)
+	{
+		m_fCurrentMaxSpeed = m_fHungrySpeed;
+
+		if (m_nHunger > 100)
+			m_nHunger = 100;
+	}
+	else
+	{
+		m_fCurrentMaxSpeed = m_fMaxSpeed;
+
+		if (m_nHunger < 0)
+			m_nHunger = 0;
+	}
+
 	Vector2 v2TotalVelocity;
 
 	//for (int i = 0; i < m_BehaviourList.size(); ++i)
@@ -73,10 +89,10 @@ Vector2 Agent::GetVelocity()
 
 void Agent::SetMaxSpeed(float fMaxSpeed)
 {
-	m_fMaxSpeed = fMaxSpeed;
+	m_fCurrentMaxSpeed = fMaxSpeed;
 }
 
 float Agent::GetMaxSpeed()
 {
-	return m_fMaxSpeed;
+	return m_fCurrentMaxSpeed;
 }

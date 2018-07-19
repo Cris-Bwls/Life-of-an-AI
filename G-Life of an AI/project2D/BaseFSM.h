@@ -4,11 +4,12 @@
 
 class Agent;
 class BaseFSMState;
+class Terrain;
 
 class BaseFSM
 {
 public:
-	BaseFSM();
+	BaseFSM(Terrain* pTerrain);
 	virtual ~BaseFSM();
 
 	virtual void AddState(char* stateName);
@@ -17,8 +18,9 @@ public:
 	void Update(float fDeltaTime);
 	void Draw(aie::Renderer2D* pRenderer);
 
-private:
+protected:
 	Agent* m_pAgent;
+	Terrain* m_pTerrain;
 
 	BaseFSMState* m_currentState;
 	std::map<char*, BaseFSMState*> m_StateMap;

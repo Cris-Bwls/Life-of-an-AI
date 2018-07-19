@@ -7,9 +7,11 @@
 #include "FSMStateFindGrass.h"
 #include "FSMStateFlockMove.h"
 #include "FSMStateMove.h"
+#include "Terrain.h"
 
-BaseFSM::BaseFSM()
+BaseFSM::BaseFSM(Terrain* pTerrain)
 {
+	m_pTerrain = pTerrain;
 }
 
 
@@ -26,7 +28,7 @@ void BaseFSM::AddState(char* stateName)
 	else if (stateName == "FSMStateFindGrass")
 		m_StateMap[stateName] = new FSMStateFindGrass();
 	else if (stateName == "FSMStateFlockMove")
-		m_StateMap[stateName] = new FSMStateFlockMove();
+		m_StateMap[stateName] = new FSMStateFlockMove(m_pTerrain);
 
 	m_StateMap[stateName]->SetFSM(this);
 	m_StateMap[stateName]->SetAgent(m_pAgent);

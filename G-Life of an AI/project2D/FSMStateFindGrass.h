@@ -6,5 +6,7 @@ class FSMStateFindGrass :
 public:
 	FSMStateFindGrass();
 	~FSMStateFindGrass();
+
+	void Update(float fDeltaTime);
 };
 

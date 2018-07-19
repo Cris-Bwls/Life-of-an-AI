@@ -30,7 +30,7 @@ Vector2 SteeringSeperation::Update(Flocking* pFlocking, Agent* pAgent, float fDe
 		v2Sum += (v2BoidPos - v2AgentPos);
 	}
 	// Average the sum
-	Vector2 v2Avg = v2Sum * ((float)1 / (float)nFlockSize);
+	Vector2 v2Avg = v2Sum * (1.0f / (float)nFlockSize);
 
 	// return average with weighting applied
 	return v2Avg * m_fWeighting;
