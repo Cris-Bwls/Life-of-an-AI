@@ -16,8 +16,11 @@ SteeringSeperation::~SteeringSeperation()
 Vector2 SteeringSeperation::Update(Flocking* pFlocking, Agent* pAgent, float fDeltaTime)
 {
 	int nFlockSize = pFlocking->GetFlock().size();
-	Vector2 v2AgentPos = pAgent->GetPos();
 
+	if (nFlockSize == 0)
+		return Vector2();
+
+	Vector2 v2AgentPos = pAgent->GetPos();
 
 	// Sum Force of flock
 	Vector2 v2Sum = Vector2(0, 0);
@@ -27,11 +30,19 @@ Vector2 SteeringSeperation::Update(Flocking* pFlocking, Agent* pAgent, float fDe
 		Vector2 v2BoidPos = pFlocking->GetFlock()[i].pAgent->GetPos();
 
 		// Add Force Between Boid Pos and Agent Pos to Sum
-		v2Sum += (v2BoidPos - v2AgentPos);
+		Vector2 v2Force = v2BoidPos - v2AgentPos;
+		float fForceMag = v2Force.magnitude();
+
+		float fNormalisedMag = (FLOCKING_NEIGHBOUR_RADIUS - fForceMag) * (1.0f / FLOCKING_NEIGHBOUR_RADIUS);
+		v2Sum += v2Force * (fNormalisedMag - 0.5f) * 3.5f;
 	}
 	// Average the sum
 	Vector2 v2Avg = v2Sum * (1.0f / (float)nFlockSize);
 
-	// return average with weighting applied
-	return v2Avg * m_fWeighting;
+	// Invert and normalise avg
+	Vector2 v2Result = v2Avg * -1;
+	v2Result.normalise();
+
+	// return result with weighting applied
+	return v2Result * m_fWeighting;
 }

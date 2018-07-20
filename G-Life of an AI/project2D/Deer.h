@@ -19,6 +19,6 @@ private:
 	void SetupFSM();
 
 	BaseFSM* m_FSM;
-	//HERENOW
+	float m_fGameTime;
 };
 

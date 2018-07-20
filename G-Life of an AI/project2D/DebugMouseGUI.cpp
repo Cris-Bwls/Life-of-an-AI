@@ -217,12 +217,23 @@ void DebugMouseGUI::Draw()
 			m_pGuiFlags->heatMapEdit.bPlaceHeatPoint = true;
 
 			m_pGuiFlags->heatMapEdit.bRemoveHeatPoint = false;
+			m_pGuiFlags->heatMapEdit.bCursorHeatPoint = false;
 		}
 		if (ImGui::Button("Remove Heat Source"))
 		{
 			m_pGuiFlags->heatMapEdit.bRemoveHeatPoint = true;
 
 			m_pGuiFlags->heatMapEdit.bPlaceHeatPoint = false;
+			m_pGuiFlags->heatMapEdit.bCursorHeatPoint = false;
+		}
+		ImGui::Separator();
+
+		ImGui::Checkbox("Cursor is Heat Source", &(m_pGuiFlags->heatMapEdit.bCursorHeatPoint));
+
+		if (m_pGuiFlags->heatMapEdit.bCursorHeatPoint)
+		{
+			m_pGuiFlags->heatMapEdit.bPlaceHeatPoint = false;
+			m_pGuiFlags->heatMapEdit.bRemoveHeatPoint = false;
 		}
 		ImGui::Separator();
 
@@ -233,6 +244,8 @@ void DebugMouseGUI::Draw()
 			selected = "Place Heat Source";
 		else if (m_pGuiFlags->heatMapEdit.bRemoveHeatPoint)
 			selected = "Remove Heat Source";
+		else if (m_pGuiFlags->heatMapEdit.bCursorHeatPoint)
+			selected = "Cursor is Heat Source";
 		else
 			selected = "NONE";
 

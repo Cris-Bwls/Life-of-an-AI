@@ -63,6 +63,18 @@ bool Application2D::startup() {
 	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
 	pAgentManager->AddDeer(Vector2(100, 200));
 	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
+	pAgentManager->AddDeer(Vector2(100, 200));
+	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
 
 	
 	return true;
@@ -81,7 +93,10 @@ void Application2D::shutdown() {
 	TimeManager::Destroy();
 }
 
-void Application2D::update(float deltaTime) {
+void Application2D::update(float deltaTime) 
+{
+	// Increment timer
+	TimeManager::GetInstance()->SetTime(deltaTime);
 
 	m_timer += deltaTime;
 
@@ -94,11 +109,13 @@ void Application2D::update(float deltaTime) {
 	//DEBUG
 	GUIFlags* pGuiFlags = GUIManager::GetInstance()->GetGuiFlags();
 
+	if (pGuiFlags->heatMapEdit.bCursorHeatPoint)
+		m_pMap->ResetAnimalAvoid();
 
 	if (input->isKeyDown(aie::INPUT_KEY_1) || pGuiFlags->heatMapEdit.bRebuildHeatMap)
 	{
 		m_pMap->ResetAnimalAvoid();
-		for (int i = 0; i < m_HeatSourceList.size(); ++i)
+		for (unsigned int i = 0; i < m_HeatSourceList.size(); ++i)
 		{
 			m_pMap->SetAnimalAvoid(m_HeatSourceList[i], 20);
 		}
@@ -125,12 +142,19 @@ void Application2D::update(float deltaTime) {
 		pGuiFlags->pathFindingEdit.bRebuildPath = false;
 	}
 
-	if (input->isMouseButtonDown(0))
+	if (input->isKeyDown(aie::INPUT_KEY_3))
 	{
 		SetMouseDownLeft();
 		MouseDownLeft();
 	}
 
+
+	if (input->isMouseButtonDown(0))
+	{
+		SetMouseDownLeft();
+		MouseDownLeft();
+	}
+	
 	// Update Objects
 	StaticObjectManager::GetInstance()->Update(deltaTime);
 
@@ -183,7 +207,7 @@ void Application2D::draw() {
 
 			if (pGuiFlags->pathFindingEdit.bFullPath)
 			{
-				for (int i = 0; i < m_path.size(); ++i)
+				for (unsigned int i = 0; i < m_path.size(); ++i)
 				{
 					m_2dRenderer->drawBox(m_path[i].x, m_path[i].y, TILE_SIZE, TILE_SIZE);
 				}
@@ -210,6 +234,9 @@ void Application2D::draw() {
 	m_2dRenderer->end();
 
 	GUIManager::GetInstance()->Draw();
+
+	//DEBUG
+	//system("cls");
 }
 
 void Application2D::SetMouseDownLeft()
@@ -321,7 +348,7 @@ void Application2D::SetMouseDownLeft()
 				{
 					Vector2 tilePos = pTile->GetPos();
 
-					for (int i = 0; i < m_HeatSourceList.size(); ++i)
+					for (unsigned int i = 0; i < m_HeatSourceList.size(); ++i)
 					{
 						if (m_HeatSourceList[i] == tilePos)
 							return;
@@ -345,7 +372,7 @@ void Application2D::SetMouseDownLeft()
 				{
 					Vector2 tilePos = pTile->GetPos();
 
-					for (int i = 0; i < m_HeatSourceList.size(); ++i)
+					for (unsigned int i = 0; i < m_HeatSourceList.size(); ++i)
 					{
 						if (m_HeatSourceList[i] == tilePos)
 						{
@@ -358,6 +385,20 @@ void Application2D::SetMouseDownLeft()
 			funcSet = true;
 			return;
 		}
+		// Cursor HeatPoint
+		else if (pGuiFlags->heatMapEdit.bCursorHeatPoint)
+		{
+			m_pMap->ResetAnimalAvoid();
+			auto v2pos = CameraManager::GetInstance()->GetWorldMousePos();
+			auto pTile = m_pMap->GetTileByPos(v2pos);
+			if (pTile)
+				m_pMap->SetAnimalAvoid(v2pos, 20);
+			m_pMap->UpdateAnimalAvoidVector();
+
+			return;
+		}
+
+
 		break;
 	case GUI_Type_DebugMouse::EWINDOWS_PATHFINDING_EDIT:
 		// Move Pathfinding start pos

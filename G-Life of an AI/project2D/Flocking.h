@@ -3,6 +3,8 @@
 #include<vector>
 #include"Vector2.h"
 
+#define FLOCKING_NEIGHBOUR_RADIUS 160.0f
+
 class Agent;
 class SteeringBase;
 

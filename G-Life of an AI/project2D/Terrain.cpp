@@ -456,7 +456,9 @@ std::vector<Vector2> Terrain::GetPathToPos(Vector2 v2Start, Vector2 v2End, bool 
 
 std::vector<Vector2> Terrain::GetPathToObject(Vector2 v2Start, StaticObject* target, bool bAStar)
 {
-	SetSortHeap([](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
+	SortHeapFunc = [](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); };
+	//auto test = [](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); };
+	//SetSortHeap([](TerrainTile* lhs, TerrainTile* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
 	
 	std::vector<Vector2> path;
 	TerrainTile* pStart = GetTileByPos(v2Start);

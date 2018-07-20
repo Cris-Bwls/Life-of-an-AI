@@ -38,7 +38,11 @@ namespace GUI_Windows
 	{
 		bool bPlaceHeatPoint = false;
 		bool bRemoveHeatPoint = false;
+
+		bool bActiveRebuildHeatMap = false;
 		bool bRebuildHeatMap = false;
+
+		bool bCursorHeatPoint = false;
 	};
 
 	struct PathfindingEdit
@@ -53,7 +57,7 @@ namespace GUI_Windows
 		bool bRebuildPath = false;
 		bool bFullPath = false;
 		bool bStepPath = false;
-		int nStepCount = 0;
+		unsigned int nStepCount = 0;
 	};
 
 	struct StaticObjectPlace

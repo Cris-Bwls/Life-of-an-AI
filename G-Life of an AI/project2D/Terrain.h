@@ -4,12 +4,12 @@
 #include "Vector2.h"
 #include "Renderer2D.h"
 #include "StaticObject.h"
-
-class TerrainTile;
+#include "TerrainTile.h"
+//class TerrainTile;
 struct TileQuadrant;
 
-#define TERRAIN_SIZE_X 50
-#define TERRAIN_SIZE_Y 30
+#define TERRAIN_SIZE_X 50 //50
+#define TERRAIN_SIZE_Y 30 //30
 
 #define TILE_SIZE 16
 #define TILE_OFFSET (TILE_SIZE/2)

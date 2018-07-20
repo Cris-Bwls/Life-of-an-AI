@@ -8,8 +8,7 @@
 #include "SteeringCohesion.h"
 #include "SteeringSeperation.h"
 
-#define FLOCKING_NEIGHBOUR_RADIUS 160.0f
-
+#include <iostream>
 
 Flocking::Flocking(Agent* pAgent)
 {
@@ -25,8 +24,13 @@ Flocking::Flocking(Agent* pAgent)
 		m_bAgentIsDeer = true;
 
 	m_pSteeringBehaviours[0] = new SteeringAlignment();
+	m_pSteeringBehaviours[0]->m_fWeighting = 0.05f;
+
 	m_pSteeringBehaviours[1] = new SteeringCohesion();
+	m_pSteeringBehaviours[1]->m_fWeighting = 2.0f;
+
 	m_pSteeringBehaviours[2] = new SteeringSeperation();
+	m_pSteeringBehaviours[2]->m_fWeighting = 2.0f;
 }
 
 
@@ -39,6 +43,8 @@ Flocking::~Flocking()
 
 Vector2 Flocking::Update(float fDeltaTime)
 {
+	//printf("Object\n");
+
 	CalcFlock();
 
 	Vector2 v2TotalVelocity;
@@ -54,18 +60,27 @@ Vector2 Flocking::Update(float fDeltaTime)
 		}
 
 		Vector2 v2Force;
-
+		
 		if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringAlignment).hash_code())
+		{
 			v2Force = ((SteeringAlignment*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+			//printf("SteeringAlignment: x: %f y: %f\n", v2Force.x, v2Force.y);
+		}
 		else if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringCohesion).hash_code())
+		{
 			v2Force = ((SteeringCohesion*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+			//printf("SteeringCohesion: x: %f y: %f\n", v2Force.x, v2Force.y);
+		}
 		else if (typeid(*m_pSteeringBehaviours[i]).hash_code() == typeid(SteeringSeperation).hash_code())
+		{
 			v2Force = ((SteeringSeperation*)m_pSteeringBehaviours[i])->Update(this, m_pAgent, fDeltaTime);
+			//printf("SteeringSeperation: x: %f y: %f\n", v2Force.x, v2Force.y);
+		}
 
 		v2Force *= m_pSteeringBehaviours[i]->m_fWeighting;
 
-		float fForce = v2Force.magnitude();
-		if (fForce < fRemaining)
+		float fForceMag = v2Force.magnitude();
+		if (fForceMag < fRemaining)
 		{
 			v2TotalVelocity += v2Force;
 		}
@@ -96,6 +111,9 @@ void Flocking::CalcFlock()
 	{
 		for (int i = 0; i < pAIPool->m_ActiveObjects.size(); ++i)
 		{
+			if (pAIPool->m_ActiveObjects[i] == m_pAgent)
+				continue;
+
 			Vector2 v2NeighbourPos = pAIPool->m_ActiveObjects[i]->GetPos();
 			Vector2 v2AgentPos = m_pAgent->GetPos();
 			Vector2 v2Vector = v2NeighbourPos - v2AgentPos;
@@ -117,6 +135,9 @@ void Flocking::CalcFlock()
 	{
 		for (int i = 0; i < pDeerPool->m_ActiveObjects.size(); ++i)
 		{
+			if (pDeerPool->m_ActiveObjects[i] == m_pAgent)
+				continue;
+
 			Vector2 v2NeighbourPos = pDeerPool->m_ActiveObjects[i]->GetPos();
 			Vector2 v2AgentPos = m_pAgent->GetPos();
 			Vector2 v2Vector = v2NeighbourPos - v2AgentPos;

@@ -27,7 +27,7 @@ void BaseFSM::AddState(char* stateName)
 	else if (stateName == "FSMStateEatGrass")
 		m_StateMap[stateName] = std::unique_ptr<BaseFSMState>(new FSMStateEatGrass());
 	else if (stateName == "FSMStateFindGrass")
-		m_StateMap[stateName] = std::unique_ptr<BaseFSMState>(new FSMStateFindGrass());
+		m_StateMap[stateName] = std::unique_ptr<BaseFSMState>(new FSMStateFindGrass(m_pTerrain));
 	else if (stateName == "FSMStateFlockMove")
 		m_StateMap[stateName] = std::unique_ptr<BaseFSMState>(new FSMStateFlockMove(m_pTerrain));
 
