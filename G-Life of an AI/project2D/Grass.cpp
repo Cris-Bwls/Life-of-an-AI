@@ -5,6 +5,8 @@
 Grass::Grass()
 {
 	m_bIsBlocker = false;
+
+	m_nCharges = 5;
 }
 
 

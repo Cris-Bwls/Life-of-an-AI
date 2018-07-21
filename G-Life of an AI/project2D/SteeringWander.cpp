@@ -10,7 +10,7 @@ SteeringWander::SteeringWander(float fRadius, float fDistance, float fJitter)
 	m_fDistance = fDistance;
 	m_fJitter = fJitter;
 
-	srand(time((time_t)0));
+	srand((unsigned int)time((time_t)0));
 }
 
 
@@ -50,7 +50,7 @@ Vector2 SteeringWander::WanderTarget(Agent* pAgent)
 	v2Target.x = -sinf(random)*m_fRadius;
 	v2Target.y = cosf(random)*m_fRadius;
 
-	Vector2 v2Jitter(rand(), rand());
+	Vector2 v2Jitter((float)rand(), (float)rand());
 	v2Jitter.normalise();
 	v2Jitter *= m_fJitter;
 

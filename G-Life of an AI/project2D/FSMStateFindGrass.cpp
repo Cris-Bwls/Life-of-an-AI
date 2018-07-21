@@ -8,11 +8,15 @@
 #include "SteeringSeek.h"
 #include "TimeManager.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #define TIME_OUT_DURATION 5000.0f //1 second is 1000.0f
 
 FSMStateFindGrass::FSMStateFindGrass(Terrain* pTerrain)
 {
 	m_pSeek = new SteeringSeek();
+	m_pTerrain = pTerrain;
 
 	m_bHavePathToGrass = false;
 	m_nAttemptCount = 0;
@@ -61,7 +65,11 @@ void FSMStateFindGrass::Update(float fDeltaTime)
 		
 		auto listSize = grassActiveList.size();
 		if (listSize > 0)
-			v2TargetPos = grassActiveList[0]->GetPos();
+		{
+			m_pTarget = grassActiveList[0];
+			v2TargetPos = m_pTarget->GetPos();
+		}
+
 		for (unsigned int i = 1; i < listSize; ++i)
 		{
 			Vector2 currentPos = grassActiveList[i]->GetPos();
@@ -84,20 +92,49 @@ void FSMStateFindGrass::Update(float fDeltaTime)
 	// IF Path
 	if (m_bHavePathToGrass)
 	{
-		// IF at target position (close enough)
+
+		// IF at next path position (close enough)
 		if (Vector2(m_Path.front() - m_pAgent->GetPos()).magnitudeSqr() < 16.0f)
 		{
 			m_Path.erase(m_Path.begin());
+
+			if (m_Path.size() == 0)
+			{
+				m_bHavePathToGrass = false;
+			}
 		}
 
+
 		// IF Target Position IS blocked
-		if (m_pTerrain->GetTileByPos(m_Path.front())->GetBlocked())
-			m_bHavePathToGrass = false; // Rebuild Path
+		if (m_bHavePathToGrass)
+			if (m_pTerrain->GetTileByPos(m_Path.front())->GetBlocked())
+				m_bHavePathToGrass = false; // Rebuild Path
 		// ELSE
 		else
 		{
 			// seek to target pos
-			m_pSeek->Update(m_pAgent, fDeltaTime, m_Path.front());
+			Vector2 v2velocity = m_pSeek->Update(m_pAgent, fDeltaTime, m_Path.front());
+			v2velocity += m_pAgent->GetVelocity();
+
+			// Make sure within Max Speed
+			float fMag = v2velocity.normalise();
+			if (fMag > m_pAgent->GetMaxSpeed())
+				v2velocity *= m_pAgent->GetMaxSpeed();
+			else
+				v2velocity *= fMag;
+
+			// Determine new Agent rotation
+			float fRotation = atan2f(v2velocity.y, v2velocity.x);
+			fRotation -= (float)M_PI_2;
+
+			// Determine new Agent position
+			Vector2 v2Pos = m_pAgent->GetPos();
+			v2Pos += v2velocity * fDeltaTime;
+
+			// Set Agents vel, pos, rot
+			m_pAgent->SetVelocity(v2velocity);
+			m_pAgent->SetPos(v2Pos);
+			m_pAgent->SetRotation(fRotation);
 		}
 
 		if (Vector2(m_pTarget->GetPos() - m_pAgent->GetPos()).magnitudeSqr() < 16.0f)
@@ -106,6 +143,8 @@ void FSMStateFindGrass::Update(float fDeltaTime)
 			m_nAttemptCount = 0;
 			m_fTimeOutStart = 0.0f;
 			m_bHavePathToGrass = false;
+
+			m_pAgent->SetTarget(m_pTarget);
 		}
 	}
 }

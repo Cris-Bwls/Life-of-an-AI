@@ -133,7 +133,7 @@ void TerrainTile::SetPos(Vector2 v2Pos, int tileSize)
 {
 	m_v2Pos = v2Pos;
 
-	int offset = tileSize * 0.25;
+	int offset = (int)(tileSize * 0.25f);
 	m_AnimalAvoidQuadrants[0]->m_v2Pos = Vector2(v2Pos.x - offset, v2Pos.y + offset);
 	m_AnimalAvoidQuadrants[1]->m_v2Pos = Vector2(v2Pos.x + offset, v2Pos.y + offset);
 	m_AnimalAvoidQuadrants[2]->m_v2Pos = Vector2(v2Pos.x - offset, v2Pos.y - offset);

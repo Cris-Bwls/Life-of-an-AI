@@ -67,7 +67,7 @@ StaticObjectManager* StaticObjectManager::GetInstance()
 void StaticObjectManager::Update(float fDeltaTime)
 {
 	// GRASS
-	for (int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pGrassPool->m_ActiveObjects[i];
 
@@ -92,7 +92,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// ROCK
-	for (int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pRockPool->m_ActiveObjects[i];
 
@@ -117,7 +117,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// TREE
-	for (int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pTreePool->m_ActiveObjects[i];
 
@@ -142,7 +142,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CONSTRUCTION
-	for (int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pConstructionPool->m_ActiveObjects[i];
 
@@ -167,7 +167,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CRAFTER
-	for (int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pCrafterPool->m_ActiveObjects[i];
 
@@ -192,7 +192,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// FORGE
-	for (int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pForgePool->m_ActiveObjects[i];
 
@@ -217,7 +217,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// STOCKPILE
-	for (int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pStockpilePool->m_ActiveObjects[i];
 
@@ -242,7 +242,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 
 	// CABIN
-	for (int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pCabinPool->m_ActiveObjects[i];
 
@@ -267,7 +267,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 	
 	// HUT
-	for (int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pHutPool->m_ActiveObjects[i];
 
@@ -292,7 +292,7 @@ void StaticObjectManager::Update(float fDeltaTime)
 	}
 	
 	// TENT
-	for (int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
 	{
 		auto current = m_pTentPool->m_ActiveObjects[i];
 
@@ -320,61 +320,61 @@ void StaticObjectManager::Update(float fDeltaTime)
 void StaticObjectManager::Draw(aie::Renderer2D* pRenderer)
 {
 	// GRASS
-	for (int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pGrassPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pGrassPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// ROCK
-	for (int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pRockPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pRockPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// TREE
-	for (int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pTreePool->m_ActiveObjects.size(); ++i)
 	{
 		m_pTreePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CONSTRUCTION
-	for (int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pConstructionPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pConstructionPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CRAFTER
-	for (int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pCrafterPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pCrafterPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// FORGE
-	for (int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pForgePool->m_ActiveObjects.size(); ++i)
 	{
 		m_pForgePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// STOCKPILE
-	for (int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pStockpilePool->m_ActiveObjects.size(); ++i)
 	{
 		m_pStockpilePool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// CABIN
-	for (int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pCabinPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pCabinPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// HUT
-	for (int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pHutPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pHutPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
 
 	// TENT
-	for (int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
+	for (unsigned int i = 0; i < m_pTentPool->m_ActiveObjects.size(); ++i)
 	{
 		m_pTentPool->m_ActiveObjects[i]->Draw(pRenderer);
 	}
@@ -683,7 +683,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Grass*)object;
 		auto containerActive = m_pGrassPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -701,7 +701,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Rock*)object;
 		auto containerActive = m_pRockPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -719,7 +719,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Tree*)object;
 		auto containerActive = m_pTreePool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -737,7 +737,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Construction*)object;
 		auto containerActive = m_pConstructionPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -755,7 +755,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Crafter*)object;
 		auto containerActive = m_pCrafterPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -773,7 +773,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Forge*)object;
 		auto containerActive = m_pForgePool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -791,7 +791,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Stockpile*)object;
 		auto containerActive = m_pStockpilePool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -809,7 +809,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Cabin*)object;
 		auto containerActive = m_pCabinPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -827,7 +827,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Hut*)object;
 		auto containerActive = m_pHutPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{
@@ -845,7 +845,7 @@ void StaticObjectManager::RemoveObject(StaticObject* object)
 		auto polyObject = (Tent*)object;
 		auto containerActive = m_pTentPool->m_ActiveObjects;
 
-		for (int i = 0; i < containerActive.size(); ++i)
+		for (unsigned int i = 0; i < containerActive.size(); ++i)
 		{
 			if (polyObject == containerActive[i])
 			{

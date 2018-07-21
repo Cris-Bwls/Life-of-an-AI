@@ -8,7 +8,7 @@
 FSMStateEatGrass::FSMStateEatGrass()
 {
 	m_fStartTime = 0.0f;
-	m_fEatTime = 5000.0f; // 1 second = 1000.0
+	m_fEatTime = 5.0f; // 1 second = 1.0f
 }
 
 

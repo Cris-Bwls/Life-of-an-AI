@@ -45,7 +45,7 @@ void Agent::Draw(aie::Renderer2D* pRenderer)
 	else
 	{
 		pRenderer->setRenderColour(0xffaec8FF);
-		pRenderer->drawCircle(m3Transform[2].x, m3Transform[2].y, 12.0f);
+		pRenderer->drawCircle(m3Transform[2].x, m3Transform[2].y, 6.0f);
 		pRenderer->setRenderColour(0xFFFFFFFF);
 	}
 }

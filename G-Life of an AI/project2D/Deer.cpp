@@ -7,6 +7,8 @@
 Deer::Deer()
 {
 	m_FSM = nullptr;
+	m_pTerrain = nullptr;
+
 	m_fGameTime = 0.0f;
 	m_nHunger = 65;
 }

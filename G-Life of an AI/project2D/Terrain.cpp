@@ -15,7 +15,7 @@ Terrain::Terrain()
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
 			m_pTiles[x][y] = new TerrainTile(x, y, ETERRAINTYPE_DIRT); 
-			m_pTiles[x][y]->SetPos(Vector2((float)(TILE_SIZE * x + TILE_OFFSET), (float)(TILE_SIZE * y + TILE_OFFSET)), (float)TILE_SIZE);
+			m_pTiles[x][y]->SetPos(Vector2((float)(TILE_SIZE * x + TILE_OFFSET), (float)(TILE_SIZE * y + TILE_OFFSET)), TILE_SIZE);
 			m_pTiles[x][y]->SetFScore(0xFFFFFFFF);
 		}
 	}
@@ -655,7 +655,7 @@ void Terrain::UpdateAnimalAvoidVector()
 
 						Vector2 deltaPos = pQuadrant->m_pNeighbours[j]->m_v2Pos - pQuadrant->m_v2Pos;
 						int deltaDistance = pQuadrant->m_pNeighbours[j]->m_nDistance - pQuadrant->m_nDistance;
-						v2Vec += (deltaPos * deltaDistance);
+						v2Vec += (deltaPos * (float)deltaDistance);
 					}
 				}
 				v2Vec.normalise();
