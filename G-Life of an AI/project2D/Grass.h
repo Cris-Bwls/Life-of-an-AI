@@ -7,6 +7,8 @@ public:
 	Grass();
 	~Grass();
 
+	void Reset();
+
 	void Draw(aie::Renderer2D* pRenderer);
 };
 

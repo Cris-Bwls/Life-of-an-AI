@@ -2,7 +2,7 @@
 #include "BaseFSM.h"
 #include "TimeManager.h"
 
-#define HUNGER_TIMER 1.0f
+#define HUNGER_TIMER 2.0f
 
 Deer::Deer()
 {
@@ -10,7 +10,7 @@ Deer::Deer()
 	m_pTerrain = nullptr;
 
 	m_fGameTime = 0.0f;
-	m_nHunger = 65;
+	m_nHunger = 0;
 }
 
 

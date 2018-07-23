@@ -35,6 +35,9 @@ public:
 
 private:
 	inline void SetSortHeap(std::function<bool(TerrainTile* lhs, TerrainTile* rhs)> NewSortHeapFunc) { SortHeapFunc = NewSortHeapFunc; };
+
+	void BlockedAvoid();
+
 	//Variables
 	TerrainTile* m_pTiles[TERRAIN_SIZE_X][TERRAIN_SIZE_Y];
 

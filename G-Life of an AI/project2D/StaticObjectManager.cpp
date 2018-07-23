@@ -410,6 +410,7 @@ StaticObject* StaticObjectManager::PlaceObject(EStaticObjectType eObjectType, Ve
 			}
 
 			// Setup object
+			object->Reset();
 			object->SetIsAlive(true);
 			object->SetPos(v2Pos);
 

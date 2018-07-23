@@ -271,6 +271,8 @@ void Terrain::ResetAnimalAvoid()
 
 		pCurrentQuadrant = pCurrentQuadrant->m_pNeighbours[0];
 	}
+
+	BlockedAvoid();
 }
 
 void Terrain::SetAnimalAvoid(Vector2 v2Pos, int nNoiseLevel)
@@ -731,4 +733,19 @@ void Terrain::DrawQuadrants(aie::Renderer2D * pRenderer)
 	}
 
 	pRenderer->setRenderColour(0xFFFFFFFF);
+}
+
+void Terrain::BlockedAvoid()
+{
+	for (int x = 0; x < TERRAIN_SIZE_X; ++x)
+	{
+		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
+		{
+			if (m_pTiles[x][y]->GetBlocked())
+			{
+				Vector2 v2TilePos = m_pTiles[x][y]->GetPos();
+				SetAnimalAvoid(v2TilePos, 2);
+			}
+		}
+	}
 }

@@ -1,17 +1,22 @@
 #include "Grass.h"
 
-
+#define CHARGES 5
 
 Grass::Grass()
 {
 	m_bIsBlocker = false;
 
-	m_nCharges = 5;
+	m_nCharges = CHARGES;
 }
 
 
 Grass::~Grass()
 {
+}
+
+void Grass::Reset()
+{
+	m_nCharges = CHARGES;
 }
 
 
