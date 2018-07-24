@@ -188,6 +188,8 @@
     <ClCompile Include="FSMStateFlockMove.cpp" />
     <ClCompile Include="FSMStateMove.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GOAPActionBase.cpp" />
+    <ClCompile Include="GOAPPlanner.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Housing.cpp" />
@@ -242,6 +244,9 @@
     <ClInclude Include="FSMStateFlockMove.h" />
     <ClInclude Include="FSMStateMove.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GOAPActionBase.h" />
+    <ClInclude Include="GOAPPlanner.h" />
+    <ClInclude Include="GOAPWorldState.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="GuiFlags.h" />
     <ClInclude Include="GUIManager.h" />
