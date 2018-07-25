@@ -673,6 +673,11 @@ void Terrain::Draw(aie::Renderer2D * pRenderer)
 	{
 		for (int y = 0; y < TERRAIN_SIZE_Y; ++y)
 		{
+			//DEBUG
+			if (m_pTiles[x][y]->GetStaticObject())
+				if (m_pTiles[x][y]->GetStaticObject()->GetIsAlive() == false)
+					m_pTiles[x][y]->RemoveStaticObject();
+
 			pRenderer->setRenderColour(m_pTiles[x][y]->GetTerrainStats().m_nColour);
 
 			Vector2 v2Pos = m_pTiles[x][y]->GetPos();

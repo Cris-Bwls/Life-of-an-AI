@@ -17,17 +17,19 @@ enum EGOAPSymbols
 	EGOAPSYMBOLS_TOTAL
 };
 
+union Data
+{
+	bool bData;
+	int nData;
+	//float fData;
+	void* pVoid;
+};
+
+
 struct WorldStateProperty
 {
 	EGOAPSymbols eSymbol;
-
-	union value
-	{
-		bool bValue;
-		int nValue;
-		//float fValue;
-		void* pVoid;
-	};
+	Data data;
 };
 
 struct WorldState
