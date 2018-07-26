@@ -1,159 +1,238 @@
 #include "goapplanner.h"
 
 #include <heap.h>
-#include <graph.h>
-#include <stack.h>
 
 #include "goapaction.h"
 
-Queue<GoapAction*> GoapPlanner::makePlan(DArray<GoapAction*> availableActions,
-	NiceMap worldState, const char* goalKey, bool goalVal)
+GoapPlanner::~GoapPlanner()
 {
-	Queue<GoapAction*> result;
+	for (GoapAction* a : m_actions)
+		delete a;
+}
 
-	// let's try to make a tree
-	DArray<GoapNode*> tree;
-	for (int i = 0; i < availableActions.getCount(); ++i)
+std::queue<GoapAction*> GoapPlanner::makePlan(std::string const& goalKey,
+	bool goalVal) const
+{
+	GoapGraph graph = makeGraph();
+
+	GoapNode* root = graph.rootNode;
+	root->previous = root;
+	root->fScore = 0.0f;
+	root->gScore = 0.0f;
+	root->hScore = 0.0f;
+
+	Heap<GoapNode*> nodeHeap;
+	nodeHeap.setCompareFunction([](auto a, auto b)
 	{
-		if (!canDoAction(availableActions[i], worldState))
-			continue;
-		// make a node from this action
-		auto node = new GoapNode();
-		node->action = availableActions[i];
-		node->cost = node->action->getCost();
-		node->reached = false;
-		node->prev = nullptr;
+		return a->fScore < b->fScore;
+	});
 
-		auto others = availableActions;
-		others.remove(node->action);
-		node->otherActions = others;
+	nodeHeap.push(root);
 
-		node->resultState = worldState;
-		applyState(&(node->resultState), node->action->getEffects());
-
-		tree.add(node);
-
-		if (node->resultState[goalKey] == goalVal)
-		{
-			node->reached = true;
-		}
-		else
-		{
-			auto l = processAction(node, goalKey, goalVal);
-			for (int j = 0; j < l.getCount(); ++j)
-				tree.add(l[j]);
-		}
-	}
-
-	// (badly) find all nodes at the end of the tree
-	DArray<GoapNode*> leaves;
-	for (int i = 0; i < tree.getCount(); ++i)
+	while (nodeHeap.getCount() > 0)
 	{
-		bool hasLeaf = false;
+		GoapNode* node = nodeHeap.pop();
 
-		for (int j = 0; j < tree.getCount(); ++j)
+		node->traversed = true;
+
+		for (auto edge : node->edgesFrom)
 		{
-			if (tree[j]->prev == tree[i])
+			GoapNode* other = edge->to;
+
+			if (other->traversed)
+				continue;
+
+			float cost = edge->action->getRunningCost();
+
+			// just doing dijkstra's for now
+			float newScore = node->gScore + cost;
+
+			if (newScore > other->fScore)
+				continue;
+
+			other->gScore = newScore;
+			other->fScore = newScore;
+			other->hScore = newScore;
+
+			// point to the currently processing node
+			other->previous = node;
+			// keep track of the action so it's less work to extract the
+			// plan from the graph
+			other->prevAction = edge->action;
+
+			// terribly check if the node's already in the heap to be processed
+			bool inHeap = false;
+			for (int i = 0; i < nodeHeap.getCount(); ++i)
 			{
-				hasLeaf = true;
-				break;
+				if (nodeHeap[i] == other)
+				{
+					inHeap = true;
+					break;
+				}
 			}
+
+			// if it's not, stick it on!
+			if (!inHeap)
+				nodeHeap.push(other);
 		}
-
-		if (!hasLeaf)
-			leaves.add(tree[i]);
 	}
 
-	// grab the cheapest end point 
-	auto cheapestLeaf = leaves[0];
-	for (int i = 0; i < leaves.getCount(); ++i)
+	// let's grab the cheapest node that results in the state we want
+	GoapNode* endPoint = nullptr;
+	float cheapestScore = INFINITY;
+	for (auto node : graph.nodes)
 	{
-		auto leaf = leaves[i];
-		if (leaf->cost < cheapestLeaf->cost)
-			cheapestLeaf = leaf;
+		if (node->worldState[goalKey] == goalVal &&
+			node->fScore < cheapestScore)
+		{
+			endPoint = node;
+			cheapestScore = node->fScore;
+		}
 	}
 
-	// put the action path into a DArray so we can reverse it
-	DArray<GoapAction*> reverse;
-	while (cheapestLeaf)
+	std::queue<GoapAction*> result;
+
+	// no plan was available
+	if (!endPoint)
 	{
-		reverse.add(cheapestLeaf->action);
-		cheapestLeaf = cheapestLeaf->prev;
+		return result;
 	}
 
-	// push that array backwards into the queue
-	for (int i = reverse.getCount() - 1; i >= 0; --i)
-		result.push(reverse[i]);
+	// this should never happen if the end point is valid
+	// even if it's the only node in the path, the previous node will
+	// point to itself
+	if (!endPoint->previous)
+	{
+		return result;
+	}
 
-	// clean up our tree
-	for (int i = 0; i < tree.getCount(); ++i)
-		delete tree[i];
+	// get the plan from the graph and stick it into a vector so we can 
+	// put it into the queue in the right order
+	std::vector<GoapAction*> path;
+	while (endPoint->previous != endPoint)
+	{
+		path.push_back(endPoint->prevAction);
+		endPoint->prevAction->setStatus(ACTION_NOT_RUNNING);
+
+		endPoint = endPoint->previous;
+	}
+
+	// push it into the queue backwards so it's in the right order
+	for (int i = path.size() - 1; i >= 0; --i)
+		result.push(path[i]);
 
 	return result;
 }
 
-bool GoapPlanner::canDoAction(GoapAction* action, NiceMap worldState)
+void GoapPlanner::addAction(GoapAction* action)
 {
-	for (auto a : (*action->getPreconditions()))
-		if (worldState[a.first] != a.second)
+	m_actions.push_back(action);
+}
+
+void GoapPlanner::setState(StateMap const& newState)
+{
+	m_worldState = newState;
+}
+
+bool GoapPlanner::canDoAction(GoapAction* action, StateMap& state) const
+{
+	for (auto p : *action->getPreconditions())
+		if (state[p.first] != p.second)
 			return false;
 	return true;
 }
 
-void GoapPlanner::applyState(NiceMap* applyTo, NiceMap* toApply)
+GoapGraph GoapPlanner::makeGraph() const
 {
-	for (auto a : (*toApply))
-		(*applyTo)[a.first] = a.second;
-}
+	GoapGraph graph;
+	GoapNode* rootNode = graph.getNode(m_worldState);
+	rootNode->actionsLeft = m_actions;
 
-DArray<GoapNode*> GoapPlanner::processAction(GoapNode* onode, std::string goalKey,
-	bool goalVal)
-{
-	DArray<GoapNode*> result;
+	std::queue<GoapNode*> nodeQueue;
+	nodeQueue.push(rootNode);
 
-	for (int i = 0; i < onode->otherActions.getCount(); ++i)
+	while (!nodeQueue.empty())
 	{
-		if (!canDoAction(onode->otherActions[i], onode->resultState))
-			continue;
-		// make a node from this action
-		auto node = new GoapNode();
-		node->action = onode->otherActions[i];
-		node->cost = onode->cost + node->action->getCost();
-		node->reached = false;
-		node->prev = onode;
+		GoapNode* node = nodeQueue.front();
+		nodeQueue.pop();
 
-		auto others = onode->otherActions;
-		others.remove(node->action);
-		node->otherActions = others;
+		node->traversed = true;
 
-		node->resultState = onode->resultState;
-		applyState(&(node->resultState), node->action->getEffects());
-
-		result.add(node);
-
-		if (node->resultState[goalKey] == goalVal)
+		for (GoapAction* action : node->actionsLeft)
 		{
-			node->reached = true;
-		}
-		else
-		{
-			auto l = processAction(node, goalKey, goalVal);
-			for (int j = 0; j < l.getCount(); ++j)
-				result.add(l[j]);
-		}
+			// we only want to process actions we can do with the current state
+			// not necessary but this lowers the number of nodes and
+			// connections a whole lot
+			if (!canDoAction(action, node->worldState))
+				continue;
 
+			// make a copy of the node's world state to apply this action to
+			StateMap newMap = node->worldState;
+			for (auto const& effect : *action->getEffects())
+				newMap[effect.first] = effect.second;
+
+			// get the node with this world state
+			// if one doesn't exist, this function creates it
+			GoapNode* newNode = graph.getNode(newMap);
+
+			// this happens if the action doesn't affect the state, like
+			// if an effect of an action is already present in the state
+			if (newNode == node)
+				continue;
+
+			// this node's actions list is just the current node's one
+			// minus the action of this edge
+			auto actionsList = node->actionsLeft; // make a copy
+			auto actionFind = std::find(actionsList.begin(), actionsList.end(),
+				action);
+			// this action should always exist since we're literally in the
+			// loop of the container we copied, but check just in case
+			if (actionFind != actionsList.end()) 
+				actionsList.erase(actionFind);
+
+			newNode->actionsLeft = actionsList;
+
+			// GoapEdge constructor handles giving itself to the node which
+			// handles deleting it :)
+			GoapEdge* newEdge = new GoapEdge(node, newNode, action);
+
+			// grab a reference to the container in the queue so we can nicely
+			// use its begin() and end() functions
+			auto queueContainer = nodeQueue._Get_container();
+			auto nodeFind = std::find(queueContainer.begin(), queueContainer.end(), newNode);
+
+			// check if it was traversed since the node isn't guaranteed to be
+			// a newly created one
+			if (!newNode->traversed && nodeFind == queueContainer.end())
+				nodeQueue.push(newNode);
+		}
 	}
 
-	return result;
+	// reset all traversed values for use in A*
+	for (auto node : graph.nodes)
+		node->traversed = false;
+
+	return graph;
 }
 
-DArray<GoapAction*> GoapPlanner::getAvailableActions(DArray<GoapAction*> actions, NiceMap world)
+void GoapPlanner::printPlanFromNode(GoapNode* node) const
 {
-	DArray<GoapAction*> result;
-	for (int i = 0; i < actions.getCount(); ++i)
+	std::vector<GoapAction*> actions;
+
+	// backtrack and put all actions into a vector
+	GoapNode* thisNode = node;
+	while (thisNode != thisNode->previous)
 	{
-		if (canDoAction(actions[i], world))
-			result.add(actions[i]);
+		actions.push_back(thisNode->prevAction);
+		thisNode = thisNode->previous;
 	}
-	return result;
+
+	printf(" => ");
+
+	// and then print it backwards
+	for (int i = actions.size() - 1; i >= 0; --i)
+		printf("%s -> ", actions[i]->getName().c_str());
+
+	// delete the trailing arrow and spaces
+	printf("\b\b\b\b    \n");
 }

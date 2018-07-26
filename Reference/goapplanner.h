@@ -1,39 +1,31 @@
 #pragma once
 
-#include <map>
-#include <queue.h>
-#include <darray.h>
-#include <hashtable.h>
+#include <queue>
 
-typedef std::map<std::string, bool> NiceMap;
+#include "goapgraph.h"
 
 class GoapAction;
-
-struct GoapNode
-{
-	GoapAction* action;
-	std::map<std::string, bool> resultState;
-	DArray<GoapAction*> otherActions;
-	GoapNode* prev;
-	bool reached;
-	float cost;
-};
 
 class GoapPlanner
 {
 public:
-	GoapPlanner() = default;
-	~GoapPlanner() = default;
+	~GoapPlanner();
 
-	Queue<GoapAction*> makePlan(DArray<GoapAction*> availableActions, 
-		NiceMap worldState, const char* goalKey, bool goalVal);
+	std::queue<GoapAction*> makePlan(std::string const& goalKey,
+		bool goalVal) const;
 
-	bool canDoAction(GoapAction* action, NiceMap worldState);
+	void addAction(GoapAction* action);
+	std::vector<GoapAction*>& getActions() { return m_actions; }
 
-	void applyState(NiceMap* applyTo, NiceMap* toApply);
+	void setState(StateMap const& newState);
 
-	DArray<GoapNode*> processAction(GoapNode* onode, std::string goalKey, bool goalVal);
 private:
+	StateMap m_worldState;
+	std::vector<GoapAction*> m_actions;
 
-	DArray<GoapAction*> getAvailableActions(DArray<GoapAction*> actions, NiceMap world);
+	bool canDoAction(GoapAction* action, StateMap& state) const;
+
+	GoapGraph makeGraph() const;
+
+	void printPlanFromNode(GoapNode* node) const;
 };
