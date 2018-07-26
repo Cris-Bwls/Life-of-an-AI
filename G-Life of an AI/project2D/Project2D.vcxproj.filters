@@ -288,6 +288,45 @@
     <ClCompile Include="GOAPActionBase.cpp">
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="GOAPActionDeliverResources.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGetResources.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGatherBerries.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionEatFood.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionMakeTool.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionCook.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionHunt.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionLightFire.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionMakeObject.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionMineRock.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionChopTree.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGatherSticks.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGatherStone.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -463,6 +502,45 @@
     </ClInclude>
     <ClInclude Include="GOAPWorldState.h">
       <Filter>Header Files\Decision Making\GOAP</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionChopTree.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionMineRock.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionLightFire.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionHunt.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionCook.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionMakeTool.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionEatFood.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGatherBerries.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionMakeObject.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGetResources.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionDeliverResources.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGatherSticks.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGatherStone.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

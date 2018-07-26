@@ -14,7 +14,7 @@ public:
 	~GOAPPlanner();
 
 	void PopulateEffectMap(std::vector<GOAPActionBase*> actionList);
-	void ChangeWorldState(WorldStateProperty* pChange);
+	void ChangeWorldState(WorldStateProperty pChange);
 
 	std::vector<GOAPActionBase*> MakePlan(std::vector<WorldStateProperty> goalState);
 

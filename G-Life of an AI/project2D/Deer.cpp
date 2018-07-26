@@ -1,11 +1,15 @@
 #include "Deer.h"
 #include "BaseFSM.h"
 #include "TimeManager.h"
+#include "TextureManager.h"
 
 #define HUNGER_TIMER 2.0f
 
 Deer::Deer()
 {
+	//DEBUG
+	//m_pTexture = TextureManager::GetInstance()->GetTexture(ETEXTURES_TANK);
+
 	m_FSM = nullptr;
 	m_pTerrain = nullptr;
 
@@ -25,6 +29,7 @@ void Deer::Update(float fDeltaTime)
 	float fGameTime = TimeManager::GetInstance()->GetGameTime();
 	if (m_fGameTime + HUNGER_TIMER < fGameTime)
 	{
+		//FIXTHIS
 		++m_nHunger;
 		m_fGameTime = fGameTime;
 	}

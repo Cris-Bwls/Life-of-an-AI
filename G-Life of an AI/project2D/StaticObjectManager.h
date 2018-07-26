@@ -40,6 +40,9 @@ public:
 	inline std::vector<Hut*> GetHutActiveList() { return m_pHutPool->m_ActiveObjects; };
 	inline std::vector<Tent*> GetTentActiveList() { return m_pTentPool->m_ActiveObjects; };
 
+	//DEBUG
+	bool bFireExists = false;
+
 private:
 	StaticObjectManager();
 	~StaticObjectManager();

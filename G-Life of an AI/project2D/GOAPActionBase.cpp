@@ -3,11 +3,19 @@
 GOAPActionBase::GOAPActionBase()
 {
 	m_bUsed = false;
-	m_fFinalCost = 0.0f;
-	m_fBaseCost = 10.0f;
+	m_nCost = 10;
+
+	m_nFScore = 0;
+	m_nGScore = 0;
+	m_nHScore = 0;
 }
 
 
 GOAPActionBase::~GOAPActionBase()
 {
+}
+
+bool GOAPActionBase::CheckProceduralPreconditions()
+{
+	return true;
 }

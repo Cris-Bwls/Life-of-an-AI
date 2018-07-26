@@ -7,6 +7,7 @@
 #include "StaticObjectManager.h"
 #include "TimeManager.h"
 #include "AgentManager.h"
+#include "TextureManager.h"
 
 #include <iostream>
 
@@ -15,6 +16,8 @@
 #include <vector>
 #include "Vector2.h"
 #include "Deer.h"
+#include "AI.h"
+
 
 Application2D::Application2D() {
 
@@ -25,6 +28,8 @@ Application2D::~Application2D() {
 }
 
 bool Application2D::startup() {
+
+	TextureManager::Create();
 
 	CameraManager::Create();
 	CameraManager::GetInstance()->SetApp2D(this);
@@ -76,7 +81,9 @@ bool Application2D::startup() {
 	pAgentManager->AddDeer(Vector2(100, 200));
 	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
 
-	
+	//DEBUG
+	//pAgentManager->AddAI(Vector2(100, 100));
+
 	return true;
 }
 
@@ -91,6 +98,7 @@ void Application2D::shutdown() {
 	GUIManager::Destroy();
 	CameraManager::Destroy();
 	TimeManager::Destroy();
+	TextureManager::Destroy();
 }
 
 void Application2D::update(float deltaTime) 

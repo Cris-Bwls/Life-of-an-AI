@@ -4,6 +4,7 @@
 #include <vector>
 
 class GOAPActionBase;
+class GOAPPlanner;
 
 class AI :
 	public Agent
@@ -15,6 +16,7 @@ public:
 	void AddAction(GOAPActionBase* pAction);
 
 private:
+	GOAPPlanner* m_pPlanner;
 	std::vector<GOAPActionBase*> m_ActionList;
 };
 
