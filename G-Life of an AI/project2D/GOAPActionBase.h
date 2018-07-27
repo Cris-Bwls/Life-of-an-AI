@@ -1,52 +1,62 @@
 #pragma once
+
+#include <map>
 #include <vector>
-#include "GOAPWorldState.h"
+#include "EGOAPSymbols.h"
+
+typedef const char* gloat;
+typedef const char* insult;
+
+enum ActionStatus
+{
+	// EACTIONSTATUS_
+
+	EACTIONSTATUS_INACTIVE = 0,
+	EACTIONSTATUS_ACTIVE,
+	EACTIONSTATUS_DONE,
+	EACTIONSTATUS_FAILED
+};
 
 class GOAPActionBase
 {
 public:
 	GOAPActionBase();
 	virtual ~GOAPActionBase();
-	
-	inline std::vector<WorldStateProperty> GetPreConditionList() { return m_PreConditionList; };
-	inline std::vector<EGOAPSymbols> GetEffectList() { return m_EffectList; };
 
-	//virtual bool OnAction() = 0;
 
-	inline void SetPrev(GOAPActionBase* pPrev) { m_pPrev = pPrev; };
-	inline GOAPActionBase* GetPrev() { return m_pPrev; };
+	inline SymbolMap* GetPreConditions() { return &m_PreConditions; }
+	inline SymbolMap* GetEffects() { return &m_Effects; }
 
-	inline void SetUsed(bool bUsed) { m_bUsed = bUsed; };
-	inline bool GetUsed() { return m_bUsed; };
+	inline float GetRunningCost() { return m_fRunningCost; }
+	inline float GetBaseCost() { return m_fBaseCost; }
+	inline char* GetName() { return m_ActionName; }
 
-	inline int GetCost() { return m_nCost; };
+	inline ActionStatus GetStatus() { return m_Status; }
+	inline void SetStatus(ActionStatus status) { m_Status = status; }
 
-	inline void SetFScore(int nFScore) { m_nFScore = nFScore; };
-	inline int GetFScore() { return m_nFScore; };
+	inline void ResetRunningCost() { m_fRunningCost = m_fBaseCost; }
+	inline void AddRunningCost(float fCost) { m_fRunningCost += fCost; }
+	inline std::vector<char*>* GetCostModifiers() { return &m_CostModifiers; }
 
-	inline void SetGScore(int nGScore) { m_nGScore = nGScore; };
-	inline int GetGScore() { return m_nGScore; };
+	inline gloat HowGoodIsThisGOAP() { return "This GOAP is the best"; };
 
-	inline void SetHScore(int nHScore) { m_nHScore = nHScore; };
-	inline int GetHScore() { return m_nHScore; };
+	virtual void Start();
+	virtual void Run(float fDeltaTime);
+	virtual void Finish();
 
-	inline char* GetName() { return m_ActionName; };
+	virtual inline void Reset();
 
-	virtual bool CheckProceduralPreconditions();
 protected:
+	SymbolMap m_PreConditions;
+	SymbolMap m_Effects;
+
+	std::vector<char*> m_CostModifiers;
+
 	char* m_ActionName;
 
-	std::vector<WorldStateProperty> m_PreConditionList;
-	std::vector<EGOAPSymbols> m_EffectList;
+	float m_fBaseCost;
+	float m_fRunningCost;
 
-	GOAPActionBase* m_pPrev;
-
-	bool m_bUsed;
-
-	int m_nFScore;
-	int m_nGScore;
-	int m_nHScore;
-
-	int m_nCost;
+	ActionStatus m_Status;
 };
 

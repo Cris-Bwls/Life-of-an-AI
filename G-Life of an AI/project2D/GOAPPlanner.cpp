@@ -1,18 +1,11 @@
 #include "GOAPPlanner.h"
 #include "GOAPActionBase.h"
-#include "Agent.h"
+
+#include <vector>
 #include <algorithm>
 
 GOAPPlanner::GOAPPlanner()
 {
-	// Initialize Effect Map
-	for (int i = 0; i < EGOAPSYMBOLS_TOTAL; ++i)
-	{
-		EGOAPSymbols currentSymbol = (EGOAPSymbols)i;
-		std::vector<GOAPActionBase*> newList;
-
-		m_EffectMap[currentSymbol] = newList;
-	}
 }
 
 
@@ -20,207 +13,234 @@ GOAPPlanner::~GOAPPlanner()
 {
 }
 
-void GOAPPlanner::PopulateEffectMap(std::vector<GOAPActionBase*> actionList)
+std::queue<GOAPActionBase*> GOAPPlanner::MakePlan(EGOAPSymbol symbol, bool goalVal)
 {
-	for (unsigned int i = 0; i < actionList.size(); ++i)
+	auto Compare = [](auto a, auto b)
 	{
-		auto actionEffects = actionList[i]->GetEffectList();
+		return a->fScore < b->fScore;
+	};
 
-		for (unsigned int j = 0; j < actionEffects.size(); ++j)
-		{
-			m_EffectMap[actionEffects[j]].push_back(actionList[i]);
-		}
-	}
-}
+	GOAPGraph graph = MakeGraph();
 
-void GOAPPlanner::ChangeWorldState(WorldStateProperty pChange)
-{
-	m_WorldState.WorldStateProperties[pChange.eSymbol].bData = pChange.bData;
-}
+	GOAPGraphNode* root = graph.rootNode;
+	root->previous = root;
+	root->fScore = 0.0f;
+	root->gScore = 0.0f;
+	root->hScore = 0.0f;
 
-std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStateProperty> goalState)
-{
-	auto SortHeapFunc = ([](GOAPActionBase* lhs, GOAPActionBase* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
+	std::vector<GOAPGraphNode*> nodeHeap;
 	
-	std::vector<GOAPActionBase*> plan;
-	std::vector<GOAPActionBase*> openList;
-	
-	// Reset Effect Map
-	for (int i = 0; i < EGOAPSYMBOLS_TOTAL; ++i)
+
+	nodeHeap.push_back(root);
+	std::push_heap(nodeHeap.begin(), nodeHeap.end(), Compare);
+
+	while (nodeHeap.size() > 0)
 	{
-		EGOAPSymbols currentSymbol = (EGOAPSymbols)i;
+		// Remove lowest node from open list and set traversed to true
+		GOAPGraphNode* node = nodeHeap.front();
+		std::pop_heap(nodeHeap.begin(), nodeHeap.end(), Compare);
+		nodeHeap.pop_back();
 
-		for (unsigned int j = 0; j < m_EffectMap[currentSymbol].size(); ++j)
+		node->traversed = true;
+
+		// Loop through nodes
+		for (auto edge : node->edgesFrom)
 		{
-			m_EffectMap[currentSymbol][j]->SetUsed(false);
-			m_EffectMap[currentSymbol][j]->SetPrev(nullptr);
-		}
-	}
-	
-	for (unsigned int i = 0; i < goalState.size(); ++i)
-	{
-		auto worldStateData = m_WorldState.WorldStateProperties[goalState[i].eSymbol].bData;
-		auto goalStateData = goalState[i].bData;
+			GOAPGraphNode* other = edge->pNodeTo;
 
-		// Check if goal state is current world state
-		if (worldStateData == goalStateData)
-			return plan;
+			// Skip traversed nodes
+			if (other->traversed)
+				continue;
 
-		auto currentEffectMap = m_EffectMap[goalState[i].eSymbol];
+			// Calculate Cost
+			float cost = edge->pAction->GetRunningCost();
 
-		for (unsigned int j = 0; j < currentEffectMap.size(); ++j)
-		{
-			auto pAction = currentEffectMap[j];
-			openList.push_back(pAction);
-			std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
-			pAction->SetGScore(pAction->GetCost());
-		}
-	}
+			float newScore = node->gScore + cost;
 
-	while (openList.size() > 0)
-	{
-		// Remove lowest node from open list and make it used
-		GOAPActionBase* pCurrent = openList[0];
+			if (newScore > other->gScore)
+				continue;
 
-		std::pop_heap(openList.begin(), openList.end(), SortHeapFunc);
-		openList.pop_back();
+			// Store gScore
+			other->gScore = newScore;
 
-		pCurrent->SetUsed(true);
+			// Calculate hScore
+			auto currentPreConditions = edge->pAction->GetPreConditions();
+			float score = currentPreConditions->size();
 
-		//auto currentEffects = pCurrent->GetEffectList();
-		//for (int i = 0; i < currentEffects.size(); ++i)
-		//{
-		//	m_WorldState.WorldStateProperties[currentEffects[i]].bData = true;
-		//}
-		
-		// Check if Plan is Complete
-		bool bPlanComplete = false;
-		int nConditionSuccessCount = 0;
-		std::vector<EGOAPSymbols> requiredEffects;
-
-		auto currentPreConditions = pCurrent->GetPreConditionList();
-		for (unsigned int i = 0; i < currentPreConditions.size(); ++i)
-		{
-			auto worldStateData = m_WorldState.WorldStateProperties[currentPreConditions[i].eSymbol].bData;
-			auto preConditionData = currentPreConditions[i].bData;
-
-			if (worldStateData == preConditionData)
-				++nConditionSuccessCount;
-			else
+			for (int i = 0; i < currentPreConditions->size(); ++i)
 			{
-				auto pNow = pCurrent;
-				while (pNow->GetPrev())
-				{
-					pNow = pNow->GetPrev();
-					for (int j = 0; j < pNow->GetEffectList().size(); ++j)
-					{
-						if (pNow->GetEffectList()[j] == currentPreConditions[i].eSymbol)
-						{
-							++nConditionSuccessCount;
-							continue;
-						}
-					}
-				}
-				requiredEffects.push_back(currentPreConditions[i].eSymbol);
+				//HERENOW
+				currentPreConditions.
 			}
-		}
-
-		if (currentPreConditions.size() > 0)
-			if (nConditionSuccessCount == currentPreConditions.size())
-				bPlanComplete = true;
-
-
-		// IF Plan Complete
-		if (bPlanComplete)
-		{
-			plan.insert(plan.begin(), pCurrent);
-
-			while (pCurrent->GetPrev())
-			{
-				pCurrent = pCurrent->GetPrev();
-				plan.insert(plan.begin(), pCurrent);
-			}
-
-			// Return Plan
-			return plan;
-		}
-
-		for (unsigned int i = 0; i < requiredEffects.size(); ++i)
-		{
-			auto currentEffectMap = m_EffectMap[requiredEffects[i]];
 			
-			for (unsigned int j = 0; j < currentEffectMap.size(); ++j)
+			other->hScore = score;
+
+			// Set Final Score
+			other->fScore = other->gScore + other->hScore;
+
+			// point to the currently processing node
+			other->previous = node;
+			// point to previous action
+			other->prevAction = edge->pAction;
+
+			// terribly check if the node's already in the heap to be processed
+			bool inHeap = false;
+			for (int i = 0; i < nodeHeap.size(); ++i)
 			{
-				auto pNeighbour = currentEffectMap[j];
-
-				// Skip null
-				if (!pNeighbour)
-					continue;
-
-				// Skip If Procedural Preconditions check fails
-				if (!pNeighbour->CheckProceduralPreconditions())
-					continue;
-
-				// Skip used
-				if (pNeighbour->GetUsed())
-					continue;
-
-				//IF in open list
-				if (std::find(openList.begin(), openList.end(), pNeighbour) != openList.end())
+				if (nodeHeap[i] == other)
 				{
-					// Check if better plan
-					int newGScore = pCurrent->GetGScore() + pNeighbour->GetCost();
-					if (newGScore < pNeighbour->GetGScore())
-					{
-						// Update to use better plan
-						pNeighbour->SetGScore(newGScore);
-						pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
-
-						pNeighbour->SetPrev(pCurrent);
-
-						openList.push_back(pNeighbour);
-						std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
-					}
+					inHeap = true;
+					break;
 				}
-				// ELSE add to open list and calculate scores
-				else
-				{
-					// Calculate GScore
-					pNeighbour->SetGScore(pCurrent->GetGScore() + pNeighbour->GetCost());
+			}
 
-					// Calculate H Score
-					int nHScore = 0;
-					
-					auto neighbourPreConditions = pNeighbour->GetPreConditionList();
-					for (unsigned int k = 0; k < neighbourPreConditions.size(); ++k)
-					{
-						auto worldStateData = m_WorldState.WorldStateProperties[neighbourPreConditions[k].eSymbol].bData;
-						auto preConditionData = neighbourPreConditions[k].bData;
-
-						// IF effect needed
-						if (worldStateData != preConditionData)
-							++nHScore;
-					}
-
-					// Multiply
-					nHScore *= 10;
-
-					// Set HScore
-					pNeighbour->SetHScore(nHScore);
-
-					// Set FScore
-					pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
-
-					// Add to List
-					pNeighbour->SetPrev(pCurrent);
-
-					openList.push_back(pNeighbour);
-					std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
-				}
+			// if it's not, stick it on!
+			if (!inHeap)
+			{
+				nodeHeap.push_back(other);
+				std::push_heap(nodeHeap.begin(), nodeHeap.end(), Compare);
 			}
 		}
 	}
+
+	// let's grab the cheapest node that results in the state we want
+	GOAPGraphNode* endPoint = nullptr;
+	float cheapestScore = INFINITY;
+	for (auto node : graph.nodes)
+	{
+		if (node->worldState[symbol] == goalVal &&
+			node->fScore < cheapestScore)
+		{
+			endPoint = node;
+			cheapestScore = node->fScore;
+		}
+	}
+
+	std::queue<GOAPActionBase*> result;
+
+	// no plan was available
+	if (!endPoint)
+	{
+		return result;
+	}
+
+	// this should never happen if the end point is valid
+	// even if it's the only node in the path, the previous node will
+	// point to itself
+	if (!endPoint->previous)
+	{
+		return result;
+	}
+
+	// get the plan from the graph and stick it into a vector so we can 
+	// put it into the queue in the right order
+	std::vector<GOAPActionBase*> path;
+	while (endPoint->previous != endPoint)
+	{
+		path.push_back(endPoint->prevAction);
+		endPoint->prevAction->SetStatus(EACTIONSTATUS_INACTIVE);
+
+		endPoint = endPoint->previous;
+	}
+
+	// push it into the queue backwards so it's in the right order
+	for (int i = path.size() - 1; i >= 0; --i)
+		result.push(path[i]);
+
+	return result;
+}
+
+void GOAPPlanner::SetActionList(std::vector<GOAPActionBase*>* pActionList)
+{
+	m_pActionList = pActionList;
+}
+
+void GOAPPlanner::SetState(SymbolMap const & newState)
+{
+	m_worldState = newState;
+}
+
+bool GOAPPlanner::CanDoAction(GOAPActionBase * action, SymbolMap & state)
+{
+	for (auto p : *action->GetPreConditions())
+		if (state[p.first] != p.second)
+			return false;
+	return true;
+}
+
+GOAPGraph GOAPPlanner::MakeGraph()
+{
+	GOAPGraph graph;
+	GOAPGraphNode* rootNode = graph.getNode(m_worldState);
+	rootNode->actionsLeft = *m_pActionList;
+
+	std::queue<GOAPGraphNode*> nodeQueue;
+	nodeQueue.push(rootNode);
+
+	while (!nodeQueue.empty())
+	{
+		GOAPGraphNode* node = nodeQueue.front();
+		nodeQueue.pop();
+
+		node->traversed = true;
+
+		for (GOAPActionBase* action : node->actionsLeft)
+		{
+			// we only want to process actions we can do with the current state
+			// not necessary but this lowers the number of nodes and
+			// connections a whole lot
+			if (!CanDoAction(action, node->worldState))
+				continue;
+
+			// make a copy of the node's world state to apply this action to
+			SymbolMap newMap = node->worldState;
+			for (auto const& effect : *action->GetEffects())
+				newMap[effect.first] = effect.second;
+
+			// get the node with this world state
+			// if one doesn't exist, this function creates it
+			GOAPGraphNode* newNode = graph.getNode(newMap);
+
+			// this happens if the action doesn't affect the state, like
+			// if an effect of an action is already present in the state
+			if (newNode == node)
+				continue;
+
+			// this node's actions list is just the current node's one
+			// minus the action of this edge
+			auto actionsList = node->actionsLeft; // make a copy
+			auto actionFind = std::find(actionsList.begin(), actionsList.end(),
+				action);
+			// this action should always exist since we're literally in the
+			// loop of the container we copied, but check just in case
+			if (actionFind != actionsList.end())
+				actionsList.erase(actionFind);
+
+			newNode->actionsLeft = actionsList;
+
+			// GoapEdge constructor handles giving itself to the node which
+			// handles deleting it :)
+			GOAPGraphEdge* newEdge = new GOAPGraphEdge(node, newNode, action);
+
+			// grab a reference to the container in the queue so we can nicely
+			// use its begin() and end() functions
+			auto queueContainer = nodeQueue._Get_container();
+			auto nodeFind = std::find(queueContainer.begin(), queueContainer.end(), newNode);
+
+			// check if it was traversed since the node isn't guaranteed to be
+			// a newly created one
+			if (!newNode->traversed && nodeFind == queueContainer.end())
+				nodeQueue.push(newNode);
+		}
+	}
+
+	// reset all traversed values for use in A*
+	for (auto node : graph.nodes)
+	node->traversed = false;
 	
-	// Returns if no plan found
-	return plan;
+	return graph;
+}
+
+void GOAPPlanner::PrintPlanFromNode(GOAPGraphNode * node)
+{
 }

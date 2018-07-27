@@ -282,16 +282,7 @@
     <ClCompile Include="FSMStateFindGrass.cpp">
       <Filter>Source Files\Decision Making\FSM\States\Deer</Filter>
     </ClCompile>
-    <ClCompile Include="GOAPPlanner.cpp">
-      <Filter>Source Files\Decision Making\GOAP</Filter>
-    </ClCompile>
-    <ClCompile Include="GOAPActionBase.cpp">
-      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
-    </ClCompile>
     <ClCompile Include="GOAPActionDeliverResources.cpp">
-      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="GOAPActionGetResources.cpp">
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
     <ClCompile Include="GOAPActionGatherBerries.cpp">
@@ -312,9 +303,6 @@
     <ClCompile Include="GOAPActionLightFire.cpp">
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
-    <ClCompile Include="GOAPActionMakeObject.cpp">
-      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
-    </ClCompile>
     <ClCompile Include="GOAPActionMineRock.cpp">
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
@@ -325,6 +313,27 @@
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
     <ClCompile Include="GOAPActionGatherStone.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionBase.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPPlanner.cpp">
+      <Filter>Source Files\Decision Making\GOAP</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPGraph.cpp">
+      <Filter>Source Files\Decision Making\GOAP</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionMakeFire.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGetTool.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionGetWeapon.cpp">
+      <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="GOAPActionMakeWeapon.cpp">
       <Filter>Source Files\Decision Making\GOAP\Actions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -494,15 +503,6 @@
     <ClInclude Include="FSMStateFindGrass.h">
       <Filter>Header Files\Decision Making\FSM\States\Deer</Filter>
     </ClInclude>
-    <ClInclude Include="GOAPPlanner.h">
-      <Filter>Header Files\Decision Making\GOAP</Filter>
-    </ClInclude>
-    <ClInclude Include="GOAPActionBase.h">
-      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="GOAPWorldState.h">
-      <Filter>Header Files\Decision Making\GOAP</Filter>
-    </ClInclude>
     <ClInclude Include="GOAPActionChopTree.h">
       <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
@@ -527,12 +527,6 @@
     <ClInclude Include="GOAPActionGatherBerries.h">
       <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="GOAPActionMakeObject.h">
-      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="GOAPActionGetResources.h">
-      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="GOAPActionDeliverResources.h">
       <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
@@ -540,6 +534,30 @@
       <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
     <ClInclude Include="GOAPActionGatherStone.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionBase.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="EGOAPSymbols.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPPlanner.h">
+      <Filter>Header Files\Decision Making\GOAP</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPGraph.h">
+      <Filter>Header Files\Decision Making\GOAP</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionMakeFire.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGetTool.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionGetWeapon.h">
+      <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="GOAPActionMakeWeapon.h">
       <Filter>Header Files\Decision Making\GOAP\Actions</Filter>
     </ClInclude>
   </ItemGroup>

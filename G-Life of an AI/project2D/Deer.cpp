@@ -29,7 +29,6 @@ void Deer::Update(float fDeltaTime)
 	float fGameTime = TimeManager::GetInstance()->GetGameTime();
 	if (m_fGameTime + HUNGER_TIMER < fGameTime)
 	{
-		//FIXTHIS
 		++m_nHunger;
 		m_fGameTime = fGameTime;
 	}

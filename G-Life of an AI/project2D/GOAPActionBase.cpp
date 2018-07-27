@@ -1,13 +1,12 @@
 #include "GOAPActionBase.h"
 
+
+
 GOAPActionBase::GOAPActionBase()
 {
-	m_bUsed = false;
-	m_nCost = 10;
-
-	m_nFScore = 0;
-	m_nGScore = 0;
-	m_nHScore = 0;
+	m_Status = EACTIONSTATUS_INACTIVE;
+	m_fBaseCost = 1.0f;
+	m_fRunningCost = 1.0f;
 }
 
 
@@ -15,7 +14,26 @@ GOAPActionBase::~GOAPActionBase()
 {
 }
 
-bool GOAPActionBase::CheckProceduralPreconditions()
+void GOAPActionBase::Start()
 {
-	return true;
+	m_Status = EACTIONSTATUS_ACTIVE;
+}
+
+void GOAPActionBase::Run(float fDeltaTime)
+{
+	if (m_Status != EACTIONSTATUS_ACTIVE)
+		Start();
+}
+
+void GOAPActionBase::Finish()
+{
+	m_Status = EACTIONSTATUS_DONE;
+}
+
+inline void GOAPActionBase::Reset()
+{
+	HowGoodIsThisGOAP();
+
+	m_Status = EACTIONSTATUS_INACTIVE;
+	ResetRunningCost();
 }

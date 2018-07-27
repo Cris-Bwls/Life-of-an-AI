@@ -1,10 +1,8 @@
 #pragma once
-#include <vector>
-#include <map>
+#include<queue>
+#include "GOAPGraph.h"
+#include "EGOAPSymbols.h"
 
-#include "GOAPWorldState.h"
-
-class Agent;
 class GOAPActionBase;
 
 class GOAPPlanner
@@ -13,14 +11,23 @@ public:
 	GOAPPlanner();
 	~GOAPPlanner();
 
-	void PopulateEffectMap(std::vector<GOAPActionBase*> actionList);
-	void ChangeWorldState(WorldStateProperty pChange);
+	std::queue<GOAPActionBase*> MakePlan(EGOAPSymbol symbol, bool goalVal);
 
-	std::vector<GOAPActionBase*> MakePlan(std::vector<WorldStateProperty> goalState);
+	void SetActionList(std::vector<GOAPActionBase*>* pActionList);
+
+	void SetState(SymbolMap const& newState);
 
 private:
-	Agent* m_pAgent;
-	WorldState m_WorldState;
-	std::map<EGOAPSymbols, std::vector<GOAPActionBase*>> m_EffectMap;
+	bool CanDoAction(GOAPActionBase* action, SymbolMap& state);
+
+	GOAPGraph MakeGraph();
+
+	void PrintPlanFromNode(GOAPGraphNode* node);
+
+	// Variables
+	SymbolMap m_worldState;
+	std::vector<GOAPActionBase*>* m_pActionList;
+
 };
+
 

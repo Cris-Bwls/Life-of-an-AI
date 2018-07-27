@@ -1,5 +1,6 @@
 #pragma once
 #include "Agent.h"
+#include "EGOAPSymbols.h"
 
 #include <vector>
 
@@ -16,6 +17,7 @@ public:
 	void AddAction(GOAPActionBase* pAction);
 
 private:
+	SymbolMap m_worldState;
 	GOAPPlanner* m_pPlanner;
 	std::vector<GOAPActionBase*> m_ActionList;
 };
