@@ -38,12 +38,14 @@ void GOAPPlanner::ChangeWorldState(WorldStateProperty pChange)
 	m_WorldState.WorldStateProperties[pChange.eSymbol].bData = pChange.bData;
 }
 
-std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStateProperty> goalState)
+std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 {
 	auto SortHeapFunc = ([](GOAPActionBase* lhs, GOAPActionBase* rhs) {return lhs->GetFScore() > rhs->GetFScore(); });
 	
 	std::vector<GOAPActionBase*> plan;
 	std::vector<GOAPActionBase*> openList;
+
+	WorldState planWorldState = m_WorldState;
 	
 	// Reset Effect Map
 	for (int i = 0; i < EGOAPSYMBOLS_TOTAL; ++i)
@@ -56,25 +58,22 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStatePropert
 			m_EffectMap[currentSymbol][j]->SetPrev(nullptr);
 		}
 	}
-	
-	for (unsigned int i = 0; i < goalState.size(); ++i)
+
+	auto worldStateData = m_WorldState.WorldStateProperties[goalState.eSymbol].bData;
+	auto goalStateData = goalState.bData;
+
+	// Check if goal state is current world state
+	if (worldStateData == goalStateData)
+		return plan;
+
+	auto currentEffectActions = m_EffectMap[goalState.eSymbol];
+
+	for (unsigned int j = 0; j < currentEffectActions.size(); ++j)
 	{
-		auto worldStateData = m_WorldState.WorldStateProperties[goalState[i].eSymbol].bData;
-		auto goalStateData = goalState[i].bData;
-
-		// Check if goal state is current world state
-		if (worldStateData == goalStateData)
-			return plan;
-
-		auto currentEffectMap = m_EffectMap[goalState[i].eSymbol];
-
-		for (unsigned int j = 0; j < currentEffectMap.size(); ++j)
-		{
-			auto pAction = currentEffectMap[j];
-			openList.push_back(pAction);
-			std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
-			pAction->SetGScore(pAction->GetCost());
-		}
+		auto pAction = currentEffectActions[j];
+		openList.push_back(pAction);
+		std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
+		pAction->SetGScore(pAction->GetCost());
 	}
 
 	while (openList.size() > 0)
@@ -108,26 +107,12 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStatePropert
 				++nConditionSuccessCount;
 			else
 			{
-				auto pNow = pCurrent;
-				while (pNow->GetPrev())
-				{
-					pNow = pNow->GetPrev();
-					for (int j = 0; j < pNow->GetEffectList().size(); ++j)
-					{
-						if (pNow->GetEffectList()[j] == currentPreConditions[i].eSymbol)
-						{
-							++nConditionSuccessCount;
-							continue;
-						}
-					}
-				}
 				requiredEffects.push_back(currentPreConditions[i].eSymbol);
 			}
 		}
 
-		if (currentPreConditions.size() > 0)
-			if (nConditionSuccessCount == currentPreConditions.size())
-				bPlanComplete = true;
+		if (nConditionSuccessCount == currentPreConditions.size())
+			bPlanComplete = true;
 
 
 		// IF Plan Complete
@@ -137,9 +122,35 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStatePropert
 
 			while (pCurrent->GetPrev())
 			{
-				pCurrent = pCurrent->GetPrev();
+				auto currentEffects = pCurrent->GetEffectList();
+				for (int i = 0; i < currentEffects.size(); ++i)
+				{
+					planWorldState.WorldStateProperties[currentEffects[i]].bData = true;
+				}
+
+				pCurrent = pCurrent->GetPrev();				
+
+				int nPlanConditionSuccessCount = 0;
+				auto currentPreConditions = pCurrent->GetPreConditionList();
+				for (unsigned int i = 0; i < currentPreConditions.size(); ++i)
+				{
+					auto worldStateData = planWorldState.WorldStateProperties[currentPreConditions[i].eSymbol].bData;
+					auto preConditionData = currentPreConditions[i].bData;
+
+					if (worldStateData == preConditionData)
+						++nPlanConditionSuccessCount;
+				}
+
+				if (nPlanConditionSuccessCount != currentPreConditions.size())
+				{
+					bPlanComplete = false;
+					break;
+				}
+
 				plan.insert(plan.begin(), pCurrent);
 			}
+			if (!bPlanComplete)
+				continue;
 
 			// Return Plan
 			return plan;
@@ -147,11 +158,11 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(std::vector<WorldStatePropert
 
 		for (unsigned int i = 0; i < requiredEffects.size(); ++i)
 		{
-			auto currentEffectMap = m_EffectMap[requiredEffects[i]];
+			auto currentEffectActions = m_EffectMap[requiredEffects[i]];
 			
-			for (unsigned int j = 0; j < currentEffectMap.size(); ++j)
+			for (unsigned int j = 0; j < currentEffectActions.size(); ++j)
 			{
-				auto pNeighbour = currentEffectMap[j];
+				auto pNeighbour = currentEffectActions[j];
 
 				// Skip null
 				if (!pNeighbour)

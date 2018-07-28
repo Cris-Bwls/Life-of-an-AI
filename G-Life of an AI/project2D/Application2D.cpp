@@ -82,7 +82,7 @@ bool Application2D::startup() {
 	pAgentManager->GetDeerPool()->m_ActiveObjects.back()->SetTerrain(m_pMap);
 
 	//DEBUG
-	//pAgentManager->AddAI(Vector2(100, 100));
+	pAgentManager->AddAI(Vector2(100, 100));
 
 	return true;
 }

@@ -32,9 +32,7 @@ AI::AI()
 	wsp.eSymbol = EGOAPSYMBOLS_FIRE_LIT;
 	wsp.bData = true;
 
-	vec.push_back(wsp);
-
-	auto plan = m_pPlanner->MakePlan(vec);
+	auto plan = m_pPlanner->MakePlan(wsp);
 	
 	for (int i = 0; i < plan.size(); ++i)
 	{

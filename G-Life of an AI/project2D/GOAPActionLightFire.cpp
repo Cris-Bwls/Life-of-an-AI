@@ -23,6 +23,9 @@ GOAPActionLightFire::~GOAPActionLightFire()
 
 bool GOAPActionLightFire::CheckProceduralPreconditions()
 {
+	// DEBUG
+	return true;
+
 	// CHECK IF FIRE EXISTS	
 	if (StaticObjectManager::GetInstance()->bFireExists)
 		return true;
