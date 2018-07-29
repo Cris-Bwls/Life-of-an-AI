@@ -84,7 +84,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		std::pop_heap(openList.begin(), openList.end(), SortHeapFunc);
 		openList.pop_back();
 
-		pCurrent->SetUsed(true);
+		
 
 		//auto currentEffects = pCurrent->GetEffectList();
 		//for (int i = 0; i < currentEffects.size(); ++i)
@@ -100,10 +100,10 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		auto currentPreConditions = pCurrent->GetPreConditionList();
 		for (unsigned int i = 0; i < currentPreConditions.size(); ++i)
 		{
-			auto worldStateData = m_WorldState.WorldStateProperties[currentPreConditions[i].eSymbol].bData;
+			auto planStateData = planWorldState.WorldStateProperties[currentPreConditions[i].eSymbol].bData;
 			auto preConditionData = currentPreConditions[i].bData;
 
-			if (worldStateData == preConditionData)
+			if (planStateData == preConditionData)
 				++nConditionSuccessCount;
 			else
 			{
@@ -118,18 +118,29 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		// IF Plan Complete
 		if (bPlanComplete)
 		{
+			pCurrent->SetUsed(true);
 			plan.insert(plan.begin(), pCurrent);
+
+			auto currentEffects = pCurrent->GetEffectList();
+			for (int i = 0; i < currentEffects.size(); ++i)
+			{
+				planWorldState.WorldStateProperties[currentEffects[i]].bData = true;
+			}
 
 			while (pCurrent->GetPrev())
 			{
+				pCurrent = pCurrent->GetPrev();		
+
+				int nEffectCount = 0;
 				auto currentEffects = pCurrent->GetEffectList();
 				for (int i = 0; i < currentEffects.size(); ++i)
 				{
-					planWorldState.WorldStateProperties[currentEffects[i]].bData = true;
+					if (planWorldState.WorldStateProperties[currentEffects[i]].bData == true)
+						++nEffectCount;
 				}
-
-				pCurrent = pCurrent->GetPrev();				
-
+				if (nEffectCount == currentEffects.size())
+					continue;
+				
 				int nPlanConditionSuccessCount = 0;
 				auto currentPreConditions = pCurrent->GetPreConditionList();
 				for (unsigned int i = 0; i < currentPreConditions.size(); ++i)
@@ -139,21 +150,30 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 
 					if (worldStateData == preConditionData)
 						++nPlanConditionSuccessCount;
+					else
+						requiredEffects.push_back(currentPreConditions[i].eSymbol);
 				}
 
 				if (nPlanConditionSuccessCount != currentPreConditions.size())
 				{
 					bPlanComplete = false;
-					break;
 				}
 
-				plan.insert(plan.begin(), pCurrent);
+				if (bPlanComplete)
+				{
+					pCurrent->SetUsed(true);
+					plan.insert(plan.begin(), pCurrent);
+
+					for (int i = 0; i < currentEffects.size(); ++i)
+					{
+						planWorldState.WorldStateProperties[currentEffects[i]].bData = true;
+					}
+				}
 			}
-			if (!bPlanComplete)
-				continue;
 
 			// Return Plan
-			return plan;
+			if(bPlanComplete)
+				return plan;
 		}
 
 		for (unsigned int i = 0; i < requiredEffects.size(); ++i)
