@@ -1,17 +1,41 @@
 #pragma once
 #include <vector>
 #include "GOAPWorldState.h"
+#include "Vector2.h"
+
+class Agent;
+class Terrain;
+class StaticObject;
+
+enum ActionStatus
+{
+	// EACTIONSTATUS_
+
+	EACTIONSTATUS_INACTIVE = 0,
+	EACTIONSTATUS_ACTIVE,
+	EACTIONSTATUS_DONE,
+	EACTIONSTATUS_FAILED
+};
 
 class GOAPActionBase
 {
 public:
-	GOAPActionBase();
+	GOAPActionBase(Agent* pAgent, Terrain* pTerrain);
 	virtual ~GOAPActionBase();
 	
 	inline std::vector<WorldStateProperty> GetPreConditionList() { return m_PreConditionList; };
-	inline std::vector<EGOAPSymbols> GetEffectList() { return m_EffectList; };
+	inline std::vector<EGOAPSymbol> GetEffectList() { return m_EffectList; };
 
-	//virtual bool OnAction() = 0;
+	virtual void Start();
+	virtual void Run(float fDeltaTime);
+	virtual void Finish();
+
+	virtual bool Act();
+	virtual bool Move();
+	virtual bool MoveToPos();
+	virtual bool MoveToObject();
+
+	virtual void Reset();
 
 	inline void SetPrev(GOAPActionBase* pPrev) { m_pPrev = pPrev; };
 	inline GOAPActionBase* GetPrev() { return m_pPrev; };
@@ -37,7 +61,12 @@ protected:
 	char* m_ActionName;
 
 	std::vector<WorldStateProperty> m_PreConditionList;
-	std::vector<EGOAPSymbols> m_EffectList;
+	std::vector<EGOAPSymbol> m_EffectList;
+
+	ActionStatus m_Status;
+
+	Agent* m_pAgent;
+	Terrain* m_pTerrain;
 
 	GOAPActionBase* m_pPrev;
 
