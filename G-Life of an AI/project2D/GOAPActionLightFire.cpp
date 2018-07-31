@@ -5,15 +5,11 @@
 GOAPActionLightFire::GOAPActionLightFire()
 {
 	m_ActionName = "GOAPActionLightFire";
-	{
-		WorldStateProperty wsp;
-		wsp.eSymbol = EGOAPSYMBOLS_HAVE_WOOD;
-		wsp.bData = true;
 
-		m_PreConditionList.push_back(wsp);
-	}
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_HAVE_WOOD, true));
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_EXISTS_FIRE, true));
 
-	m_EffectList.push_back(EGOAPSYMBOLS_FIRE_LIT);
+	m_EffectList.push_back(EGOAPSYMBOL_ACTIVE_FIRE);
 }
 
 

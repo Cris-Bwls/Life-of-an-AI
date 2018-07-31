@@ -1,9 +1,9 @@
 #pragma once
 #include "GOAPActionBase.h"
-class GOAPActionMakeTool :
+class GOAPActionMakeFire :
 	public GOAPActionBase
 {
 public:
-	GOAPActionMakeTool();
-	~GOAPActionMakeTool();
+	GOAPActionMakeFire();
+	~GOAPActionMakeFire();
 };

@@ -8,11 +8,20 @@
 #include <iostream>
 #include "GOAPActionGatherSticks.h"
 #include "GOAPActionGatherStone.h"
-#include "GOAPActionMakeTool.h"
+#include "GOAPActionMakeStoneTool.h"
 #include "GOAPActionChopTree.h"
 #include "GOAPActionMineRock.h"
-#include "GOAPActionMakeObject.h"
+#include "GOAPActionMakeFire.h"
 #include "GOAPActionLightFire.h"
+#include "GOAPActionCook.h"
+#include "GOAPActionEatFood.h"
+#include "GOAPActionGatherBerries.h"
+#include "GOAPActionHunt.h"
+#include "GOAPActionGetIronTool.h"
+#include "GOAPActionGetStoneTool.h"
+#include "GOAPActionPlaceCrafter.h"
+#include "GOAPActionPlaceForge.h"
+#include "GOAPActionMakeIronTool.h"
 
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
@@ -23,36 +32,25 @@ AI::AI()
 
 	// DEBUG
 	AddAction(new GOAPActionGatherSticks);
-	AddAction(new GOAPActionMakeTool);
+	AddAction(new GOAPActionMakeStoneTool);
 	AddAction(new GOAPActionChopTree);
 	AddAction(new GOAPActionMineRock);
 	AddAction(new GOAPActionLightFire);
-	AddAction(new GOAPActionMakeObject);
+	AddAction(new GOAPActionMakeFire);
 	AddAction(new GOAPActionGatherStone);
-	AddAction(new GOAPActionGatherSticks);
-	AddAction(new GOAPActionGatherSticks);
-	AddAction(new GOAPActionGatherSticks);
+	AddAction(new GOAPActionCook);
+	AddAction(new GOAPActionEatFood);
+	AddAction(new GOAPActionGatherBerries);
+	AddAction(new GOAPActionHunt);
+	AddAction(new GOAPActionGetIronTool);
+	AddAction(new GOAPActionGetStoneTool);
+	AddAction(new GOAPActionPlaceCrafter);
+	AddAction(new GOAPActionPlaceForge);
+	AddAction(new GOAPActionMakeIronTool);
 
 	m_pPlanner->PopulateEffectMap(m_ActionList);
-
-	std::vector<WorldStateProperty> vec;
-	WorldStateProperty wsp;
-	wsp.eSymbol = EGOAPSYMBOLS_FIRE_LIT;
-	wsp.bData = true;
-
-	
-	auto start = Clock::now();
-
-	auto plan = m_pPlanner->MakePlan(wsp);
-
-	auto end = Clock::now();
-	
-	for (int i = 0; i < plan.size(); ++i)
-	{
-		printf("%s\n", plan[i]->GetName());
-	}
-
-	std::cout << "time taken:" << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << " microseconds" << std::endl;
+	m_pPlanner->ChangeWorldState(WorldStateProperty(EGOAPSYMBOL_TREE_EXISTS, true));
+	m_pPlanner->ChangeWorldState(WorldStateProperty(EGOAPSYMBOL_ROCK_EXISTS, true));
 }
 
 
@@ -79,4 +77,22 @@ void AI::AddAction(GOAPActionBase* pAction)
 	}
 
 	m_ActionList.push_back(pAction);
+}
+
+void AI::Plan()
+{
+	system("cls");
+
+	auto start = Clock::now();
+
+	auto plan = m_pPlanner->MakePlan(WorldStateProperty(EGOAPSYMBOL_FULL, true));
+
+	auto end = Clock::now();
+
+	for (int i = 0; i < plan.size(); ++i)
+	{
+		printf("%s\n", plan[i]->GetName());
+	}
+
+	std::cout << "time taken:" << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << " microseconds" << std::endl;
 }

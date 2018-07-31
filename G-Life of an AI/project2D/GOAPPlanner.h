@@ -21,6 +21,6 @@ public:
 private:
 	Agent* m_pAgent;
 	WorldState m_WorldState;
-	std::map<EGOAPSymbols, std::vector<GOAPActionBase*>> m_EffectMap;
+	std::map<EGOAPSymbol, std::vector<GOAPActionBase*>> m_EffectMap;
 };
 

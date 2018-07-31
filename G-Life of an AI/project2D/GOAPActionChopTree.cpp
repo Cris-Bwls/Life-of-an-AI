@@ -5,15 +5,13 @@
 GOAPActionChopTree::GOAPActionChopTree()
 {
 	m_ActionName = "GOAPActionChopTree";
-	{
-		WorldStateProperty wsp;
-		wsp.eSymbol = EGOAPSYMBOLS_HAVE_TOOL;
-		wsp.bData = true;
+	
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_HAVE_TOOL, true));
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_TREE_EXISTS, true));
 
-		m_PreConditionList.push_back(wsp);
-	}
+	m_EffectList.push_back(EGOAPSYMBOL_HAVE_WOOD);
 
-	m_EffectList.push_back(EGOAPSYMBOLS_HAVE_WOOD);
+	m_nCost = 5;
 }
 
 

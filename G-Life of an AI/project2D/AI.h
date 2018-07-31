@@ -15,6 +15,8 @@ public:
 
 	void AddAction(GOAPActionBase* pAction);
 
+	void Plan();
+
 private:
 	GOAPPlanner* m_pPlanner;
 	std::vector<GOAPActionBase*> m_ActionList;

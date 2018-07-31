@@ -6,7 +6,10 @@ GOAPActionGatherStone::GOAPActionGatherStone()
 {
 	m_ActionName = "GOAPActionGatherStone";
 
-	m_EffectList.push_back(EGOAPSYMBOLS_HAVE_STONE);
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_ROCK_EXISTS, true));
+
+	m_EffectList.push_back(EGOAPSYMBOL_HAVE_STONE);
+
 }
 
 

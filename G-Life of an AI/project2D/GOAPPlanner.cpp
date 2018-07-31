@@ -6,9 +6,9 @@
 GOAPPlanner::GOAPPlanner()
 {
 	// Initialize Effect Map
-	for (int i = 0; i < EGOAPSYMBOLS_TOTAL; ++i)
+	for (int i = 0; i < EGOAPSYMBOL_TOTAL; ++i)
 	{
-		EGOAPSymbols currentSymbol = (EGOAPSymbols)i;
+		EGOAPSymbol currentSymbol = (EGOAPSymbol)i;
 		std::vector<GOAPActionBase*> newList;
 
 		m_EffectMap[currentSymbol] = newList;
@@ -48,9 +48,9 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 	WorldState planWorldState = m_WorldState;
 	
 	// Reset Effect Map
-	for (int i = 0; i < EGOAPSYMBOLS_TOTAL; ++i)
+	for (int i = 0; i < EGOAPSYMBOL_TOTAL; ++i)
 	{
-		EGOAPSymbols currentSymbol = (EGOAPSymbols)i;
+		EGOAPSymbol currentSymbol = (EGOAPSymbol)i;
 
 		for (unsigned int j = 0; j < m_EffectMap[currentSymbol].size(); ++j)
 		{
@@ -84,18 +84,10 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		std::pop_heap(openList.begin(), openList.end(), SortHeapFunc);
 		openList.pop_back();
 
-		
-
-		//auto currentEffects = pCurrent->GetEffectList();
-		//for (int i = 0; i < currentEffects.size(); ++i)
-		//{
-		//	m_WorldState.WorldStateProperties[currentEffects[i]].bData = true;
-		//}
-		
 		// Check if Plan is Complete
 		bool bPlanComplete = false;
 		int nConditionSuccessCount = 0;
-		std::vector<EGOAPSymbols> requiredEffects;
+		std::vector<EGOAPSymbol> requiredEffects;
 
 		auto currentPreConditions = pCurrent->GetPreConditionList();
 		for (unsigned int i = 0; i < currentPreConditions.size(); ++i)
@@ -112,14 +104,24 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		}
 
 		if (nConditionSuccessCount == currentPreConditions.size())
-			bPlanComplete = true;
+		{
+			int nEffectCount = 0;
+			for (int i = 0; i < pCurrent->GetEffectList().size(); ++i)
+			{
+				if (planWorldState.WorldStateProperties[pCurrent->GetEffectList()[i]].bData)
+					++nEffectCount;
+			}
+			if (nEffectCount != pCurrent->GetEffectList().size())
+				bPlanComplete = true;
+		}
 
 
 		// IF Plan Complete
 		if (bPlanComplete)
 		{
-			pCurrent->SetUsed(true);
 			plan.insert(plan.begin(), pCurrent);
+
+			pCurrent->SetUsed(true);
 
 			auto currentEffects = pCurrent->GetEffectList();
 			for (int i = 0; i < currentEffects.size(); ++i)
@@ -168,10 +170,14 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 					{
 						planWorldState.WorldStateProperties[currentEffects[i]].bData = true;
 					}
+
+					// GOAL state reached return plan
+					if (goalState.bData == planWorldState.WorldStateProperties[goalState.eSymbol].bData)
+						return plan;
 				}
 			}
 
-			// Return Plan
+			// Return Plan (???REDUNDANT???)
 			if(bPlanComplete)
 				return plan;
 		}
@@ -253,5 +259,6 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 	}
 	
 	// Returns if no plan found
+	plan.clear();
 	return plan;
 }

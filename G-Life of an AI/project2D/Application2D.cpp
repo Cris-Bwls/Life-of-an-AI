@@ -156,6 +156,15 @@ void Application2D::update(float deltaTime)
 		MouseDownLeft();
 	}
 
+	if (input->isKeyDown(aie::INPUT_KEY_4))
+	{
+		auto AIList = AgentManager::GetInstance()->GetAIPool()->m_ActiveObjects;
+		for (int i = 0; i < AIList.size(); ++i)
+		{
+			AIList[i]->Plan();
+		}
+	}
+
 
 	if (input->isMouseButtonDown(0))
 	{

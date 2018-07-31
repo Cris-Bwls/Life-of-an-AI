@@ -6,7 +6,9 @@ GOAPActionGatherSticks::GOAPActionGatherSticks()
 {
 	m_ActionName = "GOAPActionGatherSticks";
 
-	m_EffectList.push_back(EGOAPSYMBOLS_HAVE_WOOD);
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_TREE_EXISTS, true));
+
+	m_EffectList.push_back(EGOAPSYMBOL_HAVE_WOOD);
 }
 
 

@@ -5,15 +5,14 @@
 GOAPActionMineRock::GOAPActionMineRock()
 {
 	m_ActionName = "GOAPActionMineRock";
-	{
-		WorldStateProperty wsp;
-		wsp.eSymbol = EGOAPSYMBOLS_HAVE_TOOL;
-		wsp.bData = true;
 
-		m_PreConditionList.push_back(wsp);
-	}
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_HAVE_TOOL, true));
+	m_PreConditionList.push_back(WorldStateProperty(EGOAPSYMBOL_ROCK_EXISTS, true));
 
-	m_EffectList.push_back(EGOAPSYMBOLS_HAVE_STONE);
+	m_EffectList.push_back(EGOAPSYMBOL_HAVE_STONE);
+	m_EffectList.push_back(EGOAPSYMBOL_HAVE_IRON);
+
+	m_nCost = 5;
 }
 
 
