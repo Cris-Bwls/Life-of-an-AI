@@ -1,8 +1,10 @@
 #include "GOAPActionPlaceForge.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionPlaceForge::GOAPActionPlaceForge()
+GOAPActionPlaceForge::GOAPActionPlaceForge(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionPlaceForge";
 

@@ -4,6 +4,6 @@ class GOAPActionCook :
 	public GOAPActionBase
 {
 public:
-	GOAPActionCook();
+	GOAPActionCook(AI* pAI, Terrain* pTerrain);
 	~GOAPActionCook();
 };

@@ -17,6 +17,7 @@
 #include "Vector2.h"
 #include "Deer.h"
 #include "AI.h"
+#include "GOAPWorldState.h"
 
 
 Application2D::Application2D() {
@@ -161,10 +162,18 @@ void Application2D::update(float deltaTime)
 		auto AIList = AgentManager::GetInstance()->GetAIPool()->m_ActiveObjects;
 		for (int i = 0; i < AIList.size(); ++i)
 		{
-			AIList[i]->Plan();
+			AIList[i]->Plan(WorldStateProperty(EGOAPSYMBOL_HAVE_TOOL, true));
 		}
 	}
 
+	if (input->isKeyDown(aie::INPUT_KEY_5))
+	{
+		auto AIList = AgentManager::GetInstance()->GetAIPool()->m_ActiveObjects;
+		for (int i = 0; i < AIList.size(); ++i)
+		{
+			AIList[i]->Plan(WorldStateProperty(EGOAPSYMBOL_HAVE_IRON_TOOL, true));
+		}
+	}
 
 	if (input->isMouseButtonDown(0))
 	{

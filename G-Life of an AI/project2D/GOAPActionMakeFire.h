@@ -4,6 +4,6 @@ class GOAPActionMakeFire :
 	public GOAPActionBase
 {
 public:
-	GOAPActionMakeFire();
+	GOAPActionMakeFire(AI* pAI, Terrain* pTerrain);
 	~GOAPActionMakeFire();
 };

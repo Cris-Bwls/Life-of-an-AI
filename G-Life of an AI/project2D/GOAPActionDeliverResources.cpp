@@ -1,8 +1,10 @@
 #include "GOAPActionDeliverResources.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionDeliverResources::GOAPActionDeliverResources()
+GOAPActionDeliverResources::GOAPActionDeliverResources(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 }
 

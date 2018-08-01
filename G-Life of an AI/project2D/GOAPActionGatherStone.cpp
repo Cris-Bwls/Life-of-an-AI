@@ -1,8 +1,10 @@
 #include "GOAPActionGatherStone.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionGatherStone::GOAPActionGatherStone()
+GOAPActionGatherStone::GOAPActionGatherStone(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionGatherStone";
 

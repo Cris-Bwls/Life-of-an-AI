@@ -1,8 +1,10 @@
 #include "GOAPActionCook.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionCook::GOAPActionCook()
+GOAPActionCook::GOAPActionCook(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionCook";
 

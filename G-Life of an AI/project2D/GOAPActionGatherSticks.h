@@ -4,7 +4,7 @@ class GOAPActionGatherSticks :
 	public GOAPActionBase
 {
 public:
-	GOAPActionGatherSticks();
+	GOAPActionGatherSticks(AI* pAI, Terrain* pTerrain);
 	~GOAPActionGatherSticks();
 };
 

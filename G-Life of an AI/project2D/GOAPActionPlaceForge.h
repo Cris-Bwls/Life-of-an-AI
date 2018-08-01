@@ -4,7 +4,7 @@ class GOAPActionPlaceForge :
 	public GOAPActionBase
 {
 public:
-	GOAPActionPlaceForge();
+	GOAPActionPlaceForge(AI* pAI, Terrain* pTerrain);
 	~GOAPActionPlaceForge();
 };
 

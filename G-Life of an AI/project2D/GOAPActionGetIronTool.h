@@ -4,7 +4,7 @@ class GOAPActionGetIronTool :
 	public GOAPActionBase
 {
 public:
-	GOAPActionGetIronTool();
+	GOAPActionGetIronTool(AI* pAI, Terrain* pTerrain);
 	~GOAPActionGetIronTool();
 };
 

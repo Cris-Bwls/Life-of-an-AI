@@ -5,6 +5,7 @@
 
 class GOAPActionBase;
 class GOAPPlanner;
+struct WorldStateProperty;
 
 class AI :
 	public Agent
@@ -15,10 +16,14 @@ public:
 
 	void AddAction(GOAPActionBase* pAction);
 
-	void Plan();
+	void Plan(WorldStateProperty wsp);
+
+	inline std::vector<GOAPActionBase*>*  GetPlan() { return &m_Plan; };
+	inline GOAPPlanner* GetPlanner() { return m_pPlanner; }
 
 private:
 	GOAPPlanner* m_pPlanner;
+	std::vector<GOAPActionBase*> m_Plan;
 	std::vector<GOAPActionBase*> m_ActionList;
 };
 

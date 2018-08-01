@@ -4,7 +4,7 @@ class GOAPActionGatherStone :
 	public GOAPActionBase
 {
 public:
-	GOAPActionGatherStone();
+	GOAPActionGatherStone(AI* pAI, Terrain* pTerrain);
 	~GOAPActionGatherStone();
 };
 

@@ -4,7 +4,7 @@ class GOAPActionSleepCabin :
 	public GOAPActionSleepBase
 {
 public:
-	GOAPActionSleepCabin();
+	GOAPActionSleepCabin(AI* pAI, Terrain* pTerrain);
 	~GOAPActionSleepCabin();
 };
 

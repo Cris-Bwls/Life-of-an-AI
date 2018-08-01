@@ -31,26 +31,28 @@ AI::AI()
 	m_pPlanner = new GOAPPlanner;
 
 	// DEBUG
-	AddAction(new GOAPActionGatherSticks);
-	AddAction(new GOAPActionMakeStoneTool);
-	AddAction(new GOAPActionChopTree);
-	AddAction(new GOAPActionMineRock);
-	AddAction(new GOAPActionLightFire);
-	AddAction(new GOAPActionMakeFire);
-	AddAction(new GOAPActionGatherStone);
-	AddAction(new GOAPActionCook);
-	AddAction(new GOAPActionEatFood);
-	AddAction(new GOAPActionGatherBerries);
-	AddAction(new GOAPActionHunt);
-	AddAction(new GOAPActionGetIronTool);
-	AddAction(new GOAPActionGetStoneTool);
-	AddAction(new GOAPActionPlaceCrafter);
-	AddAction(new GOAPActionPlaceForge);
-	AddAction(new GOAPActionMakeIronTool);
+	AddAction(new GOAPActionGatherSticks(this, m_pTerrain));
+	AddAction(new GOAPActionMakeStoneTool(this, m_pTerrain));
+	AddAction(new GOAPActionChopTree(this, m_pTerrain));
+	AddAction(new GOAPActionMineRock(this, m_pTerrain));
+	AddAction(new GOAPActionLightFire(this, m_pTerrain));
+	AddAction(new GOAPActionMakeFire(this, m_pTerrain));
+	AddAction(new GOAPActionGatherStone(this, m_pTerrain));
+	AddAction(new GOAPActionCook(this, m_pTerrain));
+	AddAction(new GOAPActionEatFood(this, m_pTerrain));
+	AddAction(new GOAPActionGatherBerries(this, m_pTerrain));
+	AddAction(new GOAPActionHunt(this, m_pTerrain));
+	AddAction(new GOAPActionGetIronTool(this, m_pTerrain));
+	AddAction(new GOAPActionGetStoneTool(this, m_pTerrain));
+	AddAction(new GOAPActionPlaceCrafter(this, m_pTerrain));
+	AddAction(new GOAPActionPlaceForge(this, m_pTerrain));
+	AddAction(new GOAPActionMakeIronTool(this, m_pTerrain));
 
 	m_pPlanner->PopulateEffectMap(m_ActionList);
+
 	m_pPlanner->ChangeWorldState(WorldStateProperty(EGOAPSYMBOL_TREE_EXISTS, true));
 	m_pPlanner->ChangeWorldState(WorldStateProperty(EGOAPSYMBOL_ROCK_EXISTS, true));
+	//m_pPlanner->ChangeWorldState(WorldStateProperty(EGOAPSYMBOL_AVAILABLE_STONE_TOOL, true));
 }
 
 
@@ -79,19 +81,19 @@ void AI::AddAction(GOAPActionBase* pAction)
 	m_ActionList.push_back(pAction);
 }
 
-void AI::Plan()
+void AI::Plan(WorldStateProperty wsp)
 {
 	system("cls");
 
 	auto start = Clock::now();
 
-	auto plan = m_pPlanner->MakePlan(WorldStateProperty(EGOAPSYMBOL_FULL, true));
+	m_Plan = m_pPlanner->MakePlan(wsp);
 
 	auto end = Clock::now();
 
-	for (int i = 0; i < plan.size(); ++i)
+	for (int i = 0; i < m_Plan.size(); ++i)
 	{
-		printf("%s\n", plan[i]->GetName());
+		printf("%s\n", m_Plan[i]->GetName());
 	}
 
 	std::cout << "time taken:" << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << " microseconds" << std::endl;

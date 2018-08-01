@@ -1,8 +1,10 @@
 #include "GOAPActionSleepCabin.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionSleepCabin::GOAPActionSleepCabin()
+GOAPActionSleepCabin::GOAPActionSleepCabin(AI* pAI, Terrain* pTerrain) : GOAPActionSleepBase(pAI, pTerrain)
 {
 }
 

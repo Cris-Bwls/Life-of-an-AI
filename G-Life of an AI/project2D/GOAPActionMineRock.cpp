@@ -1,8 +1,10 @@
 #include "GOAPActionMineRock.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionMineRock::GOAPActionMineRock()
+GOAPActionMineRock::GOAPActionMineRock(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionMineRock";
 

@@ -1,8 +1,10 @@
 #include "GOAPActionEatFood.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionEatFood::GOAPActionEatFood()
+GOAPActionEatFood::GOAPActionEatFood(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionEatFood";
 

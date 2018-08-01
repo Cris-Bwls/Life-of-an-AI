@@ -1,8 +1,10 @@
 #include "GOAPActionChopTree.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionChopTree::GOAPActionChopTree()
+GOAPActionChopTree::GOAPActionChopTree(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionChopTree";
 	

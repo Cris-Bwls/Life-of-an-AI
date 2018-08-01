@@ -56,6 +56,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		{
 			m_EffectMap[currentSymbol][j]->SetUsed(false);
 			m_EffectMap[currentSymbol][j]->SetPrev(nullptr);
+			m_EffectMap[currentSymbol][j]->m_nFailureCost = 0;
 		}
 	}
 
@@ -74,6 +75,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 		openList.push_back(pAction);
 		std::push_heap(openList.begin(), openList.end(), SortHeapFunc);
 		pAction->SetGScore(pAction->GetCost());
+		pAction->SetUsed(true);
 	}
 
 	while (openList.size() > 0)
@@ -159,6 +161,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 				if (nPlanConditionSuccessCount != currentPreConditions.size())
 				{
 					bPlanComplete = false;
+					pCurrent->m_nFailureCost += 10;
 				}
 
 				if (bPlanComplete)
@@ -211,7 +214,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 					{
 						// Update to use better plan
 						pNeighbour->SetGScore(newGScore);
-						pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
+						pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore() + pNeighbour->m_nFailureCost);
 
 						pNeighbour->SetPrev(pCurrent);
 
@@ -246,7 +249,7 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 					pNeighbour->SetHScore(nHScore);
 
 					// Set FScore
-					pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore());
+					pNeighbour->SetFScore(pNeighbour->GetGScore() + pNeighbour->GetHScore() + pNeighbour->m_nFailureCost);
 
 					// Add to List
 					pNeighbour->SetPrev(pCurrent);
@@ -256,6 +259,8 @@ std::vector<GOAPActionBase*> GOAPPlanner::MakePlan(WorldStateProperty goalState)
 				}
 			}
 		}
+
+		requiredEffects.clear();
 	}
 	
 	// Returns if no plan found

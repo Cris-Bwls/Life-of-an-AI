@@ -4,6 +4,6 @@ class GOAPActionDeliverResources :
 	public GOAPActionBase
 {
 public:
-	GOAPActionDeliverResources();
+	GOAPActionDeliverResources(AI* pAI, Terrain* pTerrain);
 	~GOAPActionDeliverResources();
 };

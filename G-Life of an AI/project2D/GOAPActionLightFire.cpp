@@ -1,8 +1,10 @@
 #include "GOAPActionLightFire.h"
+#include "AI.h"
+#include "Terrain.h"
 
 #include "StaticObjectManager.h"
 
-GOAPActionLightFire::GOAPActionLightFire()
+GOAPActionLightFire::GOAPActionLightFire(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionLightFire";
 

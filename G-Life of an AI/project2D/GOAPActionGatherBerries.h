@@ -4,6 +4,6 @@ class GOAPActionGatherBerries :
 	public GOAPActionBase
 {
 public:
-	GOAPActionGatherBerries();
+	GOAPActionGatherBerries(AI* pAI, Terrain* pTerrain);
 	~GOAPActionGatherBerries();
 };

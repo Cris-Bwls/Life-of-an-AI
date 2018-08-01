@@ -4,7 +4,7 @@ class GOAPActionSleepOutside :
 	public GOAPActionSleepBase
 {
 public:
-	GOAPActionSleepOutside();
+	GOAPActionSleepOutside(AI* pAI, Terrain* pTerrain);
 	~GOAPActionSleepOutside();
 };
 

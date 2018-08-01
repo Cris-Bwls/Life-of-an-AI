@@ -4,6 +4,6 @@ class GOAPActionMakeStoneTool :
 	public GOAPActionBase
 {
 public:
-	GOAPActionMakeStoneTool();
+	GOAPActionMakeStoneTool(AI* pAI, Terrain* pTerrain);
 	~GOAPActionMakeStoneTool();
 };

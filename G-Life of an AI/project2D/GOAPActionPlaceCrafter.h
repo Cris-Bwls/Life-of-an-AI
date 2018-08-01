@@ -4,7 +4,7 @@ class GOAPActionPlaceCrafter :
 	public GOAPActionBase
 {
 public:
-	GOAPActionPlaceCrafter();
+	GOAPActionPlaceCrafter(AI* pAI, Terrain* pTerrain);
 	~GOAPActionPlaceCrafter();
 };
 

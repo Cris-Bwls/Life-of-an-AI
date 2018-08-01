@@ -4,7 +4,7 @@ class GOAPActionChopTree :
 	public GOAPActionBase
 {
 public:
-	GOAPActionChopTree();
+	GOAPActionChopTree(AI* pAI, Terrain* pTerrain);
 	~GOAPActionChopTree();
 };
 

@@ -4,7 +4,7 @@ class GOAPActionSleepHut :
 	public GOAPActionSleepBase
 {
 public:
-	GOAPActionSleepHut();
+	GOAPActionSleepHut(AI* pAI, Terrain* pTerrain);
 	~GOAPActionSleepHut();
 };
 

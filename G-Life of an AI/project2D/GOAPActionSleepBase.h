@@ -4,7 +4,7 @@ class GOAPActionSleepBase :
 	public GOAPActionBase
 {
 public:
-	GOAPActionSleepBase();
+	GOAPActionSleepBase(AI* pAI, Terrain* pTerrain);
 	virtual ~GOAPActionSleepBase();
 };
 

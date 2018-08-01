@@ -4,7 +4,7 @@ class GOAPActionLightFire :
 	public GOAPActionBase
 {
 public:
-	GOAPActionLightFire();
+	GOAPActionLightFire(AI* pAI, Terrain* pTerrain);
 	~GOAPActionLightFire();
 
 	bool CheckProceduralPreconditions();

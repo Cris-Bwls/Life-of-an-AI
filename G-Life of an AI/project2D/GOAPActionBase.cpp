@@ -1,11 +1,11 @@
 #include "GOAPActionBase.h"
-#include "Agent.h"
+#include "AI.h"
 #include "Terrain.h"
 #include "StaticObject.h"
 
-GOAPActionBase::GOAPActionBase(Agent* pAgent, Terrain* pTerrain)
+GOAPActionBase::GOAPActionBase(AI* pAI, Terrain* pTerrain)
 {
-	m_pAgent = pAgent; 
+	m_pAI = pAI; 
 	m_pTerrain = pTerrain;
 
 	m_bUsed = false;
@@ -54,9 +54,9 @@ bool GOAPActionBase::Move()
 
 bool GOAPActionBase::MoveToPos()
 {
-	auto targetPos = m_pAgent->GetTargetPos();
-	auto path = m_pTerrain->GetPathToPos(m_pAgent->GetPos(), *targetPos, true);
-	m_pAgent->SetPath(path);
+	auto targetPos = m_pAI->GetTargetPos();
+	auto path = m_pTerrain->GetPathToPos(m_pAI->GetPos(), *targetPos, true);
+	m_pAI->SetPath(path);
 	
 	if (path.size() == 0)
 		return false;
@@ -66,9 +66,9 @@ bool GOAPActionBase::MoveToPos()
 
 bool GOAPActionBase::MoveToObject()
 {
-	auto target = m_pAgent->GetTarget();
-	auto path = m_pTerrain->GetPathToObject(m_pAgent->GetPos(), (StaticObject*)target, false);
-	m_pAgent->SetPath(path);
+	auto target = m_pAI->GetTarget();
+	auto path = m_pTerrain->GetPathToObject(m_pAI->GetPos(), (StaticObject*)target, false);
+	m_pAI->SetPath(path);
 
 	if (path.size() == 0)
 		return false;

@@ -1,8 +1,10 @@
 #include "GOAPActionMakeFire.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionMakeFire::GOAPActionMakeFire()
+GOAPActionMakeFire::GOAPActionMakeFire(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionMakeFire";
 

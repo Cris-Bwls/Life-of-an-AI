@@ -4,6 +4,6 @@ class GOAPActionHunt :
 	public GOAPActionBase
 {
 public:
-	GOAPActionHunt();
+	GOAPActionHunt(AI* pAI, Terrain* pTerrain);
 	~GOAPActionHunt();
 };

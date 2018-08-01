@@ -3,7 +3,7 @@
 #include "GOAPWorldState.h"
 #include "Vector2.h"
 
-class Agent;
+class AI;
 class Terrain;
 class StaticObject;
 
@@ -20,7 +20,7 @@ enum ActionStatus
 class GOAPActionBase
 {
 public:
-	GOAPActionBase(Agent* pAgent, Terrain* pTerrain);
+	GOAPActionBase(AI* pAI, Terrain* pTerrain);
 	virtual ~GOAPActionBase();
 	
 	inline std::vector<WorldStateProperty> GetPreConditionList() { return m_PreConditionList; };
@@ -57,6 +57,8 @@ public:
 	inline char* GetName() { return m_ActionName; };
 
 	virtual bool CheckProceduralPreconditions();
+	//TEST
+	int m_nFailureCost;
 protected:
 	char* m_ActionName;
 
@@ -65,7 +67,7 @@ protected:
 
 	ActionStatus m_Status;
 
-	Agent* m_pAgent;
+	AI* m_pAI;
 	Terrain* m_pTerrain;
 
 	GOAPActionBase* m_pPrev;

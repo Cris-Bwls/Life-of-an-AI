@@ -4,6 +4,6 @@ class GOAPActionEatFood :
 	public GOAPActionBase
 {
 public:
-	GOAPActionEatFood();
+	GOAPActionEatFood(AI* pAI, Terrain* pTerrain);
 	~GOAPActionEatFood();
 };

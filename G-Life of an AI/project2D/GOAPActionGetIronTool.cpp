@@ -1,8 +1,10 @@
 #include "GOAPActionGetIronTool.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionGetIronTool::GOAPActionGetIronTool()
+GOAPActionGetIronTool::GOAPActionGetIronTool(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionGetIronTool";
 	

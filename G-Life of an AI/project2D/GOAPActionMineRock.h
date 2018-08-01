@@ -4,6 +4,6 @@ class GOAPActionMineRock :
 	public GOAPActionBase
 {
 public:
-	GOAPActionMineRock();
+	GOAPActionMineRock(AI* pAI, Terrain* pTerrain);
 	~GOAPActionMineRock();
 };

@@ -1,8 +1,10 @@
 #include "GOAPActionGatherSticks.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionGatherSticks::GOAPActionGatherSticks()
+GOAPActionGatherSticks::GOAPActionGatherSticks(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionGatherSticks";
 

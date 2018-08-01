@@ -1,8 +1,10 @@
 #include "GOAPActionHunt.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionHunt::GOAPActionHunt()
+GOAPActionHunt::GOAPActionHunt(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionHunt";
 

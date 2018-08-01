@@ -1,8 +1,10 @@
 #include "GOAPActionPlaceCrafter.h"
+#include "AI.h"
+#include "Terrain.h"
 
 
 
-GOAPActionPlaceCrafter::GOAPActionPlaceCrafter()
+GOAPActionPlaceCrafter::GOAPActionPlaceCrafter(AI* pAI, Terrain* pTerrain) : GOAPActionBase(pAI, pTerrain)
 {
 	m_ActionName = "GOAPActionPlaceCrafter";
 
